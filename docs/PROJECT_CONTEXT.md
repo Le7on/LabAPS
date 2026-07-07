@@ -20,12 +20,12 @@ Lab APS is a laboratory Advanced Planning & Scheduling (APS) platform designed f
 
 The system transforms production demand into executable laboratory schedules while considering:
 
-* Equipment capability
-* Operator skill
-* Workflow dependency
-* Qualification requirements
-* Calendar availability
-* Optimization objectives
+- Equipment capability
+- Operator skill
+- Workflow dependency
+- Qualification requirements
+- Calendar availability
+- Optimization objectives
 
 The platform focuses on planning rather than laboratory execution.
 
@@ -35,15 +35,22 @@ The platform focuses on planning rather than laboratory execution.
 
 The Architecture Design Phase is complete and the architecture baseline is frozen.
 
-The project has entered **Implementation Phase 1 – Bootstrap**.
+Implementation has progressed through Phases 1-4 (core scaffolds):
 
-Milestone M1.1 (Developer CLI and project skeleton generation) is complete. See [12_Development_Log/M1.1_Project_Bootstrap.md](12_Development_Log/M1.1_Project_Bootstrap.md).
+- Phase 1 – Bootstrap (M1.1) + M1.2 Backend Framework (Flask app factory,
+  config, logging, Composition Root)
+- Phase 2 – Infrastructure (SQLAlchemy, session, repository, Alembic)
+- Phase 3 – Planning Domain (Plan aggregate vertical slice: domain, repository,
+  use cases, REST API)
+- Phase 4 – Scheduling Engine scaffold (PlanningProblem -> SchedulingModel ->
+  OR-Tools CP-SAT SolverAdapter -> AssignmentBuilder)
+
+See the session log: [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md).
 
 Current focus:
 
-* M1.2 – Backend Framework (Flask Application Factory, configuration loading, logging, Composition Root)
-
-No business code is implemented until the bootstrap framework is stable.
+- Wire GenerateSchedule use case to persisted Plan Versions; extend to
+  laboratory/execution/reporting modules and the frontend.
 
 ---
 
@@ -163,26 +170,26 @@ Business Rules evolve independently.
 
 Backend
 
-* Python
-* Flask
-* SQLAlchemy
-* Alembic
+- Python
+- Flask
+- SQLAlchemy
+- Alembic
 
 Desktop
 
-* PyWebView
-* HTML
-* Bootstrap
-* JavaScript
+- PyWebView
+- HTML
+- Bootstrap
+- JavaScript
 
 Optimization
 
-* Google OR-Tools (CP-SAT)
+- Google OR-Tools (CP-SAT)
 
 Database
 
-* SQLite (Development)
-* PostgreSQL (Future)
+- SQLite (Development)
+- PostgreSQL (Future)
 
 ---
 
@@ -190,25 +197,25 @@ Database
 
 Completed
 
-* Vision
-* Terminology
-* SRS
-* SAD
-* ADR
-* Constraint Framework
+- Vision
+- Terminology
+- SRS
+- SAD
+- ADR
+- Constraint Framework
 
 Pending
 
-* Physical ERD
-* OpenAPI Specification
-* UI Wireframe
-* Solver Design Specification
+- Physical ERD
+- OpenAPI Specification
+- UI Wireframe
+- Solver Design Specification
 
 Future
 
-* Development
-* Testing
-* Deployment
+- Development
+- Testing
+- Deployment
 
 ---
 
@@ -232,9 +239,9 @@ Future
 
 Continue with Milestone **M1.2 – Backend Framework**:
 
-* Flask Application Factory (`backend/app.py`)
-* Configuration loading (`backend/config`)
-* Logging initialization
-* Dependency Composition Root
+- Flask Application Factory (`backend/app.py`)
+- Configuration loading (`backend/config`)
+- Logging initialization
+- Dependency Composition Root
 
 See [11_Development/00_Project_Bootstrap_Plan.md](11_Development/00_Project_Bootstrap_Plan.md) section 14.

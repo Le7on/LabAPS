@@ -8,11 +8,11 @@
 
 ## Current Phase
 
-Implementation — Phase 1 (Bootstrap)
+Implementation — Phases 1-4 core scaffolds complete
 
 Status
 
-🟢 In Progress (M1.1 complete, M1.2 next)
+🟢 In Progress (Bootstrap, Infrastructure, Planning slice, Scheduling engine done)
 
 Architecture Baseline
 
@@ -24,8 +24,8 @@ Version 1.0 (Frozen)
 
 ## Vision
 
-* Vision
-* Terminology
+- Vision
+- Terminology
 
 Status
 
@@ -35,11 +35,11 @@ Status
 
 ## Software Requirement Specification (SRS)
 
-* Introduction
-* Business Background
-* Business Process
-* Functional Requirements
-* Business Object Model
+- Introduction
+- Business Background
+- Business Process
+- Functional Requirements
+- Business Object Model
 
 Status
 
@@ -51,26 +51,26 @@ Status
 
 Completed
 
-* Business Capability
-* System Architecture
-* Domain Architecture
-* Plan Aggregate
-* Scheduling Architecture
-* Application Architecture
-* Conceptual Database Model
-* Plan Lifecycle
-* Plan Version Architecture
-* Persistence Architecture
-* Conceptual ERD
-* Physical Database Design
-* Architecture Constraints
-* Solver Model
-* Module Interaction
-* API Architecture
-* Deployment Architecture
-* Coding Guidelines
-* Project Structure
-* Development Workflow
+- Business Capability
+- System Architecture
+- Domain Architecture
+- Plan Aggregate
+- Scheduling Architecture
+- Application Architecture
+- Conceptual Database Model
+- Plan Lifecycle
+- Plan Version Architecture
+- Persistence Architecture
+- Conceptual ERD
+- Physical Database Design
+- Architecture Constraints
+- Solver Model
+- Module Interaction
+- API Architecture
+- Deployment Architecture
+- Coding Guidelines
+- Project Structure
+- Development Workflow
 
 Status
 
@@ -82,16 +82,16 @@ Status
 
 Completed
 
-* ADR-001
-* ADR-002
-* ADR-003
-* ADR-004
-* ADR-005
-* ADR-006
-* ADR-007
-* ADR-008
-* ADR-009
-* ADR-010
+- ADR-001
+- ADR-002
+- ADR-003
+- ADR-004
+- ADR-005
+- ADR-006
+- ADR-007
+- ADR-008
+- ADR-009
+- ADR-010
 
 Status
 
@@ -103,9 +103,9 @@ Status
 
 Completed
 
-* Constraint Framework
-* Constraint Mapping
-* Constraint Specification
+- Constraint Framework
+- Constraint Mapping
+- Constraint Specification
 
 Status
 
@@ -227,10 +227,10 @@ M1.2 – Backend Framework
 
 Deliverables
 
-* Flask Application Factory
-* Configuration loading
-* Logging initialization
-* Dependency Composition Root
+- Flask Application Factory
+- Configuration loading
+- Logging initialization
+- Dependency Composition Root
 
 ---
 
@@ -250,17 +250,17 @@ Introduce the Flask Application Factory and runtime composition on top of the ge
 
 | Item                        | Status |
 | --------------------------- | ------ |
-| Vision                      | ✅      |
-| Terminology                 | ✅      |
-| SRS                         | ✅      |
-| SAD                         | ✅      |
-| ADR                         | ✅      |
-| Constraint Framework        | ✅      |
-| Physical ERD                | ✅      |
-| Data Dictionary             | ✅      |
-| OpenAPI                     | ⏳      |
-| UI Wireframe                | ⏳      |
-| Solver Design Specification | ⏳      |
+| Vision                      | ✅     |
+| Terminology                 | ✅     |
+| SRS                         | ✅     |
+| SAD                         | ✅     |
+| ADR                         | ✅     |
+| Constraint Framework        | ✅     |
+| Physical ERD                | ✅     |
+| Data Dictionary             | ✅     |
+| OpenAPI                     | ⏳     |
+| UI Wireframe                | ⏳     |
+| Solver Design Specification | ⏳     |
 
 Implementation shall begin only after all items above are complete.
 

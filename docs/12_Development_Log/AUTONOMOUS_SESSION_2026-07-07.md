@@ -15,12 +15,12 @@
 
 ## Plan
 
-| Milestone | Scope | Status |
-| --------- | ----- | ------ |
-| M1.2 | Flask app factory, config loading, logging, composition root | pending |
-| Phase 2 | SQLAlchemy, DB session, repository framework, Alembic | pending |
-| Phase 3 | Plan aggregate + PlanVersion, planning API, make test_plans_api pass | pending |
-| Phase 4 | Scheduling engine + solver adapter scaffold | pending |
+| Milestone | Scope                                                                | Status  |
+| --------- | -------------------------------------------------------------------- | ------- |
+| M1.2      | Flask app factory, config loading, logging, composition root         | pending |
+| Phase 2   | SQLAlchemy, DB session, repository framework, Alembic                | pending |
+| Phase 3   | Plan aggregate + PlanVersion, planning API, make test_plans_api pass | pending |
+| Phase 4   | Scheduling engine + solver adapter scaffold                          | pending |
 
 ---
 
@@ -93,4 +93,49 @@ whether to later adopt the envelope across the API + update the test.
 
 Ruff clean, all formatted. datetime.utcnow() replaced with timezone-aware UTC.
 
-<!-- Append entries below as work proceeds. -->
+### Phase 4 — Scheduling Engine scaffold (DONE)
+
+Real OR-Tools CP-SAT pipeline (not a fake fallback — OR-Tools is installed).
+
+- `engines/planning/planning_problem.py`: PlanningProblem (Resource, Operation,
+  PlanningPolicies) — immutable, framework-free (Planning Model ch.3).
+- `engines/planning/planning_problem_validator.py`: validates operations,
+  durations, dependency references.
+- `engines/scheduling/scheduling_model.py`: SchedulingModel (Task), plus
+  ScheduledTask + SchedulingSolution (optimization semantics).
+- `engines/scheduling/scheduling_model_builder.py`: PlanningProblem -> SchedulingModel.
+- `solver/adapter/solver_adapter.py`: abstract SolverAdapter (`solve(model)`).
+- `solver/adapter/ortools_solver_adapter.py`: CP-SAT impl — the ONLY module that
+  imports ortools. Minimizes makespan with start/end vars + precedence.
+- `engines/scheduling/assignment_builder.py`: rebuilds Assignments from solution.
+- `engines/scheduling/scheduling_engine.py`: pipeline facade (validate -> build ->
+  solve -> assignments), constructor injection, stateless.
+
+**Tests (14 total passed):**
+
+- `engines/tests/test_scheduling_engine.py` (3, via FakeSolverAdapter): assignments,
+  empty-problem rejection, unknown-dependency rejection.
+- `solver/tests/test_ortools_adapter.py` (2, real CP-SAT): precedence respected,
+  optimal makespan = 5 for a(3)->b(2); empty model handled. importorskip guards.
+
+Boundary preserved: only `solver/adapter/ortools_solver_adapter.py` imports ortools.
+Ruff clean, all formatted.
+
+### Status after this session
+
+- Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.
+- Phase 2 (Infrastructure): DONE.
+- Phase 3 (Planning Domain, Plan slice): DONE.
+- Phase 4 (Scheduling Engine scaffold): DONE.
+- Local commits only; NOT pushed (GitHub unreachable — awaiting user network/proxy).
+
+### Open items for user
+
+1. Push: 8 local commits on `main` ready; remote `origin/main` has an unrelated
+   "Add files via upload" commit. User chose force-with-lease overwrite; blocked
+   on network to github.com.
+2. API envelope decision: `{success,data,meta}` (doc 04) vs bare/`{count,items}`
+   (committed test). Built to the test. Needs a ruling to standardize.
+3. Not yet started: laboratory/execution/reporting modules, PlanVersion API +
+   generate-schedule use case wiring the SchedulingEngine to persisted plans,
+   frontend views. These are the next milestones.

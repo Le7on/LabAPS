@@ -320,39 +320,35 @@ A milestone is complete only if:
 
 Current Phase
 
-Phase 1 – Bootstrap
+Phase 4 – Scheduling Engine (scaffold complete)
 
-Current Milestone
+Completed Phases
 
-M1.2 – Backend Framework
+- Phase 1 – Bootstrap (M1.1) + M1.2 Backend Framework
+- Phase 2 – Infrastructure (SQLAlchemy, session, repository, Alembic)
+- Phase 3 – Planning Domain (Plan aggregate vertical slice)
+- Phase 4 – Scheduling Engine scaffold (PlanningProblem -> SchedulingModel ->
+  OR-Tools CP-SAT SolverAdapter -> AssignmentBuilder)
 
 Current Objective
 
-Introduce the Flask Application Factory, configuration loading, logging and the dependency Composition Root on top of the generated skeleton.
+Wire the SchedulingEngine into a generate-schedule use case against persisted
+Plan Versions, then extend to the laboratory/execution/reporting modules.
 
-M1.1 (Developer CLI Framework) is complete. See [../12_Development_Log/M1.1_Project_Bootstrap.md](../12_Development_Log/M1.1_Project_Bootstrap.md).
+See the session log: [../12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](../12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md).
 
 ---
 
 # 15. Next Immediate Tasks
 
-M1.1 tasks are complete:
+Phases 1-4 core deliverables are implemented and tested (14 passing tests).
 
-1. Developer CLI (`tools/labaps.py`) — done
-2. Manifest Loader — done
-3. Template Engine — done
-4. File Writer — done
-5. Bootstrap Engine — done
-6. Backend Skeleton Generator — done
-7. Frontend Skeleton Generator — done
-8. Development Environment Verification — done
+The next engineering tasks are:
 
-The next engineering tasks (M1.2) are executed in this order.
-
-1. Flask Application Factory (`backend/app.py`)
-2. Configuration Loading (`backend/config`)
-3. Logging Initialization
-4. Dependency Composition Root
-5. Application startup verification
+1. PlanVersion API (create/approve/publish) on the Plan aggregate
+2. GenerateSchedule use case wiring SchedulingEngine to a persisted Plan Version
+3. Laboratory module (Equipment, Staff, Workflow Definition)
+4. Frontend views consuming the REST API
+5. Push local commits once GitHub is reachable
 
 Business development begins only after the bootstrap framework is stable.
