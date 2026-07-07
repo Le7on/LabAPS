@@ -12,10 +12,10 @@ export const usePlansStore = defineStore('plans', () => {
     loading.value = true
     error.value = null
     try {
-      const data = await listPlans()
-      plans.value = data.items
+      const { data } = await listPlans()
+      plans.value = data
     } catch (e) {
-      error.value = e?.response?.data?.message ?? 'Failed to load plans'
+      error.value = e?.message ?? 'Failed to load plans'
     } finally {
       loading.value = false
     }
@@ -28,7 +28,7 @@ export const usePlansStore = defineStore('plans', () => {
       await fetchPlans()
       return true
     } catch (e) {
-      error.value = e?.response?.data?.message ?? 'Failed to create plan'
+      error.value = e?.message ?? 'Failed to create plan'
       return false
     }
   }

@@ -6,7 +6,9 @@ no business logic.
 
 from __future__ import annotations
 
-from flask import Blueprint, current_app, jsonify
+from flask import Blueprint, current_app
+
+from backend.shared import api_response
 
 health_bp = Blueprint("health", __name__)
 
@@ -14,7 +16,7 @@ health_bp = Blueprint("health", __name__)
 @health_bp.get("/health")
 def health():
     config = current_app.config["APP_CONFIG"]
-    return jsonify(
+    return api_response.success(
         {
             "status": "ok",
             "app": config.name,

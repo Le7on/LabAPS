@@ -25,12 +25,12 @@ def test_full_planning_to_schedule_flow(client):
         json={"planningHorizon": "2026-W34", "name": "Schedule Test"},
     )
     assert created.status_code == 201
-    plan_id = created.get_json()["id"]
+    plan_id = created.get_json()["data"]["id"]
 
     version = client.post(f"/api/v1/plans/{plan_id}/versions")
     assert version.status_code == 201
-    version_id = version.get_json()["id"]
-    assert version.get_json()["versionNumber"] == 1
+    version_id = version.get_json()["data"]["id"]
+    assert version.get_json()["data"]["versionNumber"] == 1
 
     schedule = client.post(
         f"/api/v1/plans/{plan_id}/versions/{version_id}/schedule",
@@ -43,10 +43,11 @@ def test_full_planning_to_schedule_flow(client):
     )
 
     assert schedule.status_code == 200
-    payload = schedule.get_json()
-    assert payload["feasible"] is True
-    assert payload["makespan"] == 5
-    assignments = {a["operationId"]: a for a in payload["assignments"]}
+    body = schedule.get_json()
+    assert body["success"] is True
+    assert body["meta"]["feasible"] is True
+    assert body["meta"]["makespan"] == 5
+    assignments = {a["operationId"]: a for a in body["data"]["assignments"]}
     assert assignments["op2"]["start"] >= assignments["op1"]["end"]
 
 

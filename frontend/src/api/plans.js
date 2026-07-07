@@ -1,8 +1,9 @@
 import client from './client'
 
-// Plans API calls. Mirrors the backend planning endpoints.
+// Plans API calls. The client interceptor unwraps the envelope to {data, meta}.
 export function listPlans() {
-  return client.get('/plans').then((r) => r.data)
+  // data is the plan array; meta carries total/pagination.
+  return client.get('/plans')
 }
 
 export function createPlan(payload) {

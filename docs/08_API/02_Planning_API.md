@@ -6,9 +6,12 @@
 
 **Project:** Laboratory Advanced Planning & Scheduling Platform (Lab APS)
 
-**Version:** 1.0
+**Version:** 1.1
 
-**Status:** Draft
+**Status:** Partially Implemented (Plan, Plan Version, Generate Schedule)
+
+**Response contract:** All responses use the envelope in
+[04_API_Response_Standard.md](04_API_Response_Standard.md) ([ADR-012](../04_ADR/ADR-012-API-Response-Envelope.md)).
 
 ---
 
@@ -85,10 +88,16 @@ HTTP
 
 ```json id="planapi005"
 {
-  "id": "PLAN-UUID",
-  "planCode": "PLAN-2026-W32",
-  "name": "Week 32 Production Plan",
-  "planningHorizon": "2026-W32"
+  "success": true,
+  "data": {
+    "id": "PLAN-UUID",
+    "planCode": "PLAN-2026-W32",
+    "name": "Week 32 Production Plan",
+    "planningHorizon": "2026-W32",
+    "status": "draft",
+    "versionCount": 0
+  },
+  "meta": {}
 }
 ```
 
@@ -271,12 +280,25 @@ HTTP
 
 ```json
 {
-  "status": "Scheduled",
-  "objectiveScore": 98.7,
-  "runtimeMs": 5234,
-  "warnings": []
+  "success": true,
+  "data": {
+    "planId": "PLAN-UUID",
+    "versionId": "VERSION-UUID",
+    "status": "optimal",
+    "assignments": [{ "operationId": "op1", "start": 0, "end": 3 }]
+  },
+  "meta": {
+    "makespan": 5,
+    "feasible": true,
+    "runtimeStatus": "optimal"
+  }
 }
 ```
+
+Implementation note: the current endpoint is
+`POST /api/v1/plans/{planId}/versions/{versionId}/schedule` and accepts an
+`operations` array in the request body. The `:generate` command form and the
+Planning-Context-driven problem build are a later milestone.
 
 ---
 

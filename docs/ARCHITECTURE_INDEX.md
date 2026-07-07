@@ -102,6 +102,8 @@ ARCHITECTURE_LOG.md
 | ADR-008 | Planning Context Snapshots                  | Accepted |
 | ADR-009 | Reject Direct Database-Driven Scheduling    | Accepted |
 | ADR-010 | Separate Laboratory Definition and Planning | Accepted |
+| ADR-011 | Adopt Vue 3 SPA Frontend                    | Accepted |
+| ADR-012 | Unified API Response Envelope               | Accepted |
 
 ---
 

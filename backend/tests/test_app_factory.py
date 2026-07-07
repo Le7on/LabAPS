@@ -27,13 +27,15 @@ def test_health_endpoint(client):
     response = client.get("/api/v1/health")
     assert response.status_code == 200
     payload = response.get_json()
-    assert payload["status"] == "ok"
-    assert payload["app"]
-    assert payload["version"]
+    assert payload["success"] is True
+    assert payload["data"]["status"] == "ok"
+    assert payload["data"]["app"]
+    assert payload["data"]["version"]
 
 
 def test_unknown_route_returns_json_404(client):
     response = client.get("/api/v1/does-not-exist")
     assert response.status_code == 404
     payload = response.get_json()
-    assert payload["error"] == "not_found"
+    assert payload["success"] is False
+    assert payload["error"]["code"] == "NOT_FOUND"

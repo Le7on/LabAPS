@@ -4,15 +4,21 @@
 
 **Project:** Laboratory Advanced Planning & Scheduling Platform (Lab APS)
 
-**Version:** 1.0
+**Version:** 1.1
 
-**Status:** Draft
+**Status:** Implemented
+
+**Decision:** [ADR-012](../04_ADR/ADR-012-API-Response-Envelope.md)
 
 ---
 
 # 1. Purpose
 
 This document defines the standard response format used by every REST API in Lab APS.
+
+This envelope is the single authoritative response contract (ADR-012). It is
+implemented by `backend/shared/api_response.py` and enforced for errors by
+`backend/shared/error_handlers.py`.
 
 A unified response model simplifies:
 

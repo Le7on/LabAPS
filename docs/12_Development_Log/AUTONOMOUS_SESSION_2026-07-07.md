@@ -150,6 +150,23 @@ Ruff clean, all formatted.
 - main.js wires router + pinia.
 - Verified: `npm run build` succeeds (86 modules), ESLint + Prettier clean.
 
+### API response envelope standardization (DONE) — resolves the open decision
+
+Decision recorded in ADR-012. Resolved the doc 02 vs doc 04 vs committed-test
+contradiction by adopting the doc 04 envelope as the single contract.
+
+- `backend/shared/api_response.py`: success/collection/error envelope builders.
+- errors.py: SCREAMING_SNAKE codes (`VALIDATION_FAILED`->422, `NOT_FOUND`->404,
+  `CONFLICT`->409, `INTERNAL_ERROR`->500) + per-field `details`.
+- error_handlers.py: emit the error envelope for AppError + HTTPException.
+- All endpoints (plans, equipment, health) now return `{success, data, meta}`;
+  generate-schedule puts makespan/feasible/status in `meta` (command response).
+- Tests updated to the envelope, incl. the committed `test_plans_api.py`. 18 pass.
+- Frontend: Axios response interceptor unwraps `{data, meta}` centrally and
+  normalizes errors to `{code, message, details}`; store/api updated. Build green.
+- Docs synced: doc 04 -> Implemented (v1.1, links ADR-012); doc 02 -> Partially
+  Implemented with envelope examples; ARCHITECTURE_INDEX ADR table adds 011, 012.
+
 ### Status after this session
 
 - Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.

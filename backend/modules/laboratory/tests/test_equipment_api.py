@@ -25,19 +25,19 @@ def test_create_and_list_equipment(client):
         },
     )
     assert response.status_code == 201
-    payload = response.get_json()
+    payload = response.get_json()["data"]
     assert payload["equipmentCode"] == "EQ-001"
     assert payload["capabilities"] == ["cool", "spin"]
     assert payload["active"] is True
 
     listing = client.get("/api/v1/equipment")
     assert listing.status_code == 200
-    data = listing.get_json()
-    assert data["count"] == 1
-    assert data["items"][0]["name"] == "Centrifuge"
+    body = listing.get_json()
+    assert body["meta"]["total"] == 1
+    assert body["data"][0]["name"] == "Centrifuge"
 
 
 def test_create_equipment_requires_code(client):
     response = client.post("/api/v1/equipment", json={"name": "No code"})
-    assert response.status_code == 400
-    assert response.get_json()["error"] == "validation_error"
+    assert response.status_code == 422
+    assert response.get_json()["error"]["code"] == "VALIDATION_FAILED"
