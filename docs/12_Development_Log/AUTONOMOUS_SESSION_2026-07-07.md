@@ -140,6 +140,16 @@ Ruff clean, all formatted.
 - Alembic migration for equipment table (chain verified: plan -> equipment).
 - Tests: create+list, validation. 18 tests pass overall. Ruff clean.
 
+### Frontend — Plans view (DONE)
+
+- src/api/client.js: shared Axios instance (baseURL /api/v1, dev proxy to Flask).
+- src/api/plans.js: listPlans/createPlan/getPlan.
+- src/stores/plans.js: Pinia store (fetchPlans, addPlan, loading/error state).
+- src/views/PlansView.vue: list table + create form bound to the store.
+- src/router/index.js: routes (/ -> /plans). App.vue: header + nav + RouterView.
+- main.js wires router + pinia.
+- Verified: `npm run build` succeeds (86 modules), ESLint + Prettier clean.
+
 ### Status after this session
 
 - Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.
