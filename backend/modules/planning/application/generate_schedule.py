@@ -17,22 +17,17 @@ from backend.engines.planning.planning_problem import (
     PlanningProblem,
 )
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
-from backend.modules.planning.repository.plan_repository import PlanRepository
 from backend.shared.errors import NotFoundError, ValidationError
 
 
 class GenerateScheduleUseCase:
-    def __init__(self, session_factory, scheduling_engine: SchedulingEngine):
-        self._session_factory = session_factory
+    def __init__(self, uow_factory, scheduling_engine: SchedulingEngine):
+        self._uow_factory = uow_factory
         self._engine = scheduling_engine
 
     def execute(self, plan_id: str, version_id: str, operations: list[dict]) -> dict:
-        session = self._session_factory()
-        try:
-            repository = PlanRepository(session)
-            plan = repository.get(plan_id)
-        finally:
-            session.close()
+        with self._uow_factory() as uow:
+            plan = uow.plans.get(plan_id)
 
         if plan is None:
             raise NotFoundError(f"Plan {plan_id} not found")

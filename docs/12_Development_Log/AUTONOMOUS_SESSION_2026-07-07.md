@@ -167,6 +167,21 @@ contradiction by adopting the doc 04 envelope as the single contract.
 - Docs synced: doc 04 -> Implemented (v1.1, links ADR-012); doc 02 -> Partially
   Implemented with envelope examples; ARCHITECTURE_INDEX ADR table adds 011, 012.
 
+### Unit of Work refactor (DONE) — removes per-use-case transaction boilerplate
+
+Addresses design recommendation #2 (repeated session/commit/rollback/close in
+every use case).
+
+- `backend/infrastructure/persistence/unit_of_work.py`: UnitOfWork context
+  manager owns the session lifecycle (commit on success, rollback on error,
+  always close) and exposes repositories (uow.plans, uow.equipment). Implements
+  "One Use Case = One Unit of Work" (DI Strategy section 10).
+- Container exposes `unit_of_work()` factory.
+- All 7 use cases refactored to `with self._uow_factory() as uow: ...`;
+  the manual try/commit/rollback/close blocks are gone.
+- API layer passes `container.unit_of_work` instead of raw session_factory.
+- 18 tests still pass; end-to-end boot verified. Ruff clean.
+
 ### Status after this session
 
 - Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.

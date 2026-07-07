@@ -18,8 +18,8 @@ from backend.shared.errors import ValidationError
 equipment_bp = Blueprint("equipment", __name__)
 
 
-def _session_factory():
-    return current_app.config["CONTAINER"].session_factory
+def _uow():
+    return current_app.config["CONTAINER"].unit_of_work
 
 
 @equipment_bp.post("/equipment")
@@ -28,13 +28,13 @@ def create_equipment():
     if not isinstance(data, dict):
         raise ValidationError("Request body must be a JSON object")
 
-    use_case = CreateEquipmentUseCase(_session_factory())
+    use_case = CreateEquipmentUseCase(_uow())
     result = use_case.execute(CreateEquipmentRequest.from_json(data))
     return api_response.success(result, status=201)
 
 
 @equipment_bp.get("/equipment")
 def list_equipment():
-    use_case = ListEquipmentUseCase(_session_factory())
+    use_case = ListEquipmentUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])

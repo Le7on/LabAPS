@@ -1,4 +1,4 @@
-"""Create Equipment use case."""
+"""Create Equipment use case (one Unit of Work)."""
 
 from __future__ import annotations
 
@@ -7,14 +7,11 @@ from backend.modules.laboratory.dto.equipment_dto import (
     CreateEquipmentRequest,
     equipment_to_dict,
 )
-from backend.modules.laboratory.repository.equipment_repository import (
-    EquipmentRepository,
-)
 
 
 class CreateEquipmentUseCase:
-    def __init__(self, session_factory):
-        self._session_factory = session_factory
+    def __init__(self, uow_factory):
+        self._uow_factory = uow_factory
 
     def execute(self, request: CreateEquipmentRequest) -> dict:
         equipment = Equipment(
@@ -23,14 +20,7 @@ class CreateEquipmentUseCase:
             capabilities=request.capabilities,
         )
 
-        session = self._session_factory()
-        try:
-            EquipmentRepository(session).add(equipment)
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+        with self._uow_factory() as uow:
+            uow.equipment.add(equipment)
 
         return equipment_to_dict(equipment)

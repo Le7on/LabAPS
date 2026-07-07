@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from backend.config.settings import AppConfig
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.infrastructure.persistence.database import Database
+from backend.infrastructure.persistence.unit_of_work import UnitOfWork
 from backend.solver.adapter.ortools_solver_adapter import ORToolsSolverAdapter
 
 
@@ -32,6 +33,10 @@ class Container:
     @property
     def session_factory(self):
         return self.database.session_factory
+
+    def unit_of_work(self) -> UnitOfWork:
+        """Create a Unit of Work (one transaction boundary per use case)."""
+        return UnitOfWork(self.database.session_factory)
 
 
 def build_container(config: AppConfig) -> Container:

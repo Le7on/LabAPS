@@ -1,21 +1,18 @@
 """Create Plan use case.
 
-One business action, one transaction boundary. Loads no aggregate (creation),
-invokes the domain, persists, returns a DTO.
+One business action, one transaction boundary (the Unit of Work). Invokes the
+domain, persists, returns a DTO.
 """
 
 from __future__ import annotations
 
-from sqlalchemy.orm import Session
-
 from backend.modules.planning.domain.aggregates.plan import Plan
 from backend.modules.planning.dto.plan_dto import CreatePlanRequest, plan_to_dict
-from backend.modules.planning.repository.plan_repository import PlanRepository
 
 
 class CreatePlanUseCase:
-    def __init__(self, session_factory):
-        self._session_factory = session_factory
+    def __init__(self, uow_factory):
+        self._uow_factory = uow_factory
 
     def execute(self, request: CreatePlanRequest) -> dict:
         plan = Plan(
@@ -24,15 +21,7 @@ class CreatePlanUseCase:
             description=request.description,
         )
 
-        session: Session = self._session_factory()
-        try:
-            repository = PlanRepository(session)
-            repository.add(plan)
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+        with self._uow_factory() as uow:
+            uow.plans.add(plan)
 
         return plan_to_dict(plan)
