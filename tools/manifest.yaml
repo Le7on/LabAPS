@@ -129,3 +129,9 @@ templates:
     target: frontend/src/main.js
   - source: frontend/App.vue.tpl
     target: frontend/src/App.vue
+  - source: frontend/eslint.config.js.tpl
+    target: frontend/eslint.config.js
+  - source: frontend/.prettierrc.json.tpl
+    target: frontend/.prettierrc.json
+  - source: frontend/.prettierignore.tpl
+    target: frontend/.prettierignore
