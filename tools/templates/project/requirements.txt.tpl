@@ -1,0 +1,13 @@
+Flask==3.1.1
+
+SQLAlchemy==2.0.41
+
+Flask-SQLAlchemy==3.1.1
+
+alembic==1.16.4
+
+ortools==9.14.6206
+
+PyYAML==6.0.2
+
+python-dotenv==1.1.1

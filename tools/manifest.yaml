@@ -1,0 +1,131 @@
+project:
+  name: Lab APS
+  version: 1.0.0
+
+# Directory layout follows Engineering Baseline v2.0 (Module First).
+directories:
+  - backend
+  - backend/bootstrap
+  - backend/config
+  - backend/modules
+  - backend/modules/planning
+  - backend/modules/planning/api
+  - backend/modules/planning/application
+  - backend/modules/planning/domain
+  - backend/modules/planning/repository
+  - backend/modules/planning/dto
+  - backend/modules/planning/tests
+  - backend/modules/laboratory
+  - backend/modules/laboratory/api
+  - backend/modules/laboratory/application
+  - backend/modules/laboratory/domain
+  - backend/modules/laboratory/repository
+  - backend/modules/laboratory/dto
+  - backend/modules/laboratory/tests
+  - backend/modules/execution
+  - backend/modules/execution/api
+  - backend/modules/execution/application
+  - backend/modules/execution/domain
+  - backend/modules/execution/repository
+  - backend/modules/execution/dto
+  - backend/modules/execution/tests
+  - backend/modules/reporting
+  - backend/modules/reporting/api
+  - backend/modules/reporting/application
+  - backend/modules/reporting/domain
+  - backend/modules/reporting/repository
+  - backend/modules/reporting/dto
+  - backend/modules/reporting/tests
+  - backend/engines
+  - backend/engines/planning
+  - backend/engines/scheduling
+  - backend/engines/analysis
+  - backend/solver
+  - backend/infrastructure
+  - backend/shared
+  - frontend
+  - frontend/public
+  - frontend/src
+  - frontend/src/views
+  - frontend/src/components
+  - frontend/src/router
+  - frontend/src/stores
+  - frontend/src/api
+  - frontend/src/assets
+  - tools
+  - deployment
+  - tests
+  - resources
+
+# Python packages receive an __init__.py during bootstrap.
+packages:
+  - backend
+  - backend/bootstrap
+  - backend/config
+  - backend/modules
+  - backend/modules/planning
+  - backend/modules/planning/api
+  - backend/modules/planning/application
+  - backend/modules/planning/domain
+  - backend/modules/planning/repository
+  - backend/modules/planning/dto
+  - backend/modules/planning/tests
+  - backend/modules/laboratory
+  - backend/modules/laboratory/api
+  - backend/modules/laboratory/application
+  - backend/modules/laboratory/domain
+  - backend/modules/laboratory/repository
+  - backend/modules/laboratory/dto
+  - backend/modules/laboratory/tests
+  - backend/modules/execution
+  - backend/modules/execution/api
+  - backend/modules/execution/application
+  - backend/modules/execution/domain
+  - backend/modules/execution/repository
+  - backend/modules/execution/dto
+  - backend/modules/execution/tests
+  - backend/modules/reporting
+  - backend/modules/reporting/api
+  - backend/modules/reporting/application
+  - backend/modules/reporting/domain
+  - backend/modules/reporting/repository
+  - backend/modules/reporting/dto
+  - backend/modules/reporting/tests
+  - backend/engines
+  - backend/engines/planning
+  - backend/engines/scheduling
+  - backend/engines/analysis
+  - backend/solver
+  - backend/infrastructure
+  - backend/shared
+
+# Project-level files rendered from templates.
+templates:
+  - source: project/README.md.tpl
+    target: README.md
+  - source: project/.gitignore.tpl
+    target: .gitignore
+  - source: project/requirements.txt.tpl
+    target: requirements.txt
+  - source: project/requirements-dev.txt.tpl
+    target: requirements-dev.txt
+  - source: project/pyproject.toml.tpl
+    target: pyproject.toml
+  - source: project/.env.example.tpl
+    target: .env.example
+  - source: backend/config.yaml.tpl
+    target: backend/config/config.yaml
+  - source: backend/logging.yaml.tpl
+    target: backend/config/logging.yaml
+  - source: backend/solver.yaml.tpl
+    target: backend/config/solver.yaml
+  - source: frontend/package.json.tpl
+    target: frontend/package.json
+  - source: frontend/vite.config.ts.tpl
+    target: frontend/vite.config.ts
+  - source: frontend/index.html.tpl
+    target: frontend/index.html
+  - source: frontend/main.js.tpl
+    target: frontend/src/main.js
+  - source: frontend/App.vue.tpl
+    target: frontend/src/App.vue

@@ -1,0 +1,15 @@
+# Lab APS application configuration
+# Application configuration only. Business configuration lives in the database.
+
+app:
+  name: "Lab APS"
+  version: "1.0.0"
+  env: development
+
+database:
+  url: "sqlite:///labaps.db"
+
+api:
+  prefix: "/api/v1"
+  host: "127.0.0.1"
+  port: 5000
