@@ -35,6 +35,10 @@ def create_app(config: AppConfig | None = None, config_file: Path | None = None)
     container = build_container(app_config)
     app.config["CONTAINER"] = container
 
+    # Development/test convenience: ensure schema exists. Production schema
+    # changes are managed through Alembic migrations.
+    container.database.create_all()
+
     register_error_handlers(app)
     register_blueprints(app, container)
 
@@ -46,6 +50,8 @@ def register_blueprints(app: Flask, container: Container) -> None:
 
     prefix = container.config.api.prefix
 
+    from backend.modules.planning.api.plans_api import plans_bp
     from backend.shared.health import health_bp
 
     app.register_blueprint(health_bp, url_prefix=prefix)
+    app.register_blueprint(plans_bp, url_prefix=prefix)

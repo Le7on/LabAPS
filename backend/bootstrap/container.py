@@ -11,21 +11,28 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from backend.config.settings import AppConfig
+from backend.infrastructure.persistence.database import Database
 
 
 @dataclass(slots=True)
 class Container:
     """Holds the assembled application dependencies.
 
-    Later phases extend this with the database engine/session factory,
-    repositories, engines and use cases. Kept intentionally small so the wiring
-    stays explicit and each phase adds exactly what it needs.
+    Later phases extend this with engines and additional repositories/use cases.
+    The database and its session factory are constructed once and shared.
     """
 
     config: AppConfig
+    database: Database
+
+    @property
+    def session_factory(self):
+        return self.database.session_factory
 
 
 def build_container(config: AppConfig) -> Container:
     """Assemble the application object graph from configuration."""
 
-    return Container(config=config)
+    database = Database(config.database.url)
+
+    return Container(config=config, database=database)

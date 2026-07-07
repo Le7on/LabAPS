@@ -1,15 +1,13 @@
 import sys
 
+from constants import MANIFEST_FILE
 from context import BootstrapContext
 from manifest_loader import ManifestLoader
-from constants import MANIFEST_FILE
-from writer import FileWriter
 from renderer import TemplateRenderer
-
+from writer import FileWriter
 
 
 class BootstrapEngine:
-
     def __init__(self):
 
         self.context = BootstrapContext()
@@ -27,10 +25,8 @@ class BootstrapEngine:
         print("=" * 60)
 
         try:
-
             manifest = self.loader.load()
         except Exception as ex:
-
             print()
 
             print("=" * 60)
@@ -110,9 +106,7 @@ class BootstrapEngine:
         ok = True
 
         version = sys.version_info
-        print(
-            f"[CHECK] Python {version.major}.{version.minor}.{version.micro}"
-        )
+        print(f"[CHECK] Python {version.major}.{version.minor}.{version.micro}")
         if version < (3, 11):
             print("        Python 3.11 or newer is required.")
             ok = False
@@ -126,9 +120,7 @@ class BootstrapEngine:
                 ok = False
 
         manifest_ok = self.loader.manifest.is_file()
-        print(
-            f"[CHECK] manifest present: {manifest_ok}"
-        )
+        print(f"[CHECK] manifest present: {manifest_ok}")
         ok = ok and manifest_ok
 
         print()
@@ -153,7 +145,6 @@ class BootstrapEngine:
         print()
 
         for directory in manifest["directories"]:
-
             path = self.context.project_root / directory
 
             self.writer.mkdir(path)
@@ -161,7 +152,7 @@ class BootstrapEngine:
             print(f"[DIR ] {directory}")
 
     def create_packages(self, manifest):
-        
+
         print()
 
         print("Creating python packages...")
@@ -169,7 +160,6 @@ class BootstrapEngine:
         print()
 
         for package in manifest.get("packages", []):
-
             path = self.context.project_root / package
 
             self.writer.mkdir(path)
@@ -177,13 +167,9 @@ class BootstrapEngine:
             init = path / "__init__.py"
 
             self.writer.write_text(
-
                 init,
-
                 "",
-
                 overwrite=False,
-
             )
 
     def render_templates(self, manifest):
@@ -195,20 +181,11 @@ class BootstrapEngine:
         print()
 
         for item in manifest["templates"]:
+            source = self.context.template_root / item["source"]
 
-            source = (
-                self.context.template_root
-                / item["source"]
-            )
+            target = self.context.project_root / item["target"]
 
-            target = (
-                self.context.project_root
-                / item["target"]
-            )
-
-            template = source.read_text(
-                encoding="utf-8"
-            )
+            template = source.read_text(encoding="utf-8")
 
             content = self.renderer.render(
                 template,

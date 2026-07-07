@@ -35,7 +35,6 @@ def main():
     engine = BootstrapEngine()
 
     match args.command:
-
         case "init":
             return engine.initialize() or 0
 
@@ -55,5 +54,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     sys.exit(main())

@@ -4,7 +4,6 @@ from pathlib import Path
 
 
 class FileWriter:
-
     def mkdir(self, path: Path):
 
         path.mkdir(
@@ -25,7 +24,6 @@ class FileWriter:
         )
 
         if path.exists() and not overwrite:
-
             print(f"[SKIP ] {path}")
 
             return

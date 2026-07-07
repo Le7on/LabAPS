@@ -15,6 +15,8 @@ __pycache__/
 
 *.sqlite3
 
+*.db
+
 logs/
 
 dist/

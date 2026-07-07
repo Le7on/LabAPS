@@ -1,0 +1,39 @@
+"""Plan aggregate ORM models.
+
+Persistence mapping only. Conversion to/from Domain Objects happens in the
+repository (SQLAlchemy Mapping Guide, section 12).
+"""
+
+from __future__ import annotations
+
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from backend.infrastructure.orm.common.base import BaseEntity
+
+
+class PlanORM(BaseEntity):
+    __tablename__ = "plan"
+
+    plan_code: Mapped[str] = mapped_column(String(50), index=True)
+    name: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str] = mapped_column(String(500), default="")
+    planning_horizon: Mapped[str] = mapped_column(String(50))
+    status: Mapped[str] = mapped_column(String(20), default="draft")
+
+    versions: Mapped[list[PlanVersionORM]] = relationship(
+        back_populates="plan",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+
+
+class PlanVersionORM(BaseEntity):
+    __tablename__ = "plan_version"
+
+    plan_id: Mapped[str] = mapped_column(ForeignKey("plan.id"), index=True)
+    version_number: Mapped[int] = mapped_column(Integer)
+    version_type: Mapped[str] = mapped_column(String(20), default="working")
+    status: Mapped[str] = mapped_column(String(20), default="draft")
+
+    plan: Mapped[PlanORM] = relationship(back_populates="versions")

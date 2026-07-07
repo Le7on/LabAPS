@@ -10,7 +10,6 @@ class ManifestError(Exception):
 
 
 class ManifestLoader:
-
     def __init__(self, manifest: Path):
 
         self.manifest = manifest
@@ -18,16 +17,12 @@ class ManifestLoader:
     def load(self) -> dict:
 
         if not self.manifest.exists():
-
-            raise ManifestError(
-                f"Manifest not found:\n{self.manifest}"
-            )
+            raise ManifestError(f"Manifest not found:\n{self.manifest}")
 
         with self.manifest.open(
             "r",
             encoding="utf-8",
         ) as f:
-
             manifest = yaml.safe_load(f)
 
         self.validate(manifest)
@@ -42,10 +37,7 @@ class ManifestLoader:
     ):
 
         if not isinstance(manifest, dict):
-
-            raise ManifestError(
-                "Manifest root must be a dictionary."
-            )
+            raise ManifestError("Manifest root must be a dictionary.")
 
         self._validate_list(
             manifest,
@@ -73,13 +65,7 @@ class ManifestLoader:
         value = manifest.get(key)
 
         if value is None:
-
-            raise ManifestError(
-                f"Missing '{key}' section."
-            )
+            raise ManifestError(f"Missing '{key}' section.")
 
         if not isinstance(value, list):
-
-            raise ManifestError(
-                f"'{key}' must be a list."
-            )
+            raise ManifestError(f"'{key}' must be a list.")

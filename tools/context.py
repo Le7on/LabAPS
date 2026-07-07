@@ -2,16 +2,15 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from constants import (
+    GENERATED_DIR,
     PROJECT_NAME,
     PROJECT_ROOT,
     TEMPLATE_DIR,
-    GENERATED_DIR,
 )
 
 
 @dataclass(slots=True)
 class BootstrapContext:
-
     project_name: str = PROJECT_NAME
 
     project_root: Path = PROJECT_ROOT

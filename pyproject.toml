@@ -12,6 +12,7 @@ extend-exclude = [
     "frontend",
     "resources",
     "deployment",
+    "migrations",
 ]
 
 [tool.ruff.lint]
