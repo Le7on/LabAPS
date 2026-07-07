@@ -121,6 +121,25 @@ Real OR-Tools CP-SAT pipeline (not a fake fallback — OR-Tools is installed).
 Boundary preserved: only `solver/adapter/ortools_solver_adapter.py` imports ortools.
 Ruff clean, all formatted.
 
+### Phase 3+4 integration (DONE)
+
+- PlanRepository.save() persists new versions on an existing aggregate.
+- CreatePlanVersionUseCase, GenerateScheduleUseCase (builds PlanningProblem from
+  supplied operations, runs injected SchedulingEngine).
+- Container builds SchedulingEngine(ORToolsSolverAdapter).
+- API: `POST /plans/{id}/versions`, `POST /plans/{id}/versions/{vid}/schedule`.
+- Integration test: create plan -> version -> schedule via real CP-SAT. 16 tests.
+
+### Laboratory module — Equipment slice (DONE)
+
+- domain/entities/equipment.py: Equipment (code, name, capabilities, active).
+- infrastructure/orm/laboratory/equipment_orm.py (capabilities as JSON for the
+  slice; mapping table deferred until Capability aggregate exists).
+- repository/equipment_repository.py, dto, CreateEquipment/ListEquipment use cases.
+- api/equipment_api.py: POST/GET /api/v1/equipment. Registered in app factory.
+- Alembic migration for equipment table (chain verified: plan -> equipment).
+- Tests: create+list, validation. 18 tests pass overall. Ruff clean.
+
 ### Status after this session
 
 - Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.
