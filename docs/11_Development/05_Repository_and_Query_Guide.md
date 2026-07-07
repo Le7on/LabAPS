@@ -20,10 +20,10 @@ Lab APS separates write operations from read operations.
 
 The objective is to:
 
-* Preserve Aggregate boundaries
-* Keep Repositories small
-* Optimize reporting independently
-* Improve long-term maintainability
+- Preserve Aggregate boundaries
+- Keep Repositories small
+- Optimize reporting independently
+- Improve long-term maintainability
 
 ---
 
@@ -123,16 +123,16 @@ Avoid exposing arbitrary search methods.
 
 Repositories shall:
 
-* load Aggregate Roots
-* persist Aggregate Roots
-* map Domain Objects ↔ ORM Models
+- load Aggregate Roots
+- persist Aggregate Roots
+- map Domain Objects ↔ ORM Models
 
 Repositories shall not:
 
-* build reports
-* implement business rules
-* perform scheduling
-* perform analytics
+- build reports
+- implement business rules
+- perform scheduling
+- perform analytics
 
 ---
 
@@ -162,10 +162,10 @@ Query Services are optimized for reading.
 
 Query Services may:
 
-* Join multiple tables
-* Return DTOs
-* Execute optimized SQL
-* Read database views
+- Join multiple tables
+- Return DTOs
+- Execute optimized SQL
+- Read database views
 
 Query Services never return Domain Entities.
 
@@ -221,9 +221,9 @@ Repositories own ORM mapping.
 
 Query Services may:
 
-* use ORM
-* use SQLAlchemy Core
-* use optimized SQL
+- use ORM
+- use SQLAlchemy Core
+- use optimized SQL
 
 Implementation may vary according to performance requirements.
 
@@ -245,10 +245,10 @@ Large datasets should always be retrieved through Query Services.
 
 Examples
 
-* Dashboard
-* Gantt Chart
-* Historical Reports
-* KPI Trends
+- Dashboard
+- Gantt Chart
+- Historical Reports
+- KPI Trends
 
 Repositories shall not become reporting engines.
 
@@ -302,10 +302,10 @@ Repositories and Query Services are independent.
 
 Before introducing a new Repository method, verify:
 
-* Is this modifying an Aggregate?
-* Could this be implemented as a Query Service?
-* Does it return a Domain Object?
-* Does it preserve Aggregate boundaries?
+- Is this modifying an Aggregate?
+- Could this be implemented as a Query Service?
+- Does it return a Domain Object?
+- Does it preserve Aggregate boundaries?
 
 If the method primarily answers a reporting or searching question, it belongs in a Query Service rather than a Repository.
 
@@ -317,15 +317,15 @@ Lab APS adopts a lightweight CQRS architecture.
 
 The write model is represented by:
 
-* Domain
-* Aggregate
-* Repository
-* Use Case
+- Domain
+- Aggregate
+- Repository
+- Use Case
 
 The read model is represented by:
 
-* Query Service
-* DTO
-* API
+- Query Service
+- DTO
+- API
 
 This separation shall remain throughout the lifetime of the platform.

@@ -32,19 +32,19 @@ Scheduling performs optimization only.
 
 Scheduling is responsible for:
 
-* Building optimization variables
-* Building optimization constraints
-* Defining optimization objectives
-* Executing the Solver
-* Converting solver results into Assignments
+- Building optimization variables
+- Building optimization constraints
+- Defining optimization objectives
+- Executing the Solver
+- Converting solver results into Assignments
 
 Scheduling is NOT responsible for:
 
-* Workflow generation
-* Demand management
-* Equipment management
-* Staff management
-* Plan lifecycle
+- Workflow generation
+- Demand management
+- Equipment management
+- Staff management
+- Plan lifecycle
 
 ---
 
@@ -90,9 +90,9 @@ Scheduling receives exactly one Plan.
 
 The Plan provides:
 
-* Operations
-* Planning Context
-* Resource Snapshots
+- Operations
+- Planning Context
+- Resource Snapshots
 
 Scheduling never queries the database directly.
 
@@ -162,9 +162,9 @@ Assignment Variable
 
 Represents whether an Operation is assigned to:
 
-* Equipment
-* Staff
-* Shift
+- Equipment
+- Staff
+- Shift
 
 Start Variable
 
@@ -186,37 +186,37 @@ Constraint groups include:
 
 ## Resource Constraints
 
-* Equipment Capacity
-* Staff Capacity
+- Equipment Capacity
+- Staff Capacity
 
 ---
 
 ## Capability Constraints
 
-* Required Equipment Capability
-* Required Staff Skill
+- Required Equipment Capability
+- Required Staff Skill
 
 ---
 
 ## Workflow Constraints
 
-* Operation Dependencies
-* Intermediate Resource Availability
+- Operation Dependencies
+- Intermediate Resource Availability
 
 ---
 
 ## Calendar Constraints
 
-* Shift Availability
-* Holidays
-* Leave
-* Maintenance
+- Shift Availability
+- Holidays
+- Leave
+- Maintenance
 
 ---
 
 ## Qualification Constraints
 
-* FV Qualification
+- FV Qualification
 
 Constraint Builder receives only the Scheduling Model.
 
@@ -250,10 +250,10 @@ The Solver Adapter encapsulates Google OR-Tools.
 
 Responsibilities:
 
-* Create CP-SAT Model
-* Invoke Solver
-* Capture Solver Status
-* Return Solution
+- Create CP-SAT Model
+- Invoke Solver
+- Capture Solver Status
+- Return Solution
 
 No business logic belongs in the Solver Adapter.
 
@@ -267,12 +267,12 @@ After optimization completes, Assignment Builder converts solver output into bus
 
 Each Assignment contains:
 
-* Operation
-* Equipment
-* Staff
-* Shift
-* Planned Start Time
-* Planned End Time
+- Operation
+- Equipment
+- Staff
+- Shift
+- Planned Start Time
+- Planned End Time
 
 Assignments are attached to the originating Plan.
 
@@ -282,11 +282,11 @@ Assignments are attached to the originating Plan.
 
 The Scheduling Engine returns:
 
-* Assignments
-* Solver Status
-* Solver Runtime
-* Optimization Score
-* Warning Messages
+- Assignments
+- Solver Status
+- Solver Runtime
+- Optimization Score
+- Warning Messages
 
 The Scheduling Engine does not update the database.
 
@@ -302,9 +302,9 @@ Validation Errors
 
 Examples:
 
-* Missing Workflow Template
-* Missing Capability
-* Missing Skill
+- Missing Workflow Template
+- Missing Capability
+- Missing Skill
 
 Validation errors prevent scheduling.
 
@@ -312,8 +312,8 @@ Optimization Errors
 
 Examples:
 
-* No feasible schedule
-* Solver timeout
+- No feasible schedule
+- Solver timeout
 
 Optimization errors return partial diagnostic information.
 
@@ -321,8 +321,8 @@ System Errors
 
 Examples:
 
-* Unexpected exception
-* Infrastructure failure
+- Unexpected exception
+- Infrastructure failure
 
 System errors are logged and propagated to the Application Layer.
 
@@ -334,10 +334,10 @@ The Scheduling Architecture is designed to support future extensions.
 
 Examples include:
 
-* Additional constraint builders
-* Alternative optimization objectives
-* Multiple solver implementations
-* Parallel solving strategies
+- Additional constraint builders
+- Alternative optimization objectives
+- Multiple solver implementations
+- Parallel solving strategies
 
 The Planning Domain remains unchanged when these extensions are added.
 

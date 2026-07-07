@@ -92,11 +92,11 @@ The Use Case Layer coordinates business activities.
 
 Each Use Case:
 
-* validates the request
-* loads required aggregates
-* invokes domain behavior
-* persists changes
-* returns a response
+- validates the request
+- loads required aggregates
+- invokes domain behavior
+- persists changes
+- returns a response
 
 Business rules remain inside the Domain.
 
@@ -260,9 +260,9 @@ Validation occurs in three stages.
 
 Examples
 
-* required fields
-* invalid format
-* missing parameters
+- required fields
+- invalid format
+- missing parameters
 
 ---
 
@@ -270,9 +270,9 @@ Examples
 
 Examples
 
-* Plan exists
-* Version exists
-* User authorization
+- Plan exists
+- Version exists
+- User authorization
 
 ---
 
@@ -280,9 +280,9 @@ Examples
 
 Examples
 
-* Plan lifecycle
-* Publish rules
-* Business invariants
+- Plan lifecycle
+- Publish rules
+- Business invariants
 
 Each layer validates only its own responsibility.
 

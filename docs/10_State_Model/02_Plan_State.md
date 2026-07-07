@@ -34,9 +34,9 @@ A Plan answers one question:
 
 Examples
 
-* Week 32 Production Plan
-* Week 33 Production Plan
-* August Production Plan
+- Week 32 Production Plan
+- Week 33 Production Plan
+- August Production Plan
 
 Scheduling activities occur inside Plan Versions.
 
@@ -68,9 +68,9 @@ The Plan is available for planning activities.
 
 An Active Plan may contain:
 
-* Working Plan Versions
-* Published Plan Versions
-* Historical Plan Versions
+- Working Plan Versions
+- Published Plan Versions
+- Historical Plan Versions
 
 An Active Plan is the normal operating state.
 
@@ -80,10 +80,10 @@ An Active Plan is the normal operating state.
 
 Users may:
 
-* Create Plan Version
-* View Versions
-* Compare Versions
-* Archive Plan
+- Create Plan Version
+- View Versions
+- Compare Versions
+- Archive Plan
 
 ---
 
@@ -91,9 +91,9 @@ Users may:
 
 Users shall not:
 
-* Delete the Plan
-* Change the Planning Horizon
-* Change the Plan Identity
+- Delete the Plan
+- Change the Planning Horizon
+- Change the Plan Identity
 
 These attributes are immutable after creation.
 
@@ -115,10 +115,10 @@ All Plan Versions become read-only.
 
 Users may:
 
-* View
-* Export
-* Report
-* Compare
+- View
+- Export
+- Report
+- Compare
 
 ---
 
@@ -126,9 +126,9 @@ Users may:
 
 Users shall not:
 
-* Create new Plan Versions
-* Publish new versions
-* Modify metadata
+- Create new Plan Versions
+- Publish new versions
+- Modify metadata
 
 Archived Plans are immutable.
 
@@ -162,8 +162,8 @@ Archive Plan
 
 Archiving may occur:
 
-* manually
-* automatically after retention policy (future)
+- manually
+- automatically after retention policy (future)
 
 ---
 
@@ -231,21 +231,21 @@ Active Plan
 
 Available actions
 
-* Open
-* Create Version
-* Archive
+- Open
+- Create Version
+- Archive
 
 Archived Plan
 
 Available actions
 
-* View
-* Export
+- View
+- Export
 
 Unavailable actions
 
-* Create Version
-* Publish
+- Create Version
+- Publish
 
 ---
 
@@ -289,16 +289,16 @@ Scheduling complexity is delegated to Plan Version.
 
 This separation keeps:
 
-* Aggregate responsibilities clear
-* UI simpler
-* API cleaner
-* Domain model easier to understand
+- Aggregate responsibilities clear
+- UI simpler
+- API cleaner
+- Domain model easier to understand
 
 ---
 
 # 14. Related Documents
 
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + Plan Version
-* SAD Chapter 8 — Plan Lifecycle
-* State Model — Plan Version State Machine
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + Plan Version
+- SAD Chapter 8 — Plan Lifecycle
+- State Model — Plan Version State Machine

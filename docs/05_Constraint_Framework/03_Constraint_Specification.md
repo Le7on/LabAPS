@@ -67,27 +67,27 @@ Examples include:
 
 Operation Facts
 
-* Operation Duration
-* Required Capability
-* Required Skill
-* Dependency
+- Operation Duration
+- Required Capability
+- Required Skill
+- Dependency
 
 Equipment Facts
 
-* Capability Set
-* Availability
-* Qualification
+- Capability Set
+- Availability
+- Qualification
 
 Staff Facts
 
-* Skill Set
-* Availability
+- Skill Set
+- Availability
 
 Calendar Facts
 
-* Shift
-* Holiday
-* Maintenance
+- Shift
+- Holiday
+- Maintenance
 
 Planning Facts are immutable during one scheduling execution.
 
@@ -131,17 +131,17 @@ Every Constraint Specification contains the following attributes.
 
 Mandatory
 
-* Constraint Category
-* Source
-* Target
-* Parameters
+- Constraint Category
+- Source
+- Target
+- Parameters
 
 Optional
 
-* Severity
-* Priority
-* Description
-* Metadata
+- Severity
+- Priority
+- Description
+- Metadata
 
 The structure is intentionally generic.
 
@@ -177,10 +177,10 @@ Constraint Specifications are generated automatically.
 
 They originate from:
 
-* Workflow Definitions
-* Operation Definitions
-* Planning Context
-* Laboratory Definition
+- Workflow Definitions
+- Operation Definitions
+- Planning Context
+- Laboratory Definition
 
 Users never create Constraint Specifications directly.
 
@@ -224,11 +224,11 @@ Every Constraint Specification shall pass validation.
 
 Validation checks include:
 
-* Missing source
-* Missing target
-* Unsupported category
-* Invalid parameter
-* Circular dependency
+- Missing source
+- Missing target
+- Unsupported category
+- Invalid parameter
+- Circular dependency
 
 Only validated specifications may enter the Constraint Model.
 

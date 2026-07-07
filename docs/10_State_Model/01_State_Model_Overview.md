@@ -20,12 +20,12 @@ The objective is to provide one consistent definition of every business object's
 
 State definitions are shared by:
 
-* Domain Model
-* REST API
-* User Interface
-* Repository
-* Reporting
-* Testing
+- Domain Model
+- REST API
+- User Interface
+- Repository
+- Reporting
+- Testing
 
 Every business state shall be defined only once.
 
@@ -41,9 +41,9 @@ It is **not** merely a database value.
 
 Every state transition shall:
 
-* have a business reason
-* have a valid trigger
-* produce a business result
+- have a business reason
+- have a valid trigger
+- produce a business result
 
 ---
 
@@ -101,10 +101,10 @@ State transitions are initiated by business actions.
 
 Examples
 
-* Publish
-* Complete
-* Archive
-* Disable
+- Publish
+- Complete
+- Archive
+- Disable
 
 State changes never occur without a triggering action.
 
@@ -116,11 +116,11 @@ Every state transition is auditable.
 
 The system shall record:
 
-* Previous State
-* New State
-* Time
-* User
-* Trigger
+- Previous State
+- New State
+- Time
+- User
+- Trigger
 
 ---
 
@@ -169,11 +169,11 @@ State transitions shall always occur through the owning Aggregate.
 
 Every transition defines:
 
-* Current State
-* Trigger
-* Next State
-* Validation
-* Side Effects
+- Current State
+- Trigger
+- Next State
+- Validation
+- Side Effects
 
 Example
 
@@ -215,10 +215,10 @@ EquipmentDisabled
 
 Events may later be used for:
 
-* Audit
-* Notification
-* Integration
-* Analytics
+- Audit
+- Notification
+- Integration
+- Analytics
 
 Version 1.0 records events but does not require asynchronous processing.
 
@@ -264,14 +264,14 @@ Examples
 
 Draft
 
-* Generate Schedule enabled
-* Publish disabled
+- Generate Schedule enabled
+- Publish disabled
 
 Published
 
-* Generate Schedule disabled
-* Publish disabled
-* Execution available
+- Generate Schedule disabled
+- Publish disabled
+- Execution available
 
 The UI never determines state.
 
@@ -309,9 +309,9 @@ The database stores the current state only.
 
 State history is maintained through:
 
-* Audit Log
-* Activity Log
-* Domain Events
+- Audit Log
+- Activity Log
+- Domain Events
 
 Historical transitions are not inferred from database updates.
 
@@ -321,11 +321,11 @@ Historical transitions are not inferred from database updates.
 
 Every state machine shall have dedicated tests covering:
 
-* Valid transitions
-* Invalid transitions
-* Boundary conditions
-* Business exceptions
-* Side effects
+- Valid transitions
+- Invalid transitions
+- Boundary conditions
+- Business exceptions
+- Side effects
 
 State transition coverage is mandatory.
 

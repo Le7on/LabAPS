@@ -18,18 +18,18 @@ This document defines the conceptual entity relationship model for Lab APS.
 
 The purpose of the conceptual model is to describe:
 
-* Business entities
-* Ownership
-* Relationships
-* Aggregate boundaries
+- Business entities
+- Ownership
+- Relationships
+- Aggregate boundaries
 
 This document intentionally ignores:
 
-* Primary Keys
-* Foreign Keys
-* SQL Data Types
-* Indexes
-* ORM Implementation
+- Primary Keys
+- Foreign Keys
+- SQL Data Types
+- Indexes
+- ORM Implementation
 
 Those belong to the Physical Database Design.
 
@@ -92,12 +92,12 @@ Defines laboratory personnel.
 
 Owns:
 
-* Skills
+- Skills
 
 Does not own:
 
-* Assignments
-* Plans
+- Assignments
+- Plans
 
 ---
 
@@ -107,12 +107,12 @@ Defines laboratory instruments.
 
 Owns:
 
-* Capability
+- Capability
 
 Does not own:
 
-* Schedule
-* Assignment
+- Schedule
+- Assignment
 
 ---
 
@@ -122,11 +122,11 @@ Represents a laboratory testing service.
 
 Examples
 
-* FV
-* 96 OPA
-* 384 PNG
-* AZ RSV
-* DiLA
+- FV
+- 96 OPA
+- 384 PNG
+- AZ RSV
+- DiLA
 
 A Project references one active Workflow Definition.
 
@@ -138,10 +138,10 @@ Defines how a Project is executed.
 
 Contains
 
-* Operation Definitions
-* Dependency Definitions
-* Material BOM
-* Intermediate Resource Definitions
+- Operation Definitions
+- Dependency Definitions
+- Material BOM
+- Intermediate Resource Definitions
 
 Workflow Definition is reusable.
 
@@ -153,11 +153,11 @@ Defines one logical laboratory step.
 
 Examples
 
-* FV
-* SMDP
-* SAP
-* CP
-* SP
+- FV
+- SMDP
+- SAP
+- CP
+- SP
 
 Operation Definition is never scheduled directly.
 
@@ -213,11 +213,11 @@ Captures immutable snapshots used during scheduling.
 
 Contains:
 
-* Calendar Snapshot
-* Staff Snapshot
-* Equipment Snapshot
-* Solver Profile
-* Shift Profile
+- Calendar Snapshot
+- Staff Snapshot
+- Equipment Snapshot
+- Solver Profile
+- Shift Profile
 
 ---
 
@@ -255,11 +255,11 @@ Generated automatically.
 
 Contains:
 
-* Status
-* Duration
-* Dependency
-* Required Capability
-* Required Skill
+- Status
+- Duration
+- Dependency
+- Required Capability
+- Required Skill
 
 Operation Instance is the smallest schedulable business entity.
 
@@ -271,10 +271,10 @@ Represents scheduling results.
 
 Assignment references:
 
-* Operation Instance
-* Staff
-* Equipment
-* Shift
+- Operation Instance
+- Staff
+- Equipment
+- Shift
 
 Assignment belongs to one Plan Version.
 
@@ -286,13 +286,13 @@ Generated after scheduling.
 
 References:
 
-* Material
-* Operation Instance
+- Material
+- Operation Instance
 
 Contains:
 
-* Planned Consumption
-* Warning
+- Planned Consumption
+- Warning
 
 ---
 
@@ -302,10 +302,10 @@ Represents calculated planning metrics.
 
 Examples
 
-* Equipment Utilization
-* Staff Utilization
-* Solver Runtime
-* Completion Rate
+- Equipment Utilization
+- Staff Utilization
+- Solver Runtime
+- Completion Rate
 
 ---
 
@@ -494,11 +494,11 @@ This conceptual model serves as the source for the Physical Database Design.
 
 The next design phase will define:
 
-* Physical Tables
-* Primary Keys
-* Foreign Keys
-* Indexes
-* Naming Conventions
-* SQLAlchemy Mapping
+- Physical Tables
+- Primary Keys
+- Foreign Keys
+- Indexes
+- Naming Conventions
+- SQLAlchemy Mapping
 
 No physical database implementation shall contradict this conceptual model.

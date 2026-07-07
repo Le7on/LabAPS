@@ -30,9 +30,9 @@ Each workstation has different hardware configurations and therefore different c
 
 Examples include:
 
-* Different Head Types
-* Different Channel Configurations
-* Different Supported Projects
+- Different Head Types
+- Different Channel Configurations
+- Different Supported Projects
 
 Laboratory operators also possess different qualifications and may only perform specific operations on specific equipment.
 
@@ -83,9 +83,9 @@ The planning process involves five major roles.
 
 Responsibilities
 
-* Define weekly production demand
-* Determine production priorities
-* Approve production objectives
+- Define weekly production demand
+- Determine production priorities
+- Approve production objectives
 
 The PI does not perform scheduling.
 
@@ -95,11 +95,11 @@ The PI does not perform scheduling.
 
 Responsibilities
 
-* Create production plans
-* Assign resources
-* Execute scheduling
-* Review planning results
-* Publish production plans
+- Create production plans
+- Assign resources
+- Execute scheduling
+- Review planning results
+- Publish production plans
 
 This role is the primary user of Lab APS.
 
@@ -109,10 +109,10 @@ This role is the primary user of Lab APS.
 
 Responsibilities
 
-* Configure laboratory resources
-* Maintain workflow templates
-* Maintain equipment information
-* Maintain operator qualifications
+- Configure laboratory resources
+- Maintain workflow templates
+- Maintain equipment information
+- Maintain operator qualifications
 
 Engineers provide configuration data used during planning.
 
@@ -122,8 +122,8 @@ Engineers provide configuration data used during planning.
 
 Responsibilities
 
-* Execute assigned laboratory operations
-* Report execution status
+- Execute assigned laboratory operations
+- Report execution status
 
 Operators do not create schedules.
 
@@ -133,9 +133,9 @@ Operators do not create schedules.
 
 Responsibilities
 
-* Maintain user accounts
-* Maintain permissions
-* Maintain system configuration
+- Maintain user accounts
+- Maintain permissions
+- Maintain system configuration
 
 ---
 
@@ -175,11 +175,11 @@ Operations are the units scheduled by Lab APS.
 
 Examples
 
-* FV
-* SMDP
-* SAP
-* CP
-* SP
+- FV
+- SMDP
+- SAP
+- CP
+- SP
 
 ---
 
@@ -187,10 +187,10 @@ Examples
 
 Represents the allocation of:
 
-* Operation
-* Equipment
-* Staff
-* Shift
+- Operation
+- Equipment
+- Staff
+- Shift
 
 Assignments are generated automatically by the Scheduler.
 
@@ -202,10 +202,10 @@ Represents the complete scheduling result for a planning period.
 
 A Plan includes:
 
-* Demand
-* Workflow Instances
-* Assignments
-* Material Forecast
+- Demand
+- Workflow Instances
+- Assignments
+- Material Forecast
 
 ---
 
@@ -245,11 +245,11 @@ Operators may only perform operations for which they possess the required skills
 
 Scheduling must respect:
 
-* Working Days
-* Holidays
-* Leave
-* Equipment Maintenance
-* Shift Definitions
+- Working Days
+- Holidays
+- Leave
+- Equipment Maintenance
+- Shift Definitions
 
 ---
 
@@ -341,11 +341,11 @@ Ensure consistent planning regardless of planner experience.
 
 Automatically verify:
 
-* Equipment Capability
-* Operator Qualification
-* Workflow Dependencies
-* Equipment Qualification
-* Calendar Availability
+- Equipment Capability
+- Operator Qualification
+- Workflow Dependencies
+- Equipment Qualification
+- Calendar Availability
 
 ---
 
@@ -359,8 +359,8 @@ Automatically estimate material consumption after schedule generation.
 
 Provide utilization analysis for:
 
-* Equipment
-* Operators
+- Equipment
+- Operators
 
 ---
 
@@ -376,24 +376,24 @@ The responsibilities of Lab APS are clearly defined.
 
 ## Lab APS Is Responsible For
 
-* Production Planning
-* Resource Allocation
-* Schedule Optimization
-* Workflow Scheduling
-* Material Forecast
-* Planning Analysis
+- Production Planning
+- Resource Allocation
+- Schedule Optimization
+- Workflow Scheduling
+- Material Forecast
+- Planning Analysis
 
 ---
 
 ## Lab APS Is NOT Responsible For
 
-* Sample Management
-* Laboratory Results
-* Inventory Management
-* Instrument Control
-* Purchasing
-* Financial Management
-* ERP Functions
+- Sample Management
+- Laboratory Results
+- Inventory Management
+- Instrument Control
+- Purchasing
+- Financial Management
+- ERP Functions
 
 These functions remain external to Lab APS.
 

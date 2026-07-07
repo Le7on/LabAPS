@@ -14,12 +14,12 @@ The Planning Domain contains rich business objects.
 
 Examples include:
 
-* Plan
-* PlanVersion
-* WorkflowInstance
-* OperationInstance
-* Assignment
-* PlanningContext
+- Plan
+- PlanVersion
+- WorkflowInstance
+- OperationInstance
+- Assignment
+- PlanningContext
 
 These objects represent business concepts.
 
@@ -103,10 +103,10 @@ The Scheduling Model does not depend on OR-Tools.
 
 Future versions may replace OR-Tools with another optimization engine without modifying:
 
-* Plan
-* PlanVersion
-* WorkflowInstance
-* OperationInstance
+- Plan
+- PlanVersion
+- WorkflowInstance
+- OperationInstance
 
 Only the Solver Adapter changes.
 
@@ -118,10 +118,10 @@ The Scheduling Model can be verified independently.
 
 Examples:
 
-* Operation count
-* Resource availability
-* Dependency graph
-* Constraint generation
+- Operation count
+- Resource availability
+- Dependency graph
+- Constraint generation
 
 without executing the optimizer.
 
@@ -145,9 +145,9 @@ Rejected.
 
 The Solver would become tightly coupled to:
 
-* Domain objects
-* Repository structure
-* Business terminology
+- Domain objects
+- Repository structure
+- Business terminology
 
 Any business change would directly affect optimization code.
 
@@ -187,16 +187,16 @@ A dedicated object model is preferred.
 
 Positive
 
-* Strong separation between business and optimization.
-* Easier testing.
-* Easier debugging.
-* Solver independence.
-* Cleaner architecture.
+- Strong separation between business and optimization.
+- Easier testing.
+- Easier debugging.
+- Solver independence.
+- Cleaner architecture.
 
 Negative
 
-* One additional transformation step.
-* Additional in-memory objects during scheduling.
+- One additional transformation step.
+- Additional in-memory objects during scheduling.
 
 These costs are acceptable because scheduling is performed periodically rather than continuously.
 
@@ -224,11 +224,11 @@ Objective Set
 
 The Scheduling Model shall not contain:
 
-* ORM entities
-* Flask objects
-* Repository references
-* SQL
-* UI concepts
+- ORM entities
+- Flask objects
+- Repository references
+- SQL
+- UI concepts
 
 ---
 
@@ -296,11 +296,11 @@ No implementation shall bypass the Scheduling Model.
 
 # Related Documents
 
-* SAD Chapter 5 — Scheduling Architecture
-* SAD Chapter 14 — Solver Model
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + PlanVersion
-* ADR-004 — Operation Definition and Operation Instance
+- SAD Chapter 5 — Scheduling Architecture
+- SAD Chapter 14 — Solver Model
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + PlanVersion
+- ADR-004 — Operation Definition and Operation Instance
 
 ---
 
@@ -310,10 +310,10 @@ The Scheduling Model is intentionally generic.
 
 Future extensions may include:
 
-* Batch scheduling
-* Resource groups
-* Alternative objective strategies
-* Parallel solving
-* Distributed optimization
+- Batch scheduling
+- Resource groups
+- Alternative objective strategies
+- Parallel solving
+- Distributed optimization
 
 These enhancements shall extend the Scheduling Model without changing the Planning Domain.

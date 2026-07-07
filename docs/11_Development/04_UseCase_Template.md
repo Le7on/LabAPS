@@ -20,12 +20,12 @@ A Use Case represents one complete business action.
 
 Examples include:
 
-* Create Plan
-* Create Plan Version
-* Generate Schedule
-* Approve Plan Version
-* Publish Plan Version
-* Start Execution
+- Create Plan
+- Create Plan Version
+- Generate Schedule
+- Approve Plan Version
+- Publish Plan Version
+- Start Execution
 
 Every business action shall be implemented as one independent Use Case.
 
@@ -47,19 +47,19 @@ Business rules remain inside the Domain.
 
 A Use Case is responsible for:
 
-* Validate request
-* Load Aggregate
-* Invoke Domain behaviour
-* Invoke Engines (if required)
-* Persist Aggregate
-* Return DTO
+- Validate request
+- Load Aggregate
+- Invoke Domain behaviour
+- Invoke Engines (if required)
+- Persist Aggregate
+- Return DTO
 
 A Use Case shall **not**:
 
-* Execute SQL
-* Build scheduling models
-* Calculate business rules
-* Manipulate ORM objects directly
+- Execute SQL
+- Build scheduling models
+- Calculate business rules
+- Manipulate ORM objects directly
 
 ---
 
@@ -127,10 +127,10 @@ Dependencies are injected through the constructor.
 
 Typical dependencies include:
 
-* Repository
-* Planning Engine
-* Scheduling Engine
-* Material Calculator
+- Repository
+- Planning Engine
+- Scheduling Engine
+- Material Calculator
 
 Only required dependencies shall be injected.
 
@@ -144,9 +144,9 @@ Input validation occurs before loading business objects.
 
 Examples
 
-* Required fields
-* Invalid identifiers
-* Invalid formats
+- Required fields
+- Invalid identifiers
+- Invalid formats
 
 Business validation is **not** performed here.
 
@@ -252,9 +252,9 @@ The Response DTO contains only information required by the caller.
 
 Response DTOs shall:
 
-* be immutable
-* contain no business behaviour
-* contain no ORM models
+- be immutable
+- contain no business behaviour
+- contain no ORM models
 
 ---
 
@@ -336,10 +336,10 @@ Names shall describe the business action.
 
 Each Use Case shall have dedicated tests covering:
 
-* Successful execution
-* Validation failures
-* Business rule violations
-* Infrastructure failures
+- Successful execution
+- Validation failures
+- Business rule violations
+- Infrastructure failures
 
 Repositories and Solver Adapter shall be replaceable with test doubles.
 
@@ -349,14 +349,14 @@ Repositories and Solver Adapter shall be replaceable with test doubles.
 
 Before completing a Use Case, verify:
 
-* One business action only.
-* One Aggregate Root modified.
-* Domain behaviour invoked through methods.
-* No ORM logic.
-* No SQL.
-* No business rules implemented in the Use Case.
-* One transaction.
-* DTO returned.
+- One business action only.
+- One Aggregate Root modified.
+- Domain behaviour invoked through methods.
+- No ORM logic.
+- No SQL.
+- No business rules implemented in the Use Case.
+- One transaction.
+- DTO returned.
 
 ---
 

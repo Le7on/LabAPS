@@ -92,15 +92,15 @@ Variable Builder creates optimization variables only.
 
 Typical variables include:
 
-* Assignment Variable
-* Start Time Variable
-* End Time Variable
+- Assignment Variable
+- Start Time Variable
+- End Time Variable
 
 Variable Builder shall not:
 
-* evaluate business rules
-* access repositories
-* calculate objectives
+- evaluate business rules
+- access repositories
+- calculate objectives
 
 ---
 
@@ -110,14 +110,14 @@ Constraint Builder converts normalized scheduling facts into constraint objects.
 
 Constraint Builder shall:
 
-* consume Scheduling Model
-* produce Constraint Model
+- consume Scheduling Model
+- produce Constraint Model
 
 Constraint Builder shall not:
 
-* call OR-Tools APIs
-* access the database
-* evaluate user permissions
+- call OR-Tools APIs
+- access the database
+- evaluate user permissions
 
 ---
 
@@ -127,9 +127,9 @@ Objective Builder creates optimization goals.
 
 Examples
 
-* Maximize completed demand
-* Balance staff workload
-* Maximize equipment utilization
+- Maximize completed demand
+- Balance staff workload
+- Maximize equipment utilization
 
 Objective Builder never creates hard constraints.
 
@@ -141,18 +141,18 @@ Solver Adapter is the only component allowed to use OR-Tools.
 
 Responsibilities
 
-* Create CP-SAT model
-* Register variables
-* Register constraints
-* Register objective
-* Execute solver
-* Parse solution
+- Create CP-SAT model
+- Register variables
+- Register constraints
+- Register objective
+- Execute solver
+- Parse solution
 
 The Solver Adapter shall never:
 
-* load Domain objects
-* perform SQL
-* modify business entities
+- load Domain objects
+- perform SQL
+- modify business entities
 
 ---
 
@@ -162,12 +162,12 @@ Assignment Builder reconstructs business objects from the Scheduling Solution.
 
 Input
 
-* Scheduling Solution
-* Scheduling Model
+- Scheduling Solution
+- Scheduling Model
 
 Output
 
-* Assignment collection
+- Assignment collection
 
 Business reconstruction occurs only here.
 
@@ -181,22 +181,22 @@ Validation Errors
 
 Examples
 
-* Missing Capability
-* Invalid Planning Context
+- Missing Capability
+- Invalid Planning Context
 
 Optimization Errors
 
 Examples
 
-* No feasible solution
-* Solver timeout
+- No feasible solution
+- Solver timeout
 
 Infrastructure Errors
 
 Examples
 
-* OR-Tools exception
-* Unexpected runtime failure
+- OR-Tools exception
+- Unexpected runtime failure
 
 Each category shall produce a different business exception.
 
@@ -206,10 +206,10 @@ Each category shall produce a different business exception.
 
 Implementations should:
 
-* Build lookup dictionaries before iteration.
-* Avoid repeated graph traversal.
-* Minimize object allocation.
-* Separate preprocessing from optimization.
+- Build lookup dictionaries before iteration.
+- Avoid repeated graph traversal.
+- Minimize object allocation.
+- Separate preprocessing from optimization.
 
 The Scheduling Model should be constructed once and reused throughout one scheduling execution.
 
@@ -219,13 +219,13 @@ The Scheduling Model should be constructed once and reused throughout one schedu
 
 Every Solver execution records:
 
-* Plan Version ID
-* Number of Operations
-* Number of Resources
-* Number of Constraints
-* Runtime
-* Solver Status
-* Objective Score
+- Plan Version ID
+- Number of Operations
+- Number of Resources
+- Number of Constraints
+- Runtime
+- Solver Status
+- Objective Score
 
 Detailed variable logging shall be enabled only in debug mode.
 
@@ -267,10 +267,10 @@ Future optimization features shall extend the pipeline rather than replacing it.
 
 Examples
 
-* Additional Constraint Builders
-* Alternative Objective Builders
-* Multiple Solver Adapters
-* AI-assisted objective generation
+- Additional Constraint Builders
+- Alternative Objective Builders
+- Multiple Solver Adapters
+- AI-assisted objective generation
 
 The Planning Domain shall remain unchanged.
 

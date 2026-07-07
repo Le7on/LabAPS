@@ -140,10 +140,10 @@ Child entities are managed through Aggregate Roots.
 
 Business logic shall never exist inside:
 
-* SQL
-* Trigger
-* Stored Procedure
-* ORM Model
+- SQL
+- Trigger
+- Stored Procedure
+- ORM Model
 
 The database is responsible only for persistence.
 
@@ -153,10 +153,10 @@ The database is responsible only for persistence.
 
 Domain objects shall not depend on:
 
-* Flask
-* SQLAlchemy
-* OR-Tools
-* PyWebView
+- Flask
+- SQLAlchemy
+- OR-Tools
+- PyWebView
 
 Domain objects must be pure Python.
 
@@ -168,9 +168,9 @@ Application Services coordinate business use cases.
 
 Application Services shall not:
 
-* implement optimization
-* implement workflow generation
-* implement business calculations
+- implement optimization
+- implement workflow generation
+- implement business calculations
 
 They orchestrate Domain Services.
 
@@ -180,14 +180,14 @@ They orchestrate Domain Services.
 
 Scheduling receives only:
 
-* PlanVersion
-* PlanningContext
+- PlanVersion
+- PlanningContext
 
 Scheduling never queries:
 
-* Database
-* Flask
-* Repository
+- Database
+- Flask
+- Repository
 
 Scheduling returns Assignments only.
 
@@ -199,9 +199,9 @@ Material Forecast is generated after scheduling.
 
 Material Forecast shall never:
 
-* modify inventory
-* influence optimization
-* update external systems
+- modify inventory
+- influence optimization
+- update external systems
 
 Material Forecast is analytical only.
 
@@ -211,9 +211,9 @@ Material Forecast is analytical only.
 
 Presentation shall never:
 
-* contain business rules
-* access repositories
-* access OR-Tools
+- contain business rules
+- access repositories
+- access OR-Tools
 
 Presentation communicates only through Application Services.
 
@@ -259,9 +259,9 @@ Workflow Definition describes execution.
 
 Workflow Definition shall never:
 
-* contain schedule
-* contain staff
-* contain equipment
+- contain schedule
+- contain staff
+- contain equipment
 
 Workflow Definition is reusable.
 
@@ -289,11 +289,11 @@ Existing Core Domain behavior shall not be modified unless an Architecture Decis
 
 Every Pull Request affecting architecture shall answer:
 
-* Does this violate Aggregate boundaries?
-* Does this introduce business logic into Infrastructure?
-* Does this bypass the Application Layer?
-* Does this couple business logic to OR-Tools?
-* Does this modify historical planning data?
-* Does this preserve PlanVersion immutability?
+- Does this violate Aggregate boundaries?
+- Does this introduce business logic into Infrastructure?
+- Does this bypass the Application Layer?
+- Does this couple business logic to OR-Tools?
+- Does this modify historical planning data?
+- Does this preserve PlanVersion immutability?
 
 If any answer is "Yes", the change requires architectural review.

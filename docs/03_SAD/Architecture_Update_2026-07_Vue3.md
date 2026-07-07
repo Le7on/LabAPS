@@ -22,14 +22,14 @@ This upgrade affects the implementation layer only.
 
 The following architectural artifacts remain unchanged:
 
-* Vision
-* SRS
-* Domain Model
-* Aggregate Design
-* State Model
-* Constraint Framework
-* Planning Model
-* Solver Architecture
+- Vision
+- SRS
+- Domain Model
+- Aggregate Design
+- State Model
+- Constraint Framework
+- Planning Model
+- Solver Architecture
 
 Business architecture is not affected.
 
@@ -53,10 +53,10 @@ HTML + Bootstrap
 
 Although suitable for small desktop tools, this approach has several limitations.
 
-* UI complexity increases rapidly.
-* Client-side state management is weak.
-* Dynamic planning views become difficult to maintain.
-* Future Web deployment requires significant changes.
+- UI complexity increases rapidly.
+- Client-side state management is weak.
+- Dynamic planning views become difficult to maintain.
+- Future Web deployment requires significant changes.
 
 After architectural review, the frontend technology stack was upgraded.
 
@@ -120,7 +120,7 @@ Vue becomes responsible for all user interface rendering.
 
 ## Desktop
 
-* PyWebView
+- PyWebView
 
 Purpose
 
@@ -154,10 +154,10 @@ Vue Router
 
 Responsibilities
 
-* User interaction
-* View rendering
-* Client state
-* API communication
+- User interaction
+- View rendering
+- Client state
+- API communication
 
 Business rules remain in the backend.
 
@@ -171,10 +171,10 @@ Flask
 
 Responsibilities
 
-* REST API
-* Authentication (future)
-* Use Case execution
-* Domain orchestration
+- REST API
+- Authentication (future)
+- Use Case execution
+- Domain orchestration
 
 Flask shall not render HTML pages.
 
@@ -327,11 +327,11 @@ Client-side application state shall be managed by Pinia.
 
 Examples
 
-* Current Plan
-* Current Plan Version
-* Selected Workspace Tab
-* Authentication State (future)
-* User Preferences (future)
+- Current Plan
+- Current Plan Version
+- Selected Workspace Tab
+- Authentication State (future)
+- User Preferences (future)
 
 Business state remains on the backend.
 
@@ -379,18 +379,18 @@ PyWebView
 
 The following documents require implementation updates only.
 
-* Project Structure
-* Development Guide
-* Bootstrap Tool
+- Project Structure
+- Development Guide
+- Bootstrap Tool
 
 The following documents remain unchanged.
 
-* Vision
-* SRS
-* SAD (Business Architecture)
-* ADR-001 to ADR-010
-* Constraint Framework
-* State Model
+- Vision
+- SRS
+- SAD (Business Architecture)
+- ADR-001 to ADR-010
+- Constraint Framework
+- State Model
 
 ---
 
@@ -398,12 +398,12 @@ The following documents remain unchanged.
 
 The new implementation provides:
 
-* Clear frontend/backend separation
-* Better component reuse
-* Better state management
-* Easier testing
-* Easier future Web deployment
-* Cleaner REST architecture
+- Clear frontend/backend separation
+- Better component reuse
+- Better state management
+- Easier testing
+- Easier future Web deployment
+- Cleaner REST architecture
 
 No business architecture changes are introduced.
 
@@ -413,11 +413,11 @@ No business architecture changes are introduced.
 
 From Version 1.1 onward, Lab APS officially adopts:
 
-* Vue 3
-* Vite
-* Pinia
-* Axios
-* Flask REST API
-* PyWebView
+- Vue 3
+- Vite
+- Pinia
+- Axios
+- Flask REST API
+- PyWebView
 
 This implementation architecture becomes the new development baseline for the project.

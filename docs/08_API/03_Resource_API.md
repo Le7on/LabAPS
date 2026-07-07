@@ -60,9 +60,9 @@ Returns all active staff.
 
 Supports filtering by:
 
-* Status
-* Skill
-* Keyword
+- Status
+- Skill
+- Keyword
 
 ---
 
@@ -74,8 +74,8 @@ GET /api/v1/staff/{staffId}
 
 Returns one Staff together with:
 
-* Skills
-* Current Status
+- Skills
+- Current Status
 
 Planning information is excluded.
 
@@ -101,7 +101,7 @@ Updates editable information.
 
 Immutable fields include:
 
-* Technical Identifier
+- Technical Identifier
 
 ---
 
@@ -127,9 +127,9 @@ GET /api/v1/equipment
 
 Supports filtering by:
 
-* Status
-* Capability
-* Keyword
+- Status
+- Capability
+- Keyword
 
 ---
 
@@ -141,9 +141,9 @@ GET /api/v1/equipment/{equipmentId}
 
 Returns:
 
-* Equipment Information
-* Capability Set
-* Qualification Status
+- Equipment Information
+- Capability Set
+- Qualification Status
 
 Execution history is not included.
 
@@ -189,10 +189,10 @@ Returns all supported laboratory services.
 
 Examples
 
-* FV
-* 96 OPA
-* 384 PNG
-* AZ RSV
+- FV
+- 96 OPA
+- 384 PNG
+- AZ RSV
 
 ---
 
@@ -204,8 +204,8 @@ GET /api/v1/projects/{projectId}
 
 Returns:
 
-* Project Information
-* Active Workflow Definition
+- Project Information
+- Active Workflow Definition
 
 ---
 
@@ -231,9 +231,9 @@ Returns available Workflow Definitions.
 
 Supports filtering by:
 
-* Project
-* Version
-* Active
+- Project
+- Version
+- Active
 
 ---
 
@@ -245,9 +245,9 @@ GET /api/v1/workflows/{workflowId}
 
 Returns:
 
-* Operation Definitions
-* Dependencies
-* Material BOM
+- Operation Definitions
+- Dependencies
+- Material BOM
 
 ---
 
@@ -303,10 +303,10 @@ Adds a new material definition.
 
 Calendar resources include:
 
-* Shift
-* Holiday
-* Maintenance
-* Staff Leave
+- Shift
+- Holiday
+- Maintenance
+- Staff Leave
 
 Examples
 
@@ -328,9 +328,9 @@ Planning snapshots are generated from these resources.
 
 All Resource APIs perform:
 
-* Input validation
-* Duplicate checking
-* Referential integrity validation
+- Input validation
+- Duplicate checking
+- Referential integrity validation
 
 Business validation remains inside the Domain.
 

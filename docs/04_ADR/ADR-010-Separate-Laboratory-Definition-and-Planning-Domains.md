@@ -62,22 +62,22 @@ Laboratory Definition contains long-lived business knowledge.
 
 Examples include:
 
-* Staff
-* Equipment
-* Capability
-* Skill
-* Project
-* Workflow Definition
-* Operation Definition
-* Material Definition
-* Shift Definition
+- Staff
+- Equipment
+- Capability
+- Skill
+- Project
+- Workflow Definition
+- Operation Definition
+- Material Definition
+- Shift Definition
 
 Characteristics
 
-* Changes infrequently.
-* Shared by every Plan.
-* Managed by laboratory engineers.
-* Represents configuration rather than execution.
+- Changes infrequently.
+- Shared by every Plan.
+- Managed by laboratory engineers.
+- Represents configuration rather than execution.
 
 Laboratory Definition contains no scheduling results.
 
@@ -89,22 +89,22 @@ Planning contains short-lived operational information.
 
 Examples include:
 
-* Plan
-* PlanVersion
-* Planning Context
-* Demand
-* Workflow Instance
-* Operation Instance
-* Assignment
-* Material Forecast
-* KPI
+- Plan
+- PlanVersion
+- Planning Context
+- Demand
+- Workflow Instance
+- Operation Instance
+- Assignment
+- Material Forecast
+- KPI
 
 Characteristics
 
-* Generated repeatedly.
-* Versioned.
-* Time-dependent.
-* Represents one planning cycle.
+- Generated repeatedly.
+- Versioned.
+- Time-dependent.
+- Represents one planning cycle.
 
 Planning never modifies Laboratory Definition.
 
@@ -126,12 +126,12 @@ Combining them into one domain would introduce unnecessary coupling.
 
 Laboratory Definition is typically maintained by:
 
-* Laboratory Engineer
-* System Administrator
+- Laboratory Engineer
+- System Administrator
 
 Planning is owned by:
 
-* Production Laboratory Manager
+- Production Laboratory Manager
 
 Separating the domains reflects actual business responsibilities.
 
@@ -155,9 +155,9 @@ Examples
 
 Laboratory Definition changes
 
-* Add a new instrument
-* Update Workflow Definition
-* Add a new Capability
+- Add a new instrument
+- Update Workflow Definition
+- Add a new Capability
 
 Planning remains unaffected until a new PlanVersion is created.
 
@@ -195,16 +195,16 @@ Responsibilities remain clear.
 
 Positive
 
-* Clear ownership.
-* Independent evolution.
-* Better maintainability.
-* Easier testing.
-* Simpler permissions.
-* Cleaner module boundaries.
+- Clear ownership.
+- Independent evolution.
+- Better maintainability.
+- Easier testing.
+- Simpler permissions.
+- Cleaner module boundaries.
 
 Negative
 
-* Additional mapping step during planning.
+- Additional mapping step during planning.
 
 This mapping already exists through the Planning Context and Scheduling Model, so no additional architectural complexity is introduced.
 
@@ -322,12 +322,12 @@ Instead, the Planning Context becomes the immutable planning baseline.
 
 # Related Documents
 
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + Plan Version
-* ADR-003 — Workflow Definition and Workflow Instance
-* ADR-008 — Planning Context Uses Snapshots
-* SAD Chapter 3 — Domain Architecture
-* SAD Chapter 9 — Persistence Architecture
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + Plan Version
+- ADR-003 — Workflow Definition and Workflow Instance
+- ADR-008 — Planning Context Uses Snapshots
+- SAD Chapter 3 — Domain Architecture
+- SAD Chapter 9 — Persistence Architecture
 
 ---
 
@@ -341,15 +341,15 @@ Examples
 
 Laboratory Definition
 
-* New instrument types
-* Workflow Definition versions
-* Additional capability types
+- New instrument types
+- Workflow Definition versions
+- Additional capability types
 
 Planning
 
-* Scenario Planning
-* Dynamic Rescheduling
-* Multi-week Planning
-* AI-assisted Planning
+- Scenario Planning
+- Dynamic Rescheduling
+- Multi-week Planning
+- AI-assisted Planning
 
 Maintaining this separation ensures that laboratory configuration and production planning can evolve independently while preserving a stable and maintainable architecture.

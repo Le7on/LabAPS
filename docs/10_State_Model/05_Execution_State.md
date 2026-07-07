@@ -60,9 +60,9 @@ Execution
 
 An Assignment may have:
 
-* zero Execution (not started)
-* one active Execution
-* one completed Execution
+- zero Execution (not started)
+- one active Execution
+- one completed Execution
 
 Version 1.0 supports one Execution per Assignment.
 
@@ -102,14 +102,14 @@ Actual Start Time is empty.
 
 ## Allowed Actions
 
-* Start
+- Start
 
 ---
 
 ## Forbidden Actions
 
-* Complete
-* Fail
+- Complete
+- Fail
 
 ---
 
@@ -121,9 +121,9 @@ The laboratory work is currently executing.
 
 Execution records:
 
-* Actual Start Time
-* Current Operator
-* Current Equipment
+- Actual Start Time
+- Current Operator
+- Current Equipment
 
 Version 1.0 assumes the planned resources remain unchanged.
 
@@ -131,9 +131,9 @@ Version 1.0 assumes the planned resources remain unchanged.
 
 ## Allowed Actions
 
-* Complete
-* Fail
-* Cancel
+- Complete
+- Fail
+- Cancel
 
 ---
 
@@ -157,16 +157,16 @@ Execution terminated unsuccessfully.
 
 Failure information shall include:
 
-* Failure Time
-* Failure Reason
-* Optional Notes
+- Failure Time
+- Failure Reason
+- Optional Notes
 
 Examples
 
-* Instrument Failure
-* QC Failure
-* Operator Error
-* Unexpected Exception
+- Instrument Failure
+- QC Failure
+- Operator Error
+- Unexpected Exception
 
 ---
 
@@ -178,9 +178,9 @@ Execution was intentionally stopped before completion.
 
 Examples
 
-* Manual cancellation
-* Instrument unavailable
-* Plan superseded
+- Manual cancellation
+- Instrument unavailable
+- Plan superseded
 
 Cancellation reason shall be recorded.
 
@@ -225,12 +225,12 @@ Execution maintains runtime information.
 
 Examples
 
-* Actual Start Time
-* Actual End Time
-* Duration
-* Failure Reason
-* Cancellation Reason
-* Execution Notes
+- Actual Start Time
+- Actual End Time
+- Duration
+- Failure Reason
+- Cancellation Reason
+- Execution Notes
 
 These values never modify the Assignment.
 
@@ -256,10 +256,10 @@ BR-EX-003
 
 Execution never modifies:
 
-* Plan
-* Plan Version
-* Workflow Instance
-* Operation Instance
+- Plan
+- Plan Version
+- Workflow Instance
+- Operation Instance
 
 ---
 
@@ -273,11 +273,11 @@ Completed, Failed and Cancelled are terminal states.
 
 | Action   | Not Started | Running | Completed | Failed | Cancelled |
 | -------- | :---------: | :-----: | :-------: | :----: | :-------: |
-| Start    |     ✓     |   ✗   |    ✗    |   ✗   |    ✗    |
-| Complete |     ✗     |   ✓   |    ✗    |   ✗   |    ✗    |
-| Fail     |     ✗     |   ✓   |    ✗    |   ✗   |    ✗    |
-| Cancel   |     ✗     |   ✓   |    ✗    |   ✗   |    ✗    |
-| View     |     ✓     |   ✓   |    ✓    |   ✓   |    ✓    |
+| Start    |      ✓      |    ✗    |     ✗     |   ✗    |     ✗     |
+| Complete |      ✗      |    ✓    |     ✗     |   ✗    |     ✗     |
+| Fail     |      ✗      |    ✓    |     ✗     |   ✗    |     ✗     |
+| Cancel   |      ✗      |    ✓    |     ✗     |   ✗    |     ✗     |
+| View     |      ✓      |    ✓    |     ✓     |   ✓    |     ✓     |
 
 ---
 
@@ -343,17 +343,17 @@ Execution state transitions generate events.
 
 Examples
 
-* ExecutionStarted
-* ExecutionCompleted
-* ExecutionFailed
-* ExecutionCancelled
+- ExecutionStarted
+- ExecutionCompleted
+- ExecutionFailed
+- ExecutionCancelled
 
 These events support:
 
-* Audit
-* Dashboard
-* Notifications
-* Future LIMS integration
+- Audit
+- Dashboard
+- Notifications
+- Future LIMS integration
 
 ---
 
@@ -372,10 +372,10 @@ These events support:
 
 Future versions may support:
 
-* Pause / Resume
-* Retry
-* Multiple execution attempts
-* Instrument event synchronization
-* Automatic execution updates from instrument interfaces
+- Pause / Resume
+- Retry
+- Multiple execution attempts
+- Instrument event synchronization
+- Automatic execution updates from instrument interfaces
 
 These features extend the Execution lifecycle without affecting the Planning Domain.

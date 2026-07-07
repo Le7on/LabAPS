@@ -30,10 +30,10 @@ A Plan Version represents one attempt to solve a planning problem.
 
 Examples
 
-* Initial planning
-* Re-planning after equipment maintenance
-* Re-planning after demand changes
-* Simulation
+- Initial planning
+- Re-planning after equipment maintenance
+- Re-planning after demand changes
+- Simulation
 
 Every scheduling execution creates or updates one working Plan Version until it is published.
 
@@ -75,9 +75,9 @@ The planner is preparing the Plan Version.
 
 The planner may:
 
-* Edit Demand
-* Refresh Planning Context
-* Modify planning parameters
+- Edit Demand
+- Refresh Planning Context
+- Modify planning parameters
 
 No schedule has been accepted yet.
 
@@ -85,16 +85,16 @@ No schedule has been accepted yet.
 
 ## Allowed Actions
 
-* Edit Demand
-* Generate Schedule
-* Delete Working Version (optional)
-* Archive Version
+- Edit Demand
+- Generate Schedule
+- Delete Working Version (optional)
+- Archive Version
 
 ---
 
 ## Forbidden Actions
 
-* Publish
+- Publish
 
 ---
 
@@ -106,9 +106,9 @@ The Scheduling Engine has completed successfully.
 
 The version now contains:
 
-* Assignments
-* Material Forecast
-* KPI
+- Assignments
+- Material Forecast
+- KPI
 
 The planner has not yet approved the result.
 
@@ -116,16 +116,16 @@ The planner has not yet approved the result.
 
 ## Allowed Actions
 
-* Review Schedule
-* Generate Schedule Again
-* Compare Versions
-* Archive Version
+- Review Schedule
+- Generate Schedule Again
+- Compare Versions
+- Archive Version
 
 ---
 
 ## Forbidden Actions
 
-* Execute
+- Execute
 
 Execution is only allowed after publication.
 
@@ -145,19 +145,19 @@ The version is ready for publication.
 
 ## Typical Review Checklist
 
-* Equipment allocation
-* Staff allocation
-* Material forecast
-* Warnings
-* KPI
+- Equipment allocation
+- Staff allocation
+- Material forecast
+- Warnings
+- KPI
 
 ---
 
 ## Allowed Actions
 
-* Publish
-* Generate Schedule Again
-* Compare Versions
+- Publish
+- Generate Schedule Again
+- Compare Versions
 
 ---
 
@@ -175,25 +175,25 @@ Only one Published Plan Version may exist within a Plan.
 
 Publishing shall:
 
-* Lock the Plan Version
-* Make Assignments executable
-* Replace any previously published version
+- Lock the Plan Version
+- Make Assignments executable
+- Replace any previously published version
 
 ---
 
 ## Allowed Actions
 
-* View
-* Export
-* Compare
+- View
+- Export
+- Compare
 
 ---
 
 ## Forbidden Actions
 
-* Edit Demand
-* Generate Schedule
-* Modify Assignments
+- Edit Demand
+- Generate Schedule
+- Modify Assignments
 
 Published versions are immutable.
 
@@ -207,9 +207,9 @@ Historical planning record.
 
 The version remains available for:
 
-* Audit
-* Reporting
-* Comparison
+- Audit
+- Reporting
+- Comparison
 
 No further business actions are permitted.
 
@@ -363,13 +363,13 @@ The user interface shall enable actions according to the current state.
 
 | Action            | Working | Scheduled | Reviewed | Published | Archived |
 | ----------------- | :-----: | :-------: | :------: | :-------: | :------: |
-| Edit Demand       |    ✓    |     ✗     |     ✗    |     ✗     |     ✗    |
-| Generate Schedule |    ✓    |     ✓     |     ✓    |     ✗     |     ✗    |
-| Review            |    ✗    |     ✓     |     ✗    |     ✗     |     ✗    |
-| Publish           |    ✗    |     ✗     |     ✓    |     ✗     |     ✗    |
-| Compare           |    ✓    |     ✓     |     ✓    |     ✓     |     ✓    |
-| Export            |    ✗    |     ✓     |     ✓    |     ✓     |     ✓    |
-| Archive           |    ✓    |     ✓     |     ✓    |     ✓     |     ✗    |
+| Edit Demand       |    ✓    |     ✗     |    ✗     |     ✗     |    ✗     |
+| Generate Schedule |    ✓    |     ✓     |    ✓     |     ✗     |    ✗     |
+| Review            |    ✗    |     ✓     |    ✗     |     ✗     |    ✗     |
+| Publish           |    ✗    |     ✗     |    ✓     |     ✗     |    ✗     |
+| Compare           |    ✓    |     ✓     |    ✓     |     ✓     |    ✓     |
+| Export            |    ✗    |     ✓     |    ✓     |     ✓     |    ✓     |
+| Archive           |    ✓    |     ✓     |    ✓     |     ✓     |    ✗     |
 
 ---
 
@@ -435,10 +435,10 @@ PlanVersionArchived
 
 These events support:
 
-* Audit
-* Notification
-* Reporting
-* Future integration
+- Audit
+- Notification
+- Reporting
+- Future integration
 
 ---
 
@@ -462,8 +462,8 @@ These events support:
 
 # 18. Related Documents
 
-* State Model — Plan State
-* SAD Chapter 8 — Plan Lifecycle
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + Plan Version
-* Planning API — Publish Plan Version
+- State Model — Plan State
+- SAD Chapter 8 — Plan Lifecycle
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + Plan Version
+- Planning API — Publish Plan Version

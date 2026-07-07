@@ -76,11 +76,11 @@ Business rules describe laboratory behaviour.
 
 Examples include:
 
-* Equipment capacity
-* Staff availability
-* Workflow dependency
-* FV qualification
-* Shift availability
+- Equipment capacity
+- Staff availability
+- Workflow dependency
+- FV qualification
+- Shift availability
 
 These concepts should exist independently of any optimization library.
 
@@ -104,10 +104,10 @@ Future versions may replace OR-Tools with another optimization engine.
 
 Examples:
 
-* Gurobi
-* CPLEX
-* Timefold
-* OptaPlanner
+- Gurobi
+- CPLEX
+- Timefold
+- OptaPlanner
 
 Only the Solver Adapter requires modification.
 
@@ -121,10 +121,10 @@ Constraint Specifications and Constraint Models can be verified without executin
 
 Examples include:
 
-* Number of generated constraints
-* Constraint categories
-* Resource mappings
-* Dependency mappings
+- Number of generated constraints
+- Constraint categories
+- Resource mappings
+- Dependency mappings
 
 This allows deterministic unit testing.
 
@@ -138,8 +138,8 @@ Version 1.0 defines the following constraint categories.
 
 Examples
 
-* Equipment Capacity
-* Staff Capacity
+- Equipment Capacity
+- Staff Capacity
 
 ---
 
@@ -147,8 +147,8 @@ Examples
 
 Examples
 
-* Required Capability
-* Required Skill
+- Required Capability
+- Required Skill
 
 ---
 
@@ -156,8 +156,8 @@ Examples
 
 Examples
 
-* Finish-to-Start
-* Intermediate Resource Availability
+- Finish-to-Start
+- Intermediate Resource Availability
 
 ---
 
@@ -165,10 +165,10 @@ Examples
 
 Examples
 
-* Working Days
-* Holidays
-* Leave
-* Maintenance
+- Working Days
+- Holidays
+- Leave
+- Maintenance
 
 ---
 
@@ -176,7 +176,7 @@ Examples
 
 Examples
 
-* FV Qualification
+- FV Qualification
 
 ---
 
@@ -184,9 +184,9 @@ Examples
 
 Examples
 
-* Maximum Planning Horizon
-* Frozen Plan Rules
-* Published Version Protection
+- Maximum Planning Horizon
+- Frozen Plan Rules
+- Published Version Protection
 
 ---
 
@@ -196,11 +196,11 @@ A Constraint Specification describes one business rule in a normalized form.
 
 Typical attributes include:
 
-* Constraint Type
-* Source Object
-* Target Object
-* Parameters
-* Severity
+- Constraint Type
+- Source Object
+- Target Object
+- Parameters
+- Severity
 
 Constraint Specifications are independent of OR-Tools.
 
@@ -212,10 +212,10 @@ Constraint Builder converts Constraint Specifications into the Constraint Model.
 
 Responsibilities include:
 
-* Resolve references
-* Normalize values
-* Validate completeness
-* Group related constraints
+- Resolve references
+- Normalize values
+- Validate completeness
+- Group related constraints
 
 Constraint Builder does not invoke OR-Tools.
 
@@ -249,10 +249,10 @@ The Solver Adapter converts the Constraint Model into solver-specific constraint
 
 Responsibilities include:
 
-* Create OR-Tools variables
-* Translate Constraint Model
-* Register constraints
-* Execute optimization
+- Create OR-Tools variables
+- Translate Constraint Model
+- Register constraints
+- Execute optimization
 
 Business rules are never interpreted inside the Solver Adapter.
 
@@ -284,16 +284,16 @@ The architecture becomes easier to understand and easier to test.
 
 Positive
 
-* Clear separation between business rules and optimization implementation.
-* Easier maintenance.
-* Easier testing.
-* Cleaner architecture.
-* Solver independence.
+- Clear separation between business rules and optimization implementation.
+- Easier maintenance.
+- Easier testing.
+- Cleaner architecture.
+- Solver independence.
 
 Negative
 
-* Additional transformation layer.
-* Slight increase in implementation complexity.
+- Additional transformation layer.
+- Slight increase in implementation complexity.
 
 The benefits significantly outweigh the additional implementation effort.
 
@@ -317,9 +317,9 @@ The benefits significantly outweigh the additional implementation effort.
 
 # Related Documents
 
-* SAD Chapter 5 — Scheduling Architecture
-* SAD Chapter 14 — Solver Model
-* ADR-005 — Scheduling Model as an Anti-Corruption Layer
+- SAD Chapter 5 — Scheduling Architecture
+- SAD Chapter 14 — Solver Model
+- ADR-005 — Scheduling Model as an Anti-Corruption Layer
 
 ---
 

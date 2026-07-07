@@ -16,11 +16,11 @@ The laboratory configuration continuously changes.
 
 Examples include:
 
-* Staff leave
-* Equipment maintenance
-* Holiday calendar
-* Shift definition
-* Solver parameters
+- Staff leave
+- Equipment maintenance
+- Holiday calendar
+- Shift definition
+- Solver parameters
 
 If a PlanVersion references the current configuration directly, historical planning results may become impossible to reproduce.
 
@@ -62,12 +62,12 @@ Planning Context shall never depend on live laboratory configuration after a Pla
 
 Planning Context contains:
 
-* Calendar Snapshot
-* Shift Snapshot
-* Staff Availability Snapshot
-* Equipment Availability Snapshot
-* Solver Profile Snapshot
-* Planning Parameters Snapshot
+- Calendar Snapshot
+- Shift Snapshot
+- Staff Availability Snapshot
+- Equipment Availability Snapshot
+- Solver Profile Snapshot
+- Planning Parameters Snapshot
 
 It intentionally does **not** contain complete copies of Staff or Equipment master data.
 
@@ -139,9 +139,9 @@ Rejected.
 
 Historical planning would change whenever:
 
-* Staff changed
-* Equipment changed
-* Calendar changed
+- Staff changed
+- Equipment changed
+- Calendar changed
 
 Historical schedules would no longer be trustworthy.
 
@@ -171,15 +171,15 @@ This provides deterministic behaviour with acceptable storage cost.
 
 Positive
 
-* Deterministic scheduling.
-* Complete audit trail.
-* Version independence.
-* Reliable comparison between PlanVersions.
+- Deterministic scheduling.
+- Complete audit trail.
+- Version independence.
+- Reliable comparison between PlanVersions.
 
 Negative
 
-* Additional storage.
-* Snapshot generation step during planning.
+- Additional storage.
+- Snapshot generation step during planning.
 
 These costs are considered acceptable.
 
@@ -201,11 +201,11 @@ These costs are considered acceptable.
 
 # Related Documents
 
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + Plan Version
-* SAD Chapter 8 — Plan Lifecycle
-* SAD Chapter 9 — Plan Version Architecture
-* SAD Chapter 14 — Solver Model
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + Plan Version
+- SAD Chapter 8 — Plan Lifecycle
+- SAD Chapter 9 — Plan Version Architecture
+- SAD Chapter 14 — Solver Model
 
 ---
 

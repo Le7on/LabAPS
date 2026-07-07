@@ -34,12 +34,12 @@ However, Lab APS is an interactive planning application rather than a traditiona
 
 Typical user activities include:
 
-* Planning Workspace
-* Version Comparison
-* Gantt Timeline
-* Material Forecast
-* KPI Dashboard
-* Interactive Planning Review
+- Planning Workspace
+- Version Comparison
+- Gantt Timeline
+- Material Forecast
+- KPI Dashboard
+- Interactive Planning Review
 
 These features require rich client-side state management and dynamic UI interaction.
 
@@ -55,12 +55,12 @@ The application maintains a large amount of transient UI state.
 
 Examples include:
 
-* Current Plan
-* Current Plan Version
-* Selected Workspace
-* Current Filters
-* Current Timeline View
-* Warning Panel
+- Current Plan
+- Current Plan Version
+- Selected Workspace
+- Current Filters
+- Current Timeline View
+- Warning Panel
 
 Managing these using server-rendered templates would significantly increase complexity.
 
@@ -70,9 +70,9 @@ Managing these using server-rendered templates would significantly increase comp
 
 Rendering HTML inside Flask couples:
 
-* UI
-* API
-* Backend
+- UI
+- API
+- Backend
 
 This reduces maintainability and future deployment flexibility.
 
@@ -82,11 +82,11 @@ This reduces maintainability and future deployment flexibility.
 
 Future roadmap items include:
 
-* Scenario Planning
-* AI Recommendation
-* Interactive Gantt
-* Drag-and-Drop Planning
-* Side-by-side Version Comparison
+- Scenario Planning
+- AI Recommendation
+- Interactive Gantt
+- Drag-and-Drop Planning
+- Side-by-side Version Comparison
 
 These features are naturally implemented as SPA interactions.
 
@@ -134,17 +134,17 @@ Flask becomes a REST API server only.
 
 Frontend responsibilities:
 
-* View rendering
-* Navigation
-* Client-side state
-* User interaction
+- View rendering
+- Navigation
+- Client-side state
+- User interaction
 
 Backend responsibilities:
 
-* Business rules
-* Domain model
-* Scheduling
-* Persistence
+- Business rules
+- Domain model
+- Scheduling
+- Persistence
 
 Responsibilities remain independent.
 
@@ -156,10 +156,10 @@ The Planning Workspace becomes a true application workspace.
 
 Examples
 
-* Switching tabs without page reload
-* Live KPI updates
-* Version comparison
-* Interactive filtering
+- Switching tabs without page reload
+- Live KPI updates
+- Version comparison
+- Interactive filtering
 
 The SPA model provides a significantly better user experience.
 
@@ -181,9 +181,9 @@ This aligns with the previously defined OpenAPI Specification.
 
 The backend remains identical whether the application is:
 
-* Desktop (PyWebView)
-* Internal Web
-* Cloud Deployment
+- Desktop (PyWebView)
+- Internal Web
+- Cloud Deployment
 
 Only the hosting mechanism changes.
 
@@ -225,17 +225,17 @@ Supports future evolution without changing business architecture.
 
 Positive
 
-* Modern frontend architecture
-* Independent frontend development
-* Better state management
-* Easier future deployment
-* Better user experience
+- Modern frontend architecture
+- Independent frontend development
+- Better state management
+- Easier future deployment
+- Better user experience
 
 Negative
 
-* Frontend build pipeline required
-* JavaScript tooling required
-* Two development processes (frontend/backend)
+- Frontend build pipeline required
+- JavaScript tooling required
+- Two development processes (frontend/backend)
 
 These costs are acceptable considering the long-term benefits.
 
@@ -245,12 +245,12 @@ These costs are acceptable considering the long-term benefits.
 
 The following layers remain unchanged:
 
-* Domain
-* Application
-* Planning Engine
-* Scheduling Engine
-* Database
-* Solver
+- Domain
+- Application
+- Planning Engine
+- Scheduling Engine
+- Database
+- Solver
 
 Only the Presentation Layer changes.
 
@@ -296,11 +296,11 @@ Frontend and backend evolve independently.
 
 # Related Documents
 
-* Architecture Update 2026-07 — Vue 3 Frontend
-* SAD-16 API Architecture
-* SAD-19 Project Structure
-* UI Information Architecture
-* UI Plan Workspace Design
+- Architecture Update 2026-07 — Vue 3 Frontend
+- SAD-16 API Architecture
+- SAD-19 Project Structure
+- UI Information Architecture
+- UI Plan Workspace Design
 
 ---
 
@@ -310,10 +310,10 @@ The Presentation Layer is now completely replaceable.
 
 Future clients may include:
 
-* Desktop (PyWebView)
-* Web Browser
-* Tablet
-* Mobile Companion App
+- Desktop (PyWebView)
+- Web Browser
+- Tablet
+- Mobile Companion App
 
 All clients consume the same REST API and preserve the same Domain Model.
 

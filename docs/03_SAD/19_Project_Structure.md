@@ -305,10 +305,10 @@ The desktop interface.
 
 Contains
 
-* HTML
-* Bootstrap
-* JavaScript
-* Static assets
+- HTML
+- Bootstrap
+- JavaScript
+- Static assets
 
 Business logic shall not exist in the UI.
 
@@ -368,11 +368,11 @@ Infrastructure supports every layer but does not own business behavior.
 
 Forbidden
 
-* domain → api
-* domain → infrastructure
-* engines → api
-* solver → repository
-* ui → domain
+- domain → api
+- domain → infrastructure
+- engines → api
+- solver → repository
+- ui → domain
 
 ---
 
@@ -382,16 +382,16 @@ The `shared` package contains only generic cross-cutting concepts.
 
 Allowed
 
-* Exceptions
-* Enumerations
-* Value Objects
-* Generic utilities
+- Exceptions
+- Enumerations
+- Value Objects
+- Generic utilities
 
 Forbidden
 
-* Business entities
-* Business services
-* Scheduling logic
+- Business entities
+- Business services
+- Scheduling logic
 
 If a class is specific to Planning or Laboratory Definition, it shall belong to that domain instead of `shared`.
 

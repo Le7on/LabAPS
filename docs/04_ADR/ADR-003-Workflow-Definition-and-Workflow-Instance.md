@@ -14,12 +14,12 @@ Laboratory workflows evolve over time.
 
 Examples include:
 
-* Process optimization
-* Additional validation steps
-* New instrument support
-* Changed operation duration
-* Updated material consumption
-* New dependency rules
+- Process optimization
+- Additional validation steps
+- New instrument support
+- Changed operation duration
+- Updated material consumption
+- New dependency rules
 
 However, historical production plans must remain reproducible.
 
@@ -71,11 +71,11 @@ Workflow Definition represents laboratory process knowledge.
 
 Examples include:
 
-* Process sequence
-* Operation definitions
-* Dependency rules
-* Material BOM
-* Intermediate resources
+- Process sequence
+- Operation definitions
+- Dependency rules
+- Material BOM
+- Intermediate resources
 
 These describe **how** a laboratory project should be executed.
 
@@ -153,8 +153,8 @@ Rejected.
 
 A single object cannot simultaneously represent:
 
-* laboratory knowledge
-* generated planning data
+- laboratory knowledge
+- generated planning data
 
 Updating the workflow would invalidate historical planning.
 
@@ -184,16 +184,16 @@ Published planning must always be deterministic.
 
 Positive
 
-* Workflow evolution is supported.
-* Historical Plans remain reproducible.
-* Workflow Templates remain reusable.
-* Planning data remains isolated.
-* Workflow Engine has a clear responsibility.
+- Workflow evolution is supported.
+- Historical Plans remain reproducible.
+- Workflow Templates remain reusable.
+- Planning data remains isolated.
+- Workflow Engine has a clear responsibility.
 
 Negative
 
-* Additional entities are introduced.
-* Workflow generation becomes an explicit planning step.
+- Additional entities are introduced.
+- Workflow generation becomes an explicit planning step.
 
 These costs are acceptable given the long-term maintainability benefits.
 
@@ -257,9 +257,9 @@ It operates only on Operation Instances produced by the Workflow Generator.
 
 # Related Documents
 
-* SRS Chapter 5 — Business Object Model
-* SAD Chapter 3 — Domain Architecture
-* SAD Chapter 7 — Conceptual Database Model
-* SAD Chapter 10 — Conceptual ERD
-* ADR-001 — Plan as the Aggregate Root
-* ADR-002 — Plan + Plan Version
+- SRS Chapter 5 — Business Object Model
+- SAD Chapter 3 — Domain Architecture
+- SAD Chapter 7 — Conceptual Database Model
+- SAD Chapter 10 — Conceptual ERD
+- ADR-001 — Plan as the Aggregate Root
+- ADR-002 — Plan + Plan Version

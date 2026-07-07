@@ -90,8 +90,8 @@ Application
 
 Planning may depend on:
 
-* Scheduling Engine
-* Solver Adapter
+- Scheduling Engine
+- Solver Adapter
 
 through internal Domain Services only.
 
@@ -281,17 +281,17 @@ Version 1.0 uses a logical separation between write operations and read operatio
 
 Write Operations
 
-* Create Plan
-* Generate Schedule
-* Publish Plan
-* Update Execution
+- Create Plan
+- Generate Schedule
+- Publish Plan
+- Update Execution
 
 Read Operations
 
-* Dashboard
-* Reports
-* Planning List
-* Material Forecast
+- Dashboard
+- Reports
+- Planning List
+- Material Forecast
 
 Read operations shall not modify domain objects.
 
@@ -338,16 +338,16 @@ Examples
 
 Correct
 
-* CreatePlan()
-* GenerateSchedule()
-* PublishPlan()
-* CompleteAssignment()
+- CreatePlan()
+- GenerateSchedule()
+- PublishPlan()
+- CompleteAssignment()
 
 Avoid generic services such as
 
-* Save()
-* Update()
-* Process()
+- Save()
+- Update()
+- Process()
 
 Business-oriented interfaces improve readability.
 
@@ -385,9 +385,9 @@ External systems communicate only with the Application Layer.
 
 Examples
 
-* LIMS
-* Inventory System
-* Authentication Provider
+- LIMS
+- Inventory System
+- Authentication Provider
 
 No external system may invoke Domain objects directly.
 
@@ -399,10 +399,10 @@ Future modules shall integrate through Application Services.
 
 Examples
 
-* Scenario Planning
-* Notification Center
-* AI Recommendation
-* Audit Center
+- Scenario Planning
+- Notification Center
+- AI Recommendation
+- Audit Center
 
 Existing module boundaries shall remain unchanged.
 
@@ -432,11 +432,11 @@ Existing module boundaries shall remain unchanged.
 
 Every architectural change shall be reviewed against the following questions.
 
-* Is ownership preserved?
-* Is the dependency direction correct?
-* Does this introduce a circular dependency?
-* Does this bypass an Application Service?
-* Does this expose internal domain objects?
-* Does this violate Aggregate boundaries?
+- Is ownership preserved?
+- Is the dependency direction correct?
+- Does this introduce a circular dependency?
+- Does this bypass an Application Service?
+- Does this expose internal domain objects?
+- Does this violate Aggregate boundaries?
 
 If any answer indicates a violation, the implementation shall be redesigned before merging.

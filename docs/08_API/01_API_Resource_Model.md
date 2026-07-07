@@ -269,10 +269,10 @@ It is not an independent Aggregate.
 
 The same principle applies to:
 
-* Workflow Instance
-* Operation Instance
-* Material Forecast
-* KPI
+- Workflow Instance
+- Operation Instance
+- Material Forecast
+- KPI
 
 ---
 
@@ -342,11 +342,11 @@ The next document,
 
 defines:
 
-* Every endpoint
-* Request DTO
-* Response DTO
-* HTTP status codes
-* Validation rules
-* Error codes
+- Every endpoint
+- Request DTO
+- Response DTO
+- HTTP status codes
+- Validation rules
+- Error codes
 
 using the resource model established in this document.

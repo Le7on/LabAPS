@@ -20,17 +20,17 @@ The Planning Dataset is the normalized representation of all information require
 
 It acts as the canonical input for:
 
-* Scheduling Engine
-* Simulation
-* Material Forecast
-* KPI Analysis
+- Scheduling Engine
+- Simulation
+- Material Forecast
+- KPI Analysis
 
 The Planning Dataset is independent of:
 
-* Database schema
-* ORM
-* OR-Tools
-* User Interface
+- Database schema
+- ORM
+- OR-Tools
+- User Interface
 
 ---
 
@@ -38,12 +38,12 @@ The Planning Dataset is independent of:
 
 The Planning Dataset shall satisfy the following objectives.
 
-* Immutable
-* Deterministic
-* Serializable
-* Solver-independent
-* Reusable
-* Testable
+- Immutable
+- Deterministic
+- Serializable
+- Solver-independent
+- Reusable
+- Testable
 
 The same Planning Dataset shall always produce the same scheduling result under the same Solver Profile.
 
@@ -115,9 +115,9 @@ Contains all schedulable resources.
 
 Version 1.0 includes:
 
-* Equipment
-* Staff
-* Shift
+- Equipment
+- Staff
+- Shift
 
 Only scheduling attributes are included.
 
@@ -133,10 +133,10 @@ Each operation contains only scheduling-relevant information.
 
 Examples
 
-* Duration
-* Resource Requirements
-* Dependency References
-* Priority
+- Duration
+- Resource Requirements
+- Dependency References
+- Priority
 
 ---
 
@@ -146,10 +146,10 @@ Represents effective scheduling availability.
 
 Includes:
 
-* Working Days
-* Shift Windows
-* Staff Leave
-* Equipment Maintenance
+- Working Days
+- Shift Windows
+- Staff Leave
+- Equipment Maintenance
 
 Calendar Dataset contains only usable scheduling windows.
 
@@ -161,10 +161,10 @@ Represents execution relationships between operations.
 
 Each dependency contains:
 
-* Predecessor
-* Successor
-* Relationship Type
-* Lag
+- Predecessor
+- Successor
+- Relationship Type
+- Lag
 
 Dependencies are normalized before entering the Scheduling Engine.
 
@@ -176,10 +176,10 @@ Represents normalized scheduling constraints.
 
 Constraint Dataset is generated automatically from:
 
-* Resource Dataset
-* Operation Dataset
-* Calendar Dataset
-* Planning Policies
+- Resource Dataset
+- Operation Dataset
+- Calendar Dataset
+- Planning Policies
 
 Business Rules are never stored directly.
 
@@ -191,9 +191,9 @@ Represents optimization objectives.
 
 Examples
 
-* Complete all demand
-* Balance workload
-* Maximize equipment utilization
+- Complete all demand
+- Balance workload
+- Maximize equipment utilization
 
 Objective weights originate from the Solver Profile.
 
@@ -232,10 +232,10 @@ The Planning Dataset becomes the canonical planning representation of Lab APS.
 
 Future capabilities such as:
 
-* Simulation
-* AI-assisted planning
-* Schedule comparison
-* Multi-site optimization
-* Scenario analysis
+- Simulation
+- AI-assisted planning
+- Schedule comparison
+- Multi-site optimization
+- Scenario analysis
 
 shall consume the same Planning Dataset without introducing alternative input models.

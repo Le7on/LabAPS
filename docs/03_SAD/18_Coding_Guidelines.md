@@ -86,24 +86,24 @@ Domain Objects represent business concepts.
 
 Examples
 
-* Plan
-* PlanVersion
-* WorkflowInstance
-* OperationInstance
-* Assignment
+- Plan
+- PlanVersion
+- WorkflowInstance
+- OperationInstance
+- Assignment
 
 Domain Objects shall:
 
-* contain business behaviour
-* protect invariants
-* expose meaningful methods
+- contain business behaviour
+- protect invariants
+- expose meaningful methods
 
 Domain Objects shall NOT:
 
-* execute SQL
-* call Flask
-* call OR-Tools
-* serialize JSON
+- execute SQL
+- call Flask
+- call OR-Tools
+- serialize JSON
 
 ---
 
@@ -139,17 +139,17 @@ Immutable concepts shall be implemented as Value Objects.
 
 Examples
 
-* PlanningHorizon
-* ShiftWindow
-* CapabilitySet
-* SkillSet
-* MaterialQuantity
+- PlanningHorizon
+- ShiftWindow
+- CapabilitySet
+- SkillSet
+- MaterialQuantity
 
 Value Objects shall:
 
-* be immutable
-* support equality by value
-* contain validation
+- be immutable
+- support equality by value
+- contain validation
 
 ---
 
@@ -193,16 +193,16 @@ CompleteAssignment
 
 Each Use Case shall:
 
-* perform orchestration
-* start one transaction
-* invoke domain behaviour
-* persist changes
+- perform orchestration
+- start one transaction
+- invoke domain behaviour
+- persist changes
 
 Each Use Case shall NOT:
 
-* implement scheduling
-* calculate KPIs
-* perform SQL directly
+- implement scheduling
+- calculate KPIs
+- perform SQL directly
 
 ---
 
@@ -242,17 +242,17 @@ The Solver layer owns optimization only.
 
 Allowed
 
-* build variables
-* build constraints
-* invoke OR-Tools
-* parse solution
+- build variables
+- build constraints
+- invoke OR-Tools
+- parse solution
 
 Forbidden
 
-* query repositories
-* load Plans
-* calculate materials
-* publish Plans
+- query repositories
+- load Plans
+- calculate materials
+- publish Plans
 
 ---
 
@@ -262,8 +262,8 @@ DTOs exist only at application boundaries.
 
 DTOs shall:
 
-* carry data
-* contain no business behaviour
+- carry data
+- contain no business behaviour
 
 DTOs shall never be reused as Domain Objects.
 
@@ -329,11 +329,11 @@ Infrastructure
 
 Forbidden
 
-* Domain → Flask
-* Domain → SQLAlchemy
-* Domain → OR-Tools
-* Solver → Repository
-* Reporting → Database
+- Domain → Flask
+- Domain → SQLAlchemy
+- Domain → OR-Tools
+- Solver → Repository
+- Reporting → Database
 
 ---
 
@@ -341,9 +341,9 @@ Forbidden
 
 Every business rule shall be testable without:
 
-* Flask
-* Database
-* OR-Tools
+- Flask
+- Database
+- OR-Tools
 
 Domain tests shall execute entirely in memory.
 
@@ -399,10 +399,10 @@ Log business events.
 
 Examples
 
-* Plan Created
-* Schedule Generated
-* Plan Published
-* Assignment Completed
+- Plan Created
+- Schedule Generated
+- Plan Published
+- Assignment Completed
 
 Do not log internal implementation details unless diagnosing failures.
 
@@ -412,13 +412,13 @@ Do not log internal implementation details unless diagnosing failures.
 
 Every Pull Request shall answer:
 
-* Does this preserve Aggregate boundaries?
-* Does this introduce business logic into Infrastructure?
-* Is this behaviour located in the correct Engine?
-* Does this duplicate an existing Domain concept?
-* Can this be unit tested without Flask?
-* Can this be unit tested without a database?
-* Does this violate any Architecture Constraint?
+- Does this preserve Aggregate boundaries?
+- Does this introduce business logic into Infrastructure?
+- Is this behaviour located in the correct Engine?
+- Does this duplicate an existing Domain concept?
+- Can this be unit tested without Flask?
+- Can this be unit tested without a database?
+- Does this violate any Architecture Constraint?
 
 Changes failing this review shall be refactored before merge.
 

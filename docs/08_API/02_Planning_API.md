@@ -18,10 +18,10 @@ This document defines the REST API contract for the Planning Domain.
 
 The Planning API is responsible for the lifecycle of:
 
-* Plan
-* Plan Version
-* Scheduling
-* Publication
+- Plan
+- Plan Version
+- Scheduling
+- Publication
 
 The API follows the Resource + Command architecture defined in:
 
@@ -134,9 +134,9 @@ GET /api/v1/plans/{planId}
 
 Returns:
 
-* Plan
-* Current Published Version
-* Version Summary
+- Plan
+- Current Published Version
+- Version Summary
 
 The API does not return complete Assignments.
 
@@ -158,8 +158,8 @@ Create a new working Plan Version.
 
 The new version copies:
 
-* Planning Context
-* Demand
+- Planning Context
+- Demand
 
 No schedule is generated yet.
 
@@ -198,10 +198,10 @@ GET /api/v1/plans/{planId}/versions/{versionId}
 
 Returns
 
-* Planning Context
-* Demand
-* Schedule Summary
-* Forecast Summary
+- Planning Context
+- Demand
+- Schedule Summary
+- Forecast Summary
 
 Large collections are paged where appropriate.
 
@@ -290,8 +290,8 @@ POST /api/v1/plans/{planId}/versions/{versionId}:publish
 
 ## Preconditions
 
-* Version Status = Reviewed
-* Validation Passed
+- Version Status = Reviewed
+- Validation Passed
 
 ---
 
@@ -333,9 +333,9 @@ HTTP
 
 Examples
 
-* Invalid Planning Horizon
-* Missing Demand
-* Missing Planning Context
+- Invalid Planning Horizon
+- Missing Demand
+- Missing Planning Context
 
 ---
 
@@ -349,9 +349,9 @@ HTTP
 
 Examples
 
-* Published Version already exists.
-* Version cannot be published.
-* Plan already archived.
+- Published Version already exists.
+- Version cannot be published.
+- Plan already archived.
 
 ---
 
@@ -365,9 +365,9 @@ HTTP
 
 Examples
 
-* No feasible schedule.
-* Missing qualified resources.
-* Unsatisfied workflow dependencies.
+- No feasible schedule.
+- Missing qualified resources.
+- Unsatisfied workflow dependencies.
 
 ---
 

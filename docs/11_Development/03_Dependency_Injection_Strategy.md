@@ -18,8 +18,8 @@ This document defines how application components are created and connected at ru
 
 Lab APS adopts a lightweight dependency injection strategy based on:
 
-* Composition Root
-* Constructor Injection
+- Composition Root
+- Constructor Injection
 
 The objective is to keep the architecture explicit, testable and easy to understand.
 
@@ -31,9 +31,9 @@ Business components shall never create their own dependencies.
 
 Instead:
 
-* Dependencies are constructed once.
-* Dependencies are injected.
-* Dependencies are owned by the runtime composition.
+- Dependencies are constructed once.
+- Dependencies are injected.
+- Dependencies are owned by the runtime composition.
 
 Object creation belongs to the Application startup process.
 
@@ -121,16 +121,16 @@ Example
 
 Use Case depends on
 
-* Repository
-* Planning Engine
+- Repository
+- Planning Engine
 
 Planning Engine depends on
 
-* Scheduling Engine
+- Scheduling Engine
 
 Scheduling Engine depends on
 
-* Solver Adapter
+- Solver Adapter
 
 Components never instantiate these objects internally.
 
@@ -152,13 +152,13 @@ All Engines are stateless.
 
 Examples
 
-* WorkflowGenerator
-* PlanningProblemBuilder
-* SchedulingModelBuilder
-* ConstraintBuilder
-* ObjectiveBuilder
-* AssignmentBuilder
-* MaterialCalculator
+- WorkflowGenerator
+- PlanningProblemBuilder
+- SchedulingModelBuilder
+- ConstraintBuilder
+- ObjectiveBuilder
+- AssignmentBuilder
+- MaterialCalculator
 
 Because Engines contain no mutable state, they may be reused safely.
 
@@ -210,9 +210,9 @@ Database sessions are managed by the Application Layer.
 
 Rules
 
-* One Use Case = One Unit of Work.
-* Commit only after successful completion.
-* Roll back on any exception.
+- One Use Case = One Unit of Work.
+- Commit only after successful completion.
+- Roll back on any exception.
 
 Repositories shall never commit transactions.
 
@@ -319,9 +319,9 @@ Business components shall never instantiate repositories or engines internally.
 
 If the application evolves into:
 
-* Multi-user Web deployment
-* Distributed scheduling
-* Background worker architecture
+- Multi-user Web deployment
+- Distributed scheduling
+- Background worker architecture
 
 the Composition Root may later be replaced by a dedicated Dependency Injection container.
 

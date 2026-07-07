@@ -82,9 +82,9 @@ The equipment is temporarily unavailable as a laboratory resource.
 
 Reasons may include:
 
-* Administrative decision
-* Temporary removal
-* Validation activities
+- Administrative decision
+- Temporary removal
+- Validation activities
 
 Disabled equipment is excluded from new planning.
 
@@ -98,8 +98,8 @@ The equipment has permanently left service.
 
 Retired equipment:
 
-* cannot be enabled again
-* cannot participate in future planning
+- cannot be enabled again
+- cannot participate in future planning
 
 Historical planning remains available.
 
@@ -129,9 +129,9 @@ Equipment satisfies all scheduling requirements.
 
 Examples
 
-* Enabled
-* No maintenance
-* FV qualification valid
+- Enabled
+- No maintenance
+- FV qualification valid
 
 Available equipment may be allocated by the Scheduling Engine.
 
@@ -143,9 +143,9 @@ Equipment cannot participate in scheduling.
 
 Typical reasons include:
 
-* Planned Maintenance
-* Unexpected Failure
-* FV Qualification Expired
+- Planned Maintenance
+- Unexpected Failure
+- FV Qualification Expired
 
 The reason shall be recorded separately.
 
@@ -227,9 +227,9 @@ Retirement is irreversible.
 
 Operational availability changes automatically according to:
 
-* Maintenance Schedule
-* Qualification Status
-* Equipment Health
+- Maintenance Schedule
+- Qualification Status
+- Equipment Health
 
 Operational State is recalculated whenever planning begins.
 
@@ -287,16 +287,16 @@ Configuration View
 
 Actions
 
-* Enable
-* Disable
-* Retire
+- Enable
+- Disable
+- Retire
 
 Planning View
 
 Displays
 
-* Available
-* Unavailable
+- Available
+- Unavailable
 
 The planner does not edit Operational State manually.
 
@@ -348,10 +348,10 @@ The availability calculation shall remain inside the Domain.
 
 # 12. Related Documents
 
-* State Model — State Transition Rules
-* Planning Context
-* Constraint Framework
-* Planning Problem
-* Scheduling Model
+- State Model — State Transition Rules
+- Planning Context
+- Constraint Framework
+- Planning Problem
+- Scheduling Model
 
 The Scheduling Engine consumes only the calculated availability, never the underlying maintenance or qualification logic.

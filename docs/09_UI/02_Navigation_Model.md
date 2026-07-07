@@ -64,12 +64,12 @@ Provide an overview of laboratory status.
 
 Typical widgets
 
-* Current Planning Horizon
-* Published Plan
-* Equipment Alerts
-* Material Warnings
-* Today's Execution
-* Recent Activities
+- Current Planning Horizon
+- Published Plan
+- Equipment Alerts
+- Material Warnings
+- Today's Execution
+- Recent Activities
 
 Typical user
 

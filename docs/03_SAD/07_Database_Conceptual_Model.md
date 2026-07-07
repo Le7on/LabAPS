@@ -20,9 +20,9 @@ The purpose of the conceptual model is to establish a stable mapping between the
 
 This document is independent of:
 
-* SQL dialect
-* ORM implementation
-* Database engine
+- SQL dialect
+- ORM implementation
+- Database engine
 
 It defines business entities and their relationships only.
 
@@ -198,25 +198,25 @@ Assignment
 
 Plan owns
 
-* Planning Context
-* Demand
-* Workflow Instance
-* Operation Instance
-* Assignment
-* Material Forecast
-* KPI
+- Planning Context
+- Demand
+- Workflow Instance
+- Operation Instance
+- Assignment
+- Material Forecast
+- KPI
 
 Workflow Template owns
 
-* Operation Template
+- Operation Template
 
 Equipment owns
 
-* Capability
+- Capability
 
 Staff owns
 
-* Skill
+- Skill
 
 ---
 
@@ -252,11 +252,11 @@ Planning Context stores planning snapshots.
 
 Snapshots include
 
-* Equipment Availability
-* Staff Availability
-* Calendar
-* Shift Profile
-* Solver Profile
+- Equipment Availability
+- Staff Availability
+- Calendar
+- Shift Profile
+- Solver Profile
 
 Snapshots preserve reproducibility.
 
@@ -270,9 +270,9 @@ A Plan may contain multiple versions.
 
 Each version owns
 
-* Assignments
-* Material Forecast
-* KPI
+- Assignments
+- Material Forecast
+- KPI
 
 Only one version may have Published status.
 
@@ -284,8 +284,8 @@ Material Forecast is derived data.
 
 It references:
 
-* Operation Instance
-* Material Definition
+- Operation Instance
+- Material Definition
 
 Material Forecast never modifies inventory.
 
@@ -347,10 +347,10 @@ Entity lifecycle determines retention strategy.
 
 The persistence layer shall follow these rules.
 
-* No circular ownership.
-* No cross-domain updates.
-* No persistence logic inside Domain Objects.
-* Repositories operate on Aggregate Roots only.
-* Child entities are persisted through their Aggregate Root.
+- No circular ownership.
+- No cross-domain updates.
+- No persistence logic inside Domain Objects.
+- Repositories operate on Aggregate Roots only.
+- Child entities are persisted through their Aggregate Root.
 
 These rules ensure consistency between the Domain Model and the database model.

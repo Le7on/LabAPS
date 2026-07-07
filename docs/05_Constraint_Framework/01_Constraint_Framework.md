@@ -120,15 +120,15 @@ Resource Constraints control exclusive use of schedulable resources.
 
 Typical examples
 
-* One Equipment executes one Operation at a time.
-* One Staff executes one Operation at a time.
-* One Operation occupies one Shift.
+- One Equipment executes one Operation at a time.
+- One Staff executes one Operation at a time.
+- One Operation occupies one Shift.
 
 Typical properties
 
-* Resource Type
-* Capacity
-* Occupation Window
+- Resource Type
+- Capacity
+- Occupation Window
 
 Resource Constraints do not describe laboratory policies.
 
@@ -142,9 +142,9 @@ Capability Constraints determine whether a resource is technically able to perfo
 
 Typical examples
 
-* 384 Head required.
-* iSWAP required.
-* 16 Channel required.
+- 384 Head required.
+- iSWAP required.
+- 16 Channel required.
 
 Capability Constraints compare:
 
@@ -166,8 +166,8 @@ Qualification Constraints validate certification or qualification requirements.
 
 Examples
 
-* FV qualification must be valid.
-* Operator qualification must be active.
+- FV qualification must be valid.
+- Operator qualification must be active.
 
 Qualification Constraints differ from Capability Constraints.
 
@@ -201,10 +201,10 @@ SP
 
 Dependency Constraints may also describe:
 
-* Earliest Start
-* Latest Finish
-* Minimum Delay
-* Maximum Delay
+- Earliest Start
+- Latest Finish
+- Minimum Delay
+- Maximum Delay
 
 Future versions may support more dependency types.
 
@@ -216,11 +216,11 @@ Calendar Constraints define temporal availability.
 
 Examples
 
-* Working Day
-* Shift
-* Holiday
-* Staff Leave
-* Equipment Maintenance
+- Working Day
+- Shift
+- Holiday
+- Staff Leave
+- Equipment Maintenance
 
 Calendar Constraints define **when** scheduling is allowed.
 
@@ -234,10 +234,10 @@ Policy Constraints represent laboratory operating policies.
 
 Examples
 
-* FV required every 14 days.
-* Published Plans are immutable.
-* Frozen planning window.
-* Planning horizon limitations.
+- FV required every 14 days.
+- Published Plans are immutable.
+- Frozen planning window.
+- Planning horizon limitations.
 
 Policy Constraints typically originate from laboratory SOPs.
 
@@ -249,10 +249,10 @@ Objective Constraints represent optimization preferences rather than feasibility
 
 Examples
 
-* Maximize completed demand.
-* Balance staff workload.
-* Maximize equipment utilization.
-* Reduce equipment switching.
+- Maximize completed demand.
+- Balance staff workload.
+- Maximize equipment utilization.
+- Reduce equipment switching.
 
 Objective Constraints are implemented through the Objective Model rather than the Constraint Model.
 
@@ -284,12 +284,12 @@ Every Business Rule is converted into one or more Constraint Specifications.
 
 Each Constraint Specification contains:
 
-* Constraint Category
-* Source Entity
-* Target Entity
-* Parameters
-* Severity
-* Description
+- Constraint Category
+- Source Entity
+- Target Entity
+- Parameters
+- Severity
+- Description
 
 Constraint Specifications are solver-independent.
 
@@ -305,9 +305,9 @@ Must always be satisfied.
 
 Examples
 
-* Resource Capacity
-* Workflow Dependency
-* Required Capability
+- Resource Capacity
+- Workflow Dependency
+- Required Capability
 
 Violation results in an infeasible schedule.
 
@@ -319,9 +319,9 @@ May be violated with a penalty.
 
 Examples
 
-* Staff workload balance
-* Equipment preference
-* Preferred shift
+- Staff workload balance
+- Equipment preference
+- Preferred shift
 
 Soft Constraints contribute to optimization objectives.
 

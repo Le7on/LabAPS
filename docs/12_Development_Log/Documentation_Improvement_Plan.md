@@ -20,11 +20,11 @@ The main gap is not missing domain knowledge, but rather documentation consisten
 
 The documentation already has several strengths:
 
-* Clear business and architecture separation.
-* Strong ADR discipline.
-* Good domain modeling coverage.
-* Comprehensive planning and scheduling design.
-* A visible development workflow and engineering baseline.
+- Clear business and architecture separation.
+- Strong ADR discipline.
+- Good domain modeling coverage.
+- Comprehensive planning and scheduling design.
+- A visible development workflow and engineering baseline.
 
 These are valuable assets for a long-term platform project.
 
@@ -38,7 +38,7 @@ Some documents still point to artifact paths that do not match the actual file l
 
 Example:
 
-* The project context refers to a planned path under docs/07_Database/01_Physical_ERD.md, but the current database folder contains 03_Physical_ERD.md.
+- The project context refers to a planned path under docs/07_Database/01_Physical_ERD.md, but the current database folder contains 03_Physical_ERD.md.
 
 This creates avoidable confusion for contributors.
 
@@ -52,28 +52,28 @@ This should be normalized for consistency and discoverability.
 
 The repository contains many strong documents, but there is no single entry page that explains:
 
-* which documents should be read first,
-* which ones are authoritative,
-* which ones are implementation-ready,
-* which ones are still pending or draft.
+- which documents should be read first,
+- which ones are authoritative,
+- which ones are implementation-ready,
+- which ones are still pending or draft.
 
 ## 3.4 Architecture docs are ahead of implementation status
 
 The documentation describes the target architecture very clearly, but the repository state appears to be in an earlier bootstrap stage. The docs should explicitly distinguish:
 
-* architecture baseline,
-* current implementation status,
-* next implementation milestones.
+- architecture baseline,
+- current implementation status,
+- next implementation milestones.
 
 ## 3.5 Missing operational documentation
 
 The current set covers architecture and design well, but the following are still weak or missing from the practical developer experience:
 
-* local setup instructions,
-* environment bootstrapping,
-* test strategy and validation steps,
-* deployment runbook,
-* contribution workflow.
+- local setup instructions,
+- environment bootstrapping,
+- test strategy and validation steps,
+- deployment runbook,
+- contribution workflow.
 
 ---
 
@@ -114,7 +114,8 @@ The current set covers architecture and design well, but the following are still
    - Each major change should update the related documents in the same change set.
 
 10. Create a lightweight document template.
-   - Standard metadata should include: owner, version, status, last updated, related ADRs, and related modules.
+
+- Standard metadata should include: owner, version, status, last updated, related ADRs, and related modules.
 
 ---
 
@@ -122,28 +123,28 @@ The current set covers architecture and design well, but the following are still
 
 ## Vision and Requirements
 
-* Keep the vision and SRS as-is, but add a short “current implementation status” note at the top of each major document.
+- Keep the vision and SRS as-is, but add a short “current implementation status” note at the top of each major document.
 
 ## Architecture
 
-* Add a one-page architecture snapshot for new contributors.
-* Keep ADRs, but add a short summary section for each ADR linking to the relevant implementation module.
+- Add a one-page architecture snapshot for new contributors.
+- Keep ADRs, but add a short summary section for each ADR linking to the relevant implementation module.
 
 ## Database and API
 
-* Add a status note saying whether each artifact is design-only or implementation-ready.
-* Add examples of how the documented model maps to the actual project modules.
+- Add a status note saying whether each artifact is design-only or implementation-ready.
+- Add examples of how the documented model maps to the actual project modules.
 
 ## UI and Frontend
 
-* Add a frontend architecture note that explains the Vue 3 SPA structure and how it relates to the backend API.
-* Add a simple page map for the planned user workspace.
+- Add a frontend architecture note that explains the Vue 3 SPA structure and how it relates to the backend API.
+- Add a simple page map for the planned user workspace.
 
 ## Development and Operations
 
-* Add setup and run instructions.
-* Add testing and deployment guidance.
-* Add a changelog or milestone log linked to the development plan.
+- Add setup and run instructions.
+- Add testing and deployment guidance.
+- Add a changelog or milestone log linked to the development plan.
 
 ---
 

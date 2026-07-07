@@ -16,11 +16,11 @@ The Canonical Data Model (CDM) defines the authoritative business data structure
 
 The CDM is independent of:
 
-* Database technology
-* ORM implementation
-* REST API
-* JSON serialization
-* Solver implementation
+- Database technology
+- ORM implementation
+- REST API
+- JSON serialization
+- Solver implementation
 
 Every implementation shall derive its data structures from this document.
 
@@ -58,11 +58,11 @@ The same business concept shall have the same structure everywhere.
 
 Examples
 
-* Database
-* DTO
-* API
-* Export
-* Import
+- Database
+- DTO
+- API
+- Export
+- Import
 
 ---
 
@@ -72,9 +72,9 @@ Scheduling-specific objects are excluded.
 
 Objects such as:
 
-* Scheduling Model
-* Constraint Model
-* Variable Model
+- Scheduling Model
+- Constraint Model
+- Variable Model
 
 are runtime models and do not belong to the CDM.
 
@@ -182,11 +182,11 @@ Execution references Assignments but never modifies planning data.
 
 Each canonical object shall define:
 
-* Identity
-* Ownership
-* Lifecycle
-* Business Attributes
-* Relationships
+- Identity
+- Ownership
+- Lifecycle
+- Business Attributes
+- Relationships
 
 Every object in the CDM follows this template.
 
@@ -200,11 +200,11 @@ Every object shall contain:
 
 Technical Identity
 
-* UUID
+- UUID
 
 Business Identity
 
-* Business Code (when applicable)
+- Business Code (when applicable)
 
 Example
 
@@ -238,10 +238,10 @@ Stable laboratory knowledge.
 
 Examples
 
-* Workflow Definition
-* Operation Definition
-* Equipment
-* Staff
+- Workflow Definition
+- Operation Definition
+- Equipment
+- Staff
 
 ---
 
@@ -251,9 +251,9 @@ Generated during planning.
 
 Examples
 
-* Plan Version
-* Workflow Instance
-* Operation Instance
+- Plan Version
+- Workflow Instance
+- Operation Instance
 
 ---
 
@@ -263,9 +263,9 @@ Generated after scheduling.
 
 Examples
 
-* Assignment
-* Material Forecast
-* KPI
+- Assignment
+- Material Forecast
+- KPI
 
 ---
 
@@ -275,8 +275,8 @@ Generated during execution.
 
 Examples
 
-* Execution Record
-* Execution Log
+- Execution Record
+- Execution Log
 
 ---
 
@@ -381,12 +381,12 @@ Execution Objects are append-only.
 
 The following objects do NOT belong to the CDM.
 
-* Planning Problem
-* Scheduling Model
-* Constraint Model
-* Objective Model
-* Variable Model
-* Scheduling Solution
+- Planning Problem
+- Scheduling Model
+- Constraint Model
+- Objective Model
+- Variable Model
+- Scheduling Solution
 
 These are runtime representations.
 

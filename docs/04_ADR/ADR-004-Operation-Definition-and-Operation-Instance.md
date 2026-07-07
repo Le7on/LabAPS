@@ -14,11 +14,11 @@ Each laboratory workflow consists of one or more logical operations.
 
 Examples include:
 
-* FV
-* SMDP
-* SAP
-* CP
-* SP
+- FV
+- SMDP
+- SAP
+- CP
+- SP
 
 These operations are reusable process definitions.
 
@@ -44,10 +44,10 @@ Operation Instance
 
 The architecture must support:
 
-* Workflow reuse
-* Historical traceability
-* Scheduling
-* Future workflow evolution
+- Workflow reuse
+- Historical traceability
+- Scheduling
+- Future workflow evolution
 
 ---
 
@@ -78,12 +78,12 @@ Operation Definition describes laboratory knowledge.
 
 Examples
 
-* Operation Name
-* Logical Sequence
-* Default Duration
-* Required Capability
-* Required Skill
-* Material BOM
+- Operation Name
+- Logical Sequence
+- Default Duration
+- Required Capability
+- Required Skill
+- Material BOM
 
 Operation Definition contains no execution state.
 
@@ -115,9 +115,9 @@ Scheduling requires executable work.
 
 The Solver allocates:
 
-* Staff
-* Equipment
-* Shift
+- Staff
+- Equipment
+- Shift
 
 These allocations belong to Operation Instances.
 
@@ -149,8 +149,8 @@ Rejected.
 
 A single object would need to represent both:
 
-* process definition
-* execution state
+- process definition
+- execution state
 
 This mixes two different responsibilities.
 
@@ -182,15 +182,15 @@ Workflow contains multiple operations and therefore cannot be scheduled directly
 
 Positive
 
-* Clear separation between definition and execution.
-* Easier workflow evolution.
-* Simpler scheduling model.
-* Better historical traceability.
-* Cleaner domain boundaries.
+- Clear separation between definition and execution.
+- Easier workflow evolution.
+- Simpler scheduling model.
+- Better historical traceability.
+- Cleaner domain boundaries.
 
 Negative
 
-* One additional entity is introduced.
+- One additional entity is introduced.
 
 This additional complexity is justified because it aligns with the business model and simplifies scheduling.
 
@@ -254,17 +254,17 @@ Assignment
 
 This pipeline clearly separates:
 
-* Process Definition
-* Planning
-* Optimization
-* Execution
+- Process Definition
+- Planning
+- Optimization
+- Execution
 
 ---
 
 # Related Documents
 
-* ADR-003 — Workflow Definition and Workflow Instance
-* SAD Chapter 5 — Scheduling Architecture
-* SAD Chapter 7 — Conceptual Database Model
-* SAD Chapter 11 — Physical Database Design
-* SAD Chapter 14 — Solver Model
+- ADR-003 — Workflow Definition and Workflow Instance
+- SAD Chapter 5 — Scheduling Architecture
+- SAD Chapter 7 — Conceptual Database Model
+- SAD Chapter 11 — Physical Database Design
+- SAD Chapter 14 — Solver Model

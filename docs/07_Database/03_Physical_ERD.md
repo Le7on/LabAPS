@@ -20,9 +20,9 @@ The objective is to preserve Domain integrity while implementing a relational da
 
 This document is the bridge between:
 
-* Canonical Data Model
-* SQLAlchemy ORM
-* Relational Database
+- Canonical Data Model
+- SQLAlchemy ORM
+- Relational Database
 
 ---
 
@@ -364,10 +364,10 @@ plan
 
 Allowed cross-aggregate references include:
 
-* Assignment → Equipment
-* Assignment → Staff
-* Demand → Project
-* WorkflowInstance → WorkflowDefinition
+- Assignment → Equipment
+- Assignment → Staff
+- Demand → Project
+- WorkflowInstance → WorkflowDefinition
 
 Cross-aggregate ownership is prohibited.
 
@@ -443,10 +443,10 @@ Planning Context stores immutable snapshots.
 
 Snapshot data includes:
 
-* Calendar
-* Equipment Availability
-* Staff Availability
-* Solver Profile
+- Calendar
+- Equipment Availability
+- Staff Availability
+- Solver Profile
 
 Snapshots are stored together with the owning Plan Version.
 
@@ -488,10 +488,10 @@ Child entities are managed through ORM relationships inside their owning Aggrega
 
 Repositories shall never exist for:
 
-* Assignment
-* OperationInstance
-* MaterialForecast
-* KPI
+- Assignment
+- OperationInstance
+- MaterialForecast
+- KPI
 
 These objects are accessed through the Plan Aggregate.
 
@@ -505,11 +505,11 @@ The next design artifact is:
 
 This document will define every physical table in detail, including:
 
-* Columns
-* Data Types
-* Nullability
-* Default Values
-* Constraints
-* Indexes
+- Columns
+- Data Types
+- Nullability
+- Default Values
+- Constraints
+- Indexes
 
 The Table Dictionary becomes the direct specification for SQLAlchemy model implementation.

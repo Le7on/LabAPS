@@ -30,12 +30,12 @@ A Plan represents a complete scheduling result for a specific planning period.
 
 A Plan contains:
 
-* Planning Horizon
-* Production Demand
-* Workflow Instances
-* Schedule
-* Material Forecast
-* KPIs
+- Planning Horizon
+- Production Demand
+- Workflow Instances
+- Schedule
+- Material Forecast
+- KPIs
 
 Example
 
@@ -53,9 +53,9 @@ The time range covered by a Plan.
 
 Examples:
 
-* One Week
-* Two Weeks
-* One Month
+- One Week
+- Two Weeks
+- One Month
 
 Version 1.0 supports one-week planning.
 
@@ -79,9 +79,9 @@ Example
 
 Demand does **not** specify:
 
-* Equipment
-* Operator
-* Schedule
+- Equipment
+- Operator
+- Schedule
 
 ---
 
@@ -91,11 +91,11 @@ A Project represents a laboratory testing service.
 
 Examples
 
-* FV
-* 96 OPA
-* 384 PNG
-* AZ RSV
-* DiLA
+- FV
+- 96 OPA
+- 384 PNG
+- AZ RSV
+- DiLA
 
 A Project is **not** directly scheduled.
 
@@ -153,21 +153,21 @@ An Operation is the smallest executable scheduling unit.
 
 Examples
 
-* FV
-* SMDP
-* SAP
-* CP
-* SP
+- FV
+- SMDP
+- SAP
+- CP
+- SP
 
 The Scheduler allocates Operations.
 
 Operations define:
 
-* Duration
-* Required Capability
-* Required Skill
-* Required Resources
-* Dependencies
+- Duration
+- Required Capability
+- Required Skill
+- Required Resources
+- Dependencies
 
 ---
 
@@ -203,10 +203,10 @@ A laboratory operator capable of executing Operations.
 
 Staff properties include:
 
-* Skills
-* Working Calendar
-* Leave
-* Status
+- Skills
+- Working Calendar
+- Leave
+- Status
 
 ---
 
@@ -216,17 +216,17 @@ A laboratory instrument capable of executing Operations.
 
 Examples
 
-* SU-HM-01
-* SU-HM-02
-* SU-HM-09
-* SU-HM-10
+- SU-HM-01
+- SU-HM-02
+- SU-HM-09
+- SU-HM-10
 
 Equipment properties include:
 
-* Capability
-* Status
-* Maintenance
-* FV Qualification
+- Capability
+- Status
+- Maintenance
+- FV Qualification
 
 ---
 
@@ -236,11 +236,11 @@ Capability describes what an Equipment can perform.
 
 Examples
 
-* 96 Head
-* 384 Head
-* 16 Channel
-* 14 Channel
-* iSWAP
+- 96 Head
+- 384 Head
+- 16 Channel
+- 14 Channel
+- iSWAP
 
 Operations require Capabilities.
 
@@ -260,11 +260,11 @@ Skill describes what a Staff member is qualified to perform.
 
 Examples
 
-* FV
-* OPA
-* PNG
-* AZ RSV
-* DiLA
+- FV
+- OPA
+- PNG
+- AZ RSV
+- DiLA
 
 Scheduling matches:
 
@@ -298,9 +298,9 @@ Intermediate Resources participate in scheduling.
 
 Properties include:
 
-* Creation Time
-* Shelf Life
-* Stamp Out Count
+- Creation Time
+- Shelf Life
+- Stamp Out Count
 
 ---
 
@@ -318,10 +318,10 @@ A disposable laboratory material.
 
 Examples
 
-* Tips
-* Deepwell Block
-* Plate
-* Seal
+- Tips
+- Deepwell Block
+- Plate
+- Seal
 
 Consumables are forecast after scheduling.
 
@@ -347,8 +347,8 @@ Example
 
 384 PNG SMDP
 
-* 384 Tips
-* Deepwell Block
+- 384 Tips
+- Deepwell Block
 
 Material BOM is maintained in Workflow Templates.
 
@@ -362,10 +362,10 @@ Assignment represents the scheduling result.
 
 Assignment binds:
 
-* Operation
-* Staff
-* Equipment
-* Shift
+- Operation
+- Staff
+- Equipment
+- Shift
 
 Example
 
@@ -433,9 +433,9 @@ Material Forecast predicts laboratory material consumption after scheduling.
 
 Outputs include:
 
-* Daily Consumption
-* Weekly Consumption
-* Material Summary
+- Daily Consumption
+- Weekly Consumption
+- Material Summary
 
 ---
 
@@ -463,10 +463,10 @@ Coordinates planning activities.
 
 Responsibilities include:
 
-* Demand Processing
-* Workflow Generation
-* Schedule Generation
-* Forecast Generation
+- Demand Processing
+- Workflow Generation
+- Schedule Generation
+- Forecast Generation
 
 ---
 
@@ -476,10 +476,10 @@ Responsible for optimization.
 
 Functions include:
 
-* Variable Generation
-* Constraint Construction
-* Objective Definition
-* Solver Execution
+- Variable Generation
+- Constraint Construction
+- Objective Definition
+- Solver Execution
 
 ---
 
@@ -508,7 +508,7 @@ The following terminology shall be used consistently throughout the project.
 | Plan                  | Schedule Plan       |
 | Workflow Template     | Process             |
 | Workflow Instance     | Run                 |
-| Operation             | Step / Task (混用)    |
+| Operation             | Step / Task (混用)  |
 | Assignment            | Allocation          |
 | Capability            | Equipment Skill     |
 | Skill                 | Operator Capability |
@@ -524,11 +524,11 @@ All future documents shall use the terminology defined in this document.
 
 New terminology must be added here before being introduced into:
 
-* SRS
-* SAD
-* API
-* Database
-* Source Code
-* User Manual
+- SRS
+- SAD
+- API
+- Database
+- Source Code
+- User Manual
 
 This document is the single source of truth for Lab APS terminology.

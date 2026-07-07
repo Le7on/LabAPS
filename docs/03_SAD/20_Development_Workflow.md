@@ -18,10 +18,10 @@ This document defines the engineering workflow for developing Lab APS.
 
 Its objectives are:
 
-* Preserve architectural consistency
-* Ensure traceability
-* Reduce regression risk
-* Support long-term maintenance
+- Preserve architectural consistency
+- Ensure traceability
+- Reduce regression risk
+- Support long-term maintenance
 
 Every change to the system shall follow this workflow.
 
@@ -99,9 +99,9 @@ Unit Test
 
 Every Pull Request shall reference:
 
-* Requirement ID
-* Use Case
-* Related ADR (if applicable)
+- Requirement ID
+- Use Case
+- Related ADR (if applicable)
 
 ---
 
@@ -111,11 +111,11 @@ Normal feature development shall not modify the architecture.
 
 If a change affects:
 
-* Domain Model
-* Aggregate
-* Module Boundary
-* Persistence Model
-* Scheduling Model
+- Domain Model
+- Aggregate
+- Module Boundary
+- Persistence Model
+- Scheduling Model
 
 an Architecture Decision Record (ADR) is required.
 
@@ -275,25 +275,25 @@ Every Pull Request shall answer the following questions.
 
 ### Domain
 
-* Is the Aggregate respected?
-* Are business rules located in the Domain?
+- Is the Aggregate respected?
+- Are business rules located in the Domain?
 
 ### Application
 
-* Does one Use Case represent one business action?
+- Does one Use Case represent one business action?
 
 ### Engine
 
-* Is logic reusable?
-* Is the Engine stateless?
+- Is logic reusable?
+- Is the Engine stateless?
 
 ### Solver
 
-* Is OR-Tools isolated?
+- Is OR-Tools isolated?
 
 ### Infrastructure
 
-* Is persistence free of business logic?
+- Is persistence free of business logic?
 
 ---
 
@@ -303,10 +303,10 @@ Architecture documentation evolves with the software.
 
 Whenever one of the following changes:
 
-* Domain
-* Database
-* API
-* Scheduling Model
+- Domain
+- Database
+- API
+- Scheduling Model
 
 the corresponding document shall be updated in the same Pull Request.
 
@@ -362,12 +362,12 @@ Only reviewed code may be merged into `main`.
 
 Before a release:
 
-* All unit tests pass.
-* Integration tests pass.
-* Database migrations validated.
-* Documentation updated.
-* Version number updated.
-* Changelog updated.
+- All unit tests pass.
+- Integration tests pass.
+- Database migrations validated.
+- Documentation updated.
+- Version number updated.
+- Changelog updated.
 
 No release shall bypass the checklist.
 
@@ -377,12 +377,12 @@ No release shall bypass the checklist.
 
 A feature is considered complete only if:
 
-* Requirement implemented.
-* Unit tests written.
-* Integration tests pass.
-* Documentation updated.
-* Code reviewed.
-* No architectural violations remain.
+- Requirement implemented.
+- Unit tests written.
+- Integration tests pass.
+- Documentation updated.
+- Code reviewed.
+- No architectural violations remain.
 
 Code alone does not constitute completion.
 
@@ -408,11 +408,11 @@ Lab APS is expected to evolve over many years.
 
 Future enhancements—including:
 
-* Scenario Planning
-* Dynamic Rescheduling
-* LIMS Integration
-* AI-assisted Scheduling
-* Multi-site Planning
+- Scenario Planning
+- Dynamic Rescheduling
+- LIMS Integration
+- AI-assisted Scheduling
+- Multi-site Planning
 
 shall extend the existing architecture rather than replacing it.
 

@@ -16,10 +16,10 @@ This document defines how the Canonical Data Model is mapped into SQLAlchemy ORM
 
 Its objectives are:
 
-* Maintain consistency across the codebase
-* Preserve Aggregate boundaries
-* Prevent ORM models from becoming Domain models
-* Standardize relationship mapping
+- Maintain consistency across the codebase
+- Preserve Aggregate boundaries
+- Prevent ORM models from becoming Domain models
+- Standardize relationship mapping
 
 This guide applies to every SQLAlchemy model in Lab APS.
 
@@ -79,9 +79,9 @@ Every ORM model shall inherit from a common base class.
 
 The base class provides:
 
-* UUID primary key
-* Audit fields
-* Timestamp fields
+- UUID primary key
+- Audit fields
+- Timestamp fields
 
 Business fields shall not be defined in the base class.
 
@@ -139,8 +139,8 @@ Only mapping tables are allowed.
 
 Examples
 
-* staff_skill
-* equipment_capability
+- staff_skill
+- equipment_capability
 
 Business logic shall not be stored in mapping tables.
 
@@ -188,9 +188,9 @@ selectinload
 
 Reasons
 
-* Good performance
-* Avoids N+1 queries
-* Predictable behaviour
+- Good performance
+- Avoids N+1 queries
+- Predictable behaviour
 
 Avoid default eager loading.
 
@@ -240,8 +240,8 @@ JSON columns are permitted only for immutable snapshots.
 
 Examples
 
-* Planning Context
-* Solver Profile
+- Planning Context
+- Solver Profile
 
 JSON shall not replace relational business entities.
 
@@ -315,9 +315,9 @@ Update Assignment Table Directly
 
 Indexes shall be added for:
 
-* Foreign Keys
-* Business Codes
-* Frequently filtered status columns
+- Foreign Keys
+- Business Codes
+- Frequently filtered status columns
 
 Indexes shall not be added speculatively.
 
@@ -331,9 +331,9 @@ Alembic is the only supported migration mechanism.
 
 Rules
 
-* Every schema change requires a migration.
-* Migrations are additive whenever possible.
-* Historical data must remain compatible.
+- Every schema change requires a migration.
+- Migrations are additive whenever possible.
+- Historical data must remain compatible.
 
 Direct database modification is prohibited.
 
@@ -363,11 +363,11 @@ Direct database modification is prohibited.
 
 Before adding a new ORM model, verify:
 
-* Does it correspond to a Canonical Object?
-* Does it belong to an existing Aggregate?
-* Is ownership correctly represented?
-* Are cascade rules correct?
-* Are loading strategies appropriate?
-* Does it preserve the Domain Model?
+- Does it correspond to a Canonical Object?
+- Does it belong to an existing Aggregate?
+- Is ownership correctly represented?
+- Are cascade rules correct?
+- Are loading strategies appropriate?
+- Does it preserve the Domain Model?
 
 Only after these questions are satisfied should the ORM model be implemented.

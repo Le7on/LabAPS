@@ -24,11 +24,11 @@ It becomes the input to the Scheduling Engine.
 
 The Planning Problem is independent of:
 
-* Database
-* ORM
-* Flask
-* OR-Tools
-* User Interface
+- Database
+- ORM
+- Flask
+- OR-Tools
+- User Interface
 
 ---
 
@@ -68,11 +68,11 @@ It does not describe **how to optimize**.
 
 Responsibilities include:
 
-* Collect planning resources.
-* Collect executable operations.
-* Collect planning calendar.
-* Collect planning policies.
-* Provide a deterministic scheduling problem.
+- Collect planning resources.
+- Collect executable operations.
+- Collect planning calendar.
+- Collect planning policies.
+- Provide a deterministic scheduling problem.
 
 The Planning Problem never contains solver variables or mathematical constraints.
 
@@ -103,20 +103,20 @@ Version 1.0 resources include:
 
 Equipment
 
-* Identifier
-* Capability Set
-* Availability
+- Identifier
+- Capability Set
+- Availability
 
 Staff
 
-* Identifier
-* Skill Set
-* Availability
+- Identifier
+- Skill Set
+- Availability
 
 Shift
 
-* Shift Window
-* Working Calendar
+- Shift Window
+- Working Calendar
 
 Resources contain no scheduling assignments.
 
@@ -128,12 +128,12 @@ Operations represent executable work.
 
 Each operation contains:
 
-* Identifier
-* Duration
-* Required Capability
-* Required Skill
-* Dependency Reference
-* Metadata
+- Identifier
+- Duration
+- Required Capability
+- Required Skill
+- Dependency Reference
+- Metadata
 
 Operations are independent of optimization variables.
 
@@ -145,10 +145,10 @@ Calendars describe temporal availability.
 
 Sources include:
 
-* Shift Definition
-* Holiday Calendar
-* Staff Leave
-* Equipment Maintenance
+- Shift Definition
+- Holiday Calendar
+- Staff Leave
+- Equipment Maintenance
 
 Calendars define available scheduling windows only.
 
@@ -160,10 +160,10 @@ Planning Policies describe planning behaviour.
 
 Examples
 
-* Planning Horizon
-* Frozen Window
-* Solver Profile
-* Objective Profile
+- Planning Horizon
+- Frozen Window
+- Solver Profile
+- Objective Profile
 
 Policies influence scheduling but are not business entities.
 
@@ -213,9 +213,9 @@ Scheduling Model
 
 Scheduling Model introduces:
 
-* Variables
-* Constraint Model
-* Objective Model
+- Variables
+- Constraint Model
+- Objective Model
 
 These concepts do not exist in the Planning Problem.
 
@@ -227,11 +227,11 @@ The Planning Problem shall be validated before Scheduling Model construction.
 
 Validation includes:
 
-* Missing resources
-* Missing operation definitions
-* Invalid dependencies
-* Invalid planning calendar
-* Inconsistent planning policies
+- Missing resources
+- Missing operation definitions
+- Invalid dependencies
+- Invalid planning calendar
+- Inconsistent planning policies
 
 Only valid Planning Problems proceed to scheduling.
 

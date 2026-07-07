@@ -82,14 +82,14 @@ The Assignment is not executable.
 
 ## Allowed Actions
 
-* View
+- View
 
 ---
 
 ## Forbidden Actions
 
-* Start
-* Complete
+- Start
+- Complete
 
 ---
 
@@ -107,8 +107,8 @@ Resources have been reserved.
 
 ## Allowed Actions
 
-* Start
-* Cancel (Business Policy Dependent)
+- Start
+- Cancel (Business Policy Dependent)
 
 ---
 
@@ -124,8 +124,8 @@ The assigned Equipment and Staff are occupied.
 
 ## Allowed Actions
 
-* Complete
-* Fail
+- Complete
+- Fail
 
 ---
 
@@ -149,10 +149,10 @@ Execution could not be completed successfully.
 
 Examples
 
-* Instrument Error
-* QC Failure
-* Operator Aborted
-* Unexpected Exception
+- Instrument Error
+- QC Failure
+- Operator Aborted
+- Unexpected Exception
 
 Failure reason shall be recorded.
 
@@ -166,9 +166,9 @@ The Assignment will not be executed.
 
 Typical reasons
 
-* Plan superseded before execution
-* Equipment unavailable before execution
-* Manual cancellation
+- Plan superseded before execution
+- Equipment unavailable before execution
+- Manual cancellation
 
 Cancellation reason shall be recorded.
 
@@ -254,11 +254,11 @@ Cancelled Assignments require a cancellation reason.
 
 | Action   | Pending | Ready | Running | Completed | Failed | Cancelled |
 | -------- | :-----: | :---: | :-----: | :-------: | :----: | :-------: |
-| View     |    ✓    |   ✓   |    ✓    |     ✓     |    ✓   |     ✓     |
-| Start    |    ✗    |   ✓   |    ✗    |     ✗     |    ✗   |     ✗     |
-| Complete |    ✗    |   ✗   |    ✓    |     ✗     |    ✗   |     ✗     |
-| Fail     |    ✗    |   ✗   |    ✓    |     ✗     |    ✗   |     ✗     |
-| Cancel   |    ✗    |   ✓   |    ✗    |     ✗     |    ✗   |     ✗     |
+| View     |    ✓    |   ✓   |    ✓    |     ✓     |   ✓    |     ✓     |
+| Start    |    ✗    |   ✓   |    ✗    |     ✗     |   ✗    |     ✗     |
+| Complete |    ✗    |   ✗   |    ✓    |     ✗     |   ✗    |     ✗     |
+| Fail     |    ✗    |   ✗   |    ✓    |     ✗     |   ✗    |     ✗     |
+| Cancel   |    ✗    |   ✓   |    ✗    |     ✗     |   ✗    |     ✗     |
 
 ---
 
@@ -326,18 +326,18 @@ State transitions generate business events.
 
 Examples
 
-* AssignmentReady
-* AssignmentStarted
-* AssignmentCompleted
-* AssignmentFailed
-* AssignmentCancelled
+- AssignmentReady
+- AssignmentStarted
+- AssignmentCompleted
+- AssignmentFailed
+- AssignmentCancelled
 
 These events support:
 
-* Audit
-* Dashboard updates
-* Notifications
-* Future integrations
+- Audit
+- Dashboard updates
+- Notifications
+- Future integrations
 
 ---
 
@@ -359,7 +359,7 @@ These events support:
 
 # 18. Related Documents
 
-* State Model — Plan Version State
-* SAD Chapter 17 — Deployment Architecture
-* Planning API
-* Execution API (Future)
+- State Model — Plan Version State
+- SAD Chapter 17 — Deployment Architecture
+- Planning API
+- Execution API (Future)

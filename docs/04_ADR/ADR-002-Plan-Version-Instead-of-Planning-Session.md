@@ -16,10 +16,10 @@ The laboratory planning process frequently involves recalculating schedules befo
 
 Typical situations include:
 
-* PI changes production demand.
-* Equipment becomes unavailable.
-* Staff leave changes.
-* Laboratory manager adjusts planning manually.
+- PI changes production demand.
+- Equipment becomes unavailable.
+- Staff leave changes.
+- Laboratory manager adjusts planning manually.
 
 The architecture must preserve historical planning results while supporting repeated schedule generation.
 
@@ -79,8 +79,8 @@ Published execution is always based on one specific Plan Version.
 
 Laboratory managers naturally refer to:
 
-* Week 32 Production Plan
-* Week 33 Production Plan
+- Week 32 Production Plan
+- Week 33 Production Plan
 
 They rarely use concepts such as "Planning Session".
 
@@ -120,12 +120,12 @@ Historical versions remain available for comparison and audit.
 
 Each Plan Version contains its own:
 
-* Planning Context
-* Demand Snapshot
-* Workflow Instances
-* Assignments
-* Material Forecast
-* KPI
+- Planning Context
+- Demand Snapshot
+- Workflow Instances
+- Assignments
+- Material Forecast
+- KPI
 
 Therefore every version can be reproduced independently.
 
@@ -135,9 +135,9 @@ Therefore every version can be reproduced independently.
 
 Future versions may introduce:
 
-* Simulation
-* Emergency
-* Alternative Planning
+- Simulation
+- Emergency
+- Alternative Planning
 
 without introducing another business object.
 
@@ -191,9 +191,9 @@ The same business requirements are satisfied by Plan + Plan Version.
 
 Planning Session may be reconsidered if future requirements include:
 
-* Multiple concurrent planning teams
-* Cross-site planning
-* Independent planning workspaces
+- Multiple concurrent planning teams
+- Cross-site planning
+- Independent planning workspaces
 
 ---
 
@@ -211,9 +211,9 @@ Rejected.
 
 Using recursive parent relationships to represent versions complicates:
 
-* Queries
-* Reporting
-* Version management
+- Queries
+- Reporting
+- Version management
 
 A dedicated Plan Version entity provides a clearer model.
 
@@ -223,17 +223,17 @@ A dedicated Plan Version entity provides a clearer model.
 
 Positive
 
-* Stable business identity.
-* Clear version history.
-* Simpler API design.
-* Simpler reporting.
-* Better auditability.
-* Easier comparison between versions.
+- Stable business identity.
+- Clear version history.
+- Simpler API design.
+- Simpler reporting.
+- Better auditability.
+- Easier comparison between versions.
 
 Negative
 
-* Plan Version becomes a large aggregate.
-* More storage is required because each version stores planning snapshots.
+- Plan Version becomes a large aggregate.
+- More storage is required because each version stores planning snapshots.
 
 The additional storage cost is considered acceptable because planning data is generated weekly rather than continuously.
 
@@ -263,8 +263,8 @@ The following implementation rules are mandatory.
 
 # Related Documents
 
-* SAD Chapter 4 — Plan Aggregate
-* SAD Chapter 8 — Plan Lifecycle
-* SAD Chapter 9 — Plan Version Architecture
-* SAD Chapter 10 — Persistence Architecture
-* ADR-001 — Plan as the Aggregate Root
+- SAD Chapter 4 — Plan Aggregate
+- SAD Chapter 8 — Plan Lifecycle
+- SAD Chapter 9 — Plan Version Architecture
+- SAD Chapter 10 — Persistence Architecture
+- ADR-001 — Plan as the Aggregate Root

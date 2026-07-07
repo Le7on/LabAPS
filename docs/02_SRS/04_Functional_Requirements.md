@@ -18,10 +18,10 @@ This chapter defines the functional capabilities that shall be provided by Lab A
 
 Each functional requirement (FR) is uniquely identified and shall be traceable to:
 
-* Business Process
-* Software Architecture Design (SAD)
-* REST API
-* Test Cases
+- Business Process
+- Software Architecture Design (SAD)
+- REST API
+- Test Cases
 
 ---
 
@@ -56,10 +56,10 @@ The system shall manage laboratory staff information.
 
 Functions include:
 
-* Create Staff
-* Update Staff
-* Disable Staff
-* View Staff
+- Create Staff
+- Update Staff
+- Disable Staff
+- View Staff
 
 ---
 
@@ -71,11 +71,11 @@ Each Staff member may possess multiple Skills.
 
 Examples
 
-* FV
-* 96 OPA
-* 384 PNG
-* AZ RSV
-* DiLA
+- FV
+- 96 OPA
+- 384 PNG
+- AZ RSV
+- DiLA
 
 ---
 
@@ -85,11 +85,11 @@ The system shall manage laboratory equipment.
 
 Equipment properties include:
 
-* Name
-* Equipment Type
-* Capability
-* Status
-* Enable Flag
+- Name
+- Equipment Type
+- Capability
+- Status
+- Enable Flag
 
 ---
 
@@ -101,11 +101,11 @@ Capabilities describe hardware characteristics rather than projects.
 
 Examples
 
-* 96 Head
-* 384 Head
-* 16 Channel
-* 14 Channel
-* iSWAP
+- 96 Head
+- 384 Head
+- 16 Channel
+- 14 Channel
+- iSWAP
 
 Operations shall match required capabilities.
 
@@ -125,10 +125,10 @@ The system shall support configurable Workflow Templates.
 
 A Workflow Template consists of:
 
-* Operations
-* Dependencies
-* Intermediate Outputs
-* Material BOM
+- Operations
+- Dependencies
+- Intermediate Outputs
+- Material BOM
 
 Workflow Templates are reusable.
 
@@ -154,9 +154,9 @@ The system shall support configurable Shift definitions.
 
 Each Shift contains:
 
-* Name
-* Start Time
-* End Time
+- Name
+- Start Time
+- End Time
 
 ---
 
@@ -190,9 +190,9 @@ The system shall maintain scheduling parameters.
 
 Examples
 
-* Planning Horizon
-* Solver Timeout
-* Optimization Strategy
+- Planning Horizon
+- Solver Timeout
+- Optimization Strategy
 
 ---
 
@@ -206,9 +206,9 @@ The system shall create a new Plan.
 
 A Plan includes:
 
-* Planning Horizon
-* Demand
-* Status
+- Planning Horizon
+- Demand
+- Status
 
 ---
 
@@ -218,9 +218,9 @@ The system shall maintain production demand.
 
 Demand consists of:
 
-* Project
-* Required Quantity
-* Priority (Optional)
+- Project
+- Required Quantity
+- Priority (Optional)
 
 ---
 
@@ -228,10 +228,10 @@ Demand consists of:
 
 Before scheduling, the system shall validate:
 
-* Staff Availability
-* Equipment Availability
-* Calendar
-* Workflow Configuration
+- Staff Availability
+- Equipment Availability
+- Calendar
+- Workflow Configuration
 
 Validation errors shall prevent scheduling.
 
@@ -337,9 +337,9 @@ Equipment requiring FV must have a valid FV status.
 
 The scheduler shall prevent:
 
-* Equipment conflicts
-* Staff conflicts
-* Shift conflicts
+- Equipment conflicts
+- Staff conflicts
+- Shift conflicts
 
 ---
 
@@ -361,10 +361,10 @@ Assignments shall support status updates.
 
 Examples
 
-* Not Started
-* Running
-* Completed
-* Failed
+- Not Started
+- Running
+- Completed
+- Failed
 
 ---
 
@@ -388,9 +388,9 @@ The system shall calculate expected material usage based on the generated Schedu
 
 The system shall summarize consumption by:
 
-* Material
-* Day
-* Week
+- Material
+- Day
+- Week
 
 ---
 
@@ -412,8 +412,8 @@ The system shall export generated schedules.
 
 Supported formats
 
-* Excel
-* PDF (Future)
+- Excel
+- PDF (Future)
 
 ---
 
@@ -427,8 +427,8 @@ The system shall export material consumption summaries.
 
 The system shall provide utilization reports for:
 
-* Equipment
-* Staff
+- Equipment
+- Staff
 
 ---
 
@@ -438,10 +438,10 @@ The system shall provide utilization reports for:
 
 The dashboard shall display:
 
-* Current Plans
-* Plan Status
-* Weekly Demand
-* Published Plans
+- Current Plans
+- Plan Status
+- Weekly Demand
+- Published Plans
 
 ---
 
@@ -449,9 +449,9 @@ The dashboard shall display:
 
 The dashboard shall display:
 
-* Equipment Status
-* Staff Availability
-* Qualification Alerts
+- Equipment Status
+- Staff Availability
+- Qualification Alerts
 
 ---
 
@@ -459,8 +459,8 @@ The dashboard shall display:
 
 The dashboard shall display:
 
-* Forecast Consumption
-* Material Warnings
+- Forecast Consumption
+- Material Warnings
 
 ---
 
@@ -468,11 +468,11 @@ The dashboard shall display:
 
 Each functional requirement shall map to:
 
-* Business Process
-* Business Rules
-* Use Cases
-* Software Architecture
-* Test Cases
+- Business Process
+- Business Rules
+- Use Cases
+- Software Architecture
+- Test Cases
 
 Example
 

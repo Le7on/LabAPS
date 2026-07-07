@@ -32,13 +32,13 @@ An Engine is a stateless component responsible for performing one reusable busin
 
 Examples include:
 
-* Workflow Generator
-* Planning Problem Builder
-* Scheduling Model Builder
-* Constraint Builder
-* Objective Builder
-* Assignment Builder
-* Material Calculator
+- Workflow Generator
+- Planning Problem Builder
+- Scheduling Model Builder
+- Constraint Builder
+- Objective Builder
+- Assignment Builder
+- Material Calculator
 
 Engines are reusable by multiple Use Cases.
 
@@ -48,18 +48,18 @@ Engines are reusable by multiple Use Cases.
 
 An Engine may:
 
-* Transform data
-* Build runtime models
-* Calculate derived results
-* Execute deterministic algorithms
+- Transform data
+- Build runtime models
+- Calculate derived results
+- Execute deterministic algorithms
 
 An Engine shall not:
 
-* Access HTTP requests
-* Execute SQL
-* Commit transactions
-* Load repositories
-* Store business state
+- Access HTTP requests
+- Execute SQL
+- Commit transactions
+- Load repositories
+- Store business state
 
 ---
 
@@ -127,9 +127,9 @@ run()
 
 Engine input shall consist of:
 
-* Domain Objects
+- Domain Objects
   or
-* Runtime Models
+- Runtime Models
 
 Examples
 
@@ -219,10 +219,10 @@ Each Engine logs only major execution milestones.
 
 Recommended
 
-* Start
-* Finish
-* Duration
-* Result Summary
+- Start
+- Finish
+- Duration
+- Result Summary
 
 Avoid excessive per-item logging.
 
@@ -246,9 +246,9 @@ Engines must remain stateless.
 
 The following is prohibited:
 
-* Cached planning data
-* Mutable member variables
-* Shared runtime context
+- Cached planning data
+- Mutable member variables
+- Shared runtime context
 
 All execution state shall be passed through method parameters.
 
@@ -260,17 +260,17 @@ Engine dependencies shall be minimal.
 
 Allowed
 
-* Other Engines (when architecturally approved)
-* Configuration objects
-* Value Objects
+- Other Engines (when architecturally approved)
+- Configuration objects
+- Value Objects
 
 Forbidden
 
-* Repository
-* ORM Model
-* Flask Request
-* SQLAlchemy Session
-* REST DTO
+- Repository
+- ORM Model
+- Flask Request
+- SQLAlchemy Session
+- REST DTO
 
 ---
 
@@ -282,9 +282,9 @@ Lab APS defines three Engine categories.
 
 Examples
 
-* PlanningContextBuilder
-* WorkflowGenerator
-* PlanningProblemBuilder
+- PlanningContextBuilder
+- WorkflowGenerator
+- PlanningProblemBuilder
 
 Responsibility
 
@@ -296,10 +296,10 @@ Transform business data into planning data.
 
 Examples
 
-* SchedulingModelBuilder
-* ConstraintBuilder
-* ObjectiveBuilder
-* AssignmentBuilder
+- SchedulingModelBuilder
+- ConstraintBuilder
+- ObjectiveBuilder
+- AssignmentBuilder
 
 Responsibility
 
@@ -311,8 +311,8 @@ Transform planning data into scheduling results.
 
 Examples
 
-* MaterialCalculator
-* KPIBuilder
+- MaterialCalculator
+- KPIBuilder
 
 Responsibility
 
@@ -326,17 +326,17 @@ Every Engine shall have dedicated unit tests.
 
 Tests shall verify:
 
-* Valid input
-* Invalid input
-* Empty input
-* Boundary conditions
-* Deterministic output
+- Valid input
+- Invalid input
+- Empty input
+- Boundary conditions
+- Deterministic output
 
 Engines shall be testable without:
 
-* Database
-* Flask
-* OR-Tools
+- Database
+- Flask
+- OR-Tools
 
 except for the Solver Adapter.
 
@@ -346,10 +346,10 @@ except for the Solver Adapter.
 
 Engine implementations should:
 
-* Avoid repeated traversal of the same collection.
-* Prefer immutable intermediate models.
-* Minimize object allocation inside loops.
-* Separate validation from transformation.
+- Avoid repeated traversal of the same collection.
+- Prefer immutable intermediate models.
+- Minimize object allocation inside loops.
+- Separate validation from transformation.
 
 Optimization should not reduce readability.
 
@@ -359,12 +359,12 @@ Optimization should not reduce readability.
 
 Before merging an Engine implementation, verify:
 
-* Is the Engine stateless?
-* Does it perform exactly one responsibility?
-* Does it avoid persistence?
-* Does it avoid framework dependencies?
-* Does it return a deterministic result?
-* Can it be tested independently?
+- Is the Engine stateless?
+- Does it perform exactly one responsibility?
+- Does it avoid persistence?
+- Does it avoid framework dependencies?
+- Does it return a deterministic result?
+- Can it be tested independently?
 
 ---
 

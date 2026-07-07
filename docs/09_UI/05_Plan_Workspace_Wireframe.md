@@ -26,10 +26,10 @@ Every planning activity begins and ends in this workspace.
 
 The workspace shall allow users to:
 
-* Understand the current planning status immediately.
-* Perform the complete planning lifecycle without changing pages.
-* Focus on one Plan Version at a time.
-* Review scheduling results before publication.
+- Understand the current planning status immediately.
+- Perform the complete planning lifecycle without changing pages.
+- Focus on one Plan Version at a time.
+- Review scheduling results before publication.
 
 ---
 
@@ -72,13 +72,13 @@ Navigate between business domains.
 
 Contents
 
-* Dashboard
-* Planning
-* Resources
-* Processes
-* Execution
-* Reports
-* Administration
+- Dashboard
+- Planning
+- Resources
+- Processes
+- Execution
+- Reports
+- Administration
 
 This navigation remains visible throughout the application.
 
@@ -92,12 +92,12 @@ Display the current planning context.
 
 Fields
 
-* Plan Name
-* Planning Horizon
-* Current Version
-* Version Type
-* Plan Status
-* Solver Profile
+- Plan Name
+- Planning Horizon
+- Current Version
+- Version Type
+- Plan Status
+- Solver Profile
 
 The header is always visible.
 
@@ -111,12 +111,12 @@ Switch between planning views.
 
 Tabs
 
-* Demand
-* Schedule
-* Forecast
-* KPI
-* Versions
-* Activity
+- Demand
+- Schedule
+- Forecast
+- KPI
+- Versions
+- Activity
 
 Tabs never change the current Plan Version.
 
@@ -140,9 +140,9 @@ Display planning issues.
 
 Categories
 
-* Information
-* Warning
-* Blocking Error
+- Information
+- Warning
+- Blocking Error
 
 Blocking errors prevent publication.
 
@@ -158,14 +158,14 @@ Expose primary business actions.
 
 Primary
 
-* Generate Schedule
-* Publish
+- Generate Schedule
+- Publish
 
 Secondary
 
-* Compare Version
-* Export
-* Refresh
+- Compare Version
+- Export
+- Refresh
 
 Actions change according to Plan Version status.
 
@@ -329,9 +329,9 @@ Published
 
 Available actions
 
-* Compare
-* Clone
-* Publish
+- Compare
+- Clone
+- Publish
 
 Only one version may be Published.
 

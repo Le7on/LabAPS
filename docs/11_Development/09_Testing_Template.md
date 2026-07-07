@@ -67,15 +67,15 @@ Verify business rules.
 
 Examples
 
-* PlanVersion.publish()
-* Assignment.start()
-* Equipment.disable()
+- PlanVersion.publish()
+- Assignment.start()
+- Equipment.disable()
 
 Requirements
 
-* No Flask
-* No SQLAlchemy
-* No OR-Tools
+- No Flask
+- No SQLAlchemy
+- No OR-Tools
 
 ---
 
@@ -87,13 +87,13 @@ Verify deterministic algorithms.
 
 Examples
 
-* WorkflowGenerator
-* PlanningProblemBuilder
-* ConstraintBuilder
+- WorkflowGenerator
+- PlanningProblemBuilder
+- ConstraintBuilder
 
 Requirements
 
-* Pure in-memory execution
+- Pure in-memory execution
 
 ---
 
@@ -105,15 +105,15 @@ Verify business orchestration.
 
 Dependencies
 
-* Fake Repository
-* Fake Solver
-* Fake Clock (when required)
+- Fake Repository
+- Fake Solver
+- Fake Clock (when required)
 
 Verify
 
-* Transaction flow
-* Correct Aggregate interaction
-* Correct response DTO
+- Transaction flow
+- Correct Aggregate interaction
+- Correct response DTO
 
 ---
 
@@ -125,13 +125,13 @@ Verify ORM mapping.
 
 Dependencies
 
-* SQLite Test Database
+- SQLite Test Database
 
 Verify
 
-* CRUD
-* Relationship Mapping
-* Cascade Rules
+- CRUD
+- Relationship Mapping
+- Cascade Rules
 
 Business rules are out of scope.
 
@@ -145,10 +145,10 @@ Verify REST behaviour.
 
 Verify
 
-* HTTP Status
-* Request Validation
-* Response DTO
-* Error Codes
+- HTTP Status
+- Request Validation
+- Response DTO
+- Error Codes
 
 ---
 
@@ -160,9 +160,9 @@ Verify critical user workflows.
 
 Version 1.0 focuses on:
 
-* Planning workflow
-* Generate Schedule
-* Publish Plan
+- Planning workflow
+- Generate Schedule
+- Publish Plan
 
 Pixel-perfect testing is not required.
 
@@ -212,10 +212,10 @@ Every test should clearly describe its setup.
 
 Preferred test doubles
 
-* Fake Repository
-* Fake Solver Adapter
-* Fake Clock
-* Fake Notification Service
+- Fake Repository
+- Fake Solver Adapter
+- Fake Clock
+- Fake Notification Service
 
 Avoid mocking business behaviour whenever possible.
 

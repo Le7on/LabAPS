@@ -20,12 +20,12 @@ The purpose of this document is to establish a common understanding between stak
 
 The SRS serves as the primary reference for:
 
-* Software Architecture Design (SAD)
-* Database Design
-* API Design
-* User Interface Design
-* Test Case Design
-* Future System Maintenance
+- Software Architecture Design (SAD)
+- Database Design
+- API Design
+- User Interface Design
+- Test Case Design
+- Future System Maintenance
 
 ---
 
@@ -35,12 +35,12 @@ Lab APS is a planning platform designed for laboratory production scheduling.
 
 The system transforms production demand into executable laboratory schedules while considering:
 
-* Equipment capability
-* Operator skill
-* Workflow dependencies
-* Equipment qualification
-* Shift calendar
-* Resource availability
+- Equipment capability
+- Operator skill
+- Workflow dependencies
+- Equipment qualification
+- Shift calendar
+- Resource availability
 
 The platform provides optimized schedules together with operational analysis and material consumption forecasts.
 
@@ -68,8 +68,8 @@ Different instruments support different laboratory projects.
 
 Example
 
-* SU-HM-09 supports 384 Head workflows.
-* SU-HM-01 supports 96 Head workflows.
+- SU-HM-09 supports 384 Head workflows.
+- SU-HM-01 supports 96 Head workflows.
 
 Manual verification is time-consuming.
 
@@ -191,48 +191,48 @@ Version 1.0 includes the following functional scope.
 
 ### Master Data
 
-* Staff Management
-* Equipment Management
-* Workflow Template Management
-* Capability Management
-* Skill Management
-* Material BOM Definition
+- Staff Management
+- Equipment Management
+- Workflow Template Management
+- Capability Management
+- Skill Management
+- Material BOM Definition
 
 ---
 
 ### Planning
 
-* Weekly Planning
-* Demand Management
-* Workflow Generation
-* Automatic Scheduling
-* Plan Publishing
+- Weekly Planning
+- Demand Management
+- Workflow Generation
+- Automatic Scheduling
+- Plan Publishing
 
 ---
 
 ### Scheduling
 
-* Equipment Allocation
-* Staff Allocation
-* Shift Allocation
-* Workflow Dependency Scheduling
-* Equipment Qualification Validation
+- Equipment Allocation
+- Staff Allocation
+- Shift Allocation
+- Workflow Dependency Scheduling
+- Equipment Qualification Validation
 
 ---
 
 ### Analysis
 
-* Equipment Utilization
-* Staff Utilization
-* Material Consumption Forecast
+- Equipment Utilization
+- Staff Utilization
+- Material Consumption Forecast
 
 ---
 
 ### Reporting
 
-* Schedule Export
-* Material Forecast Export
-* Planning Summary
+- Schedule Export
+- Material Forecast Export
+- Planning Summary
 
 ---
 
@@ -240,14 +240,14 @@ Version 1.0 includes the following functional scope.
 
 The following functions are intentionally excluded from Version 1.0.
 
-* Inventory Management
-* Purchasing
-* Instrument Control
-* Sample Tracking
-* Laboratory Result Management
-* Financial Management
-* ERP Functions
-* LIMS Functions
+- Inventory Management
+- Purchasing
+- Instrument Control
+- Sample Tracking
+- Laboratory Result Management
+- Financial Management
+- ERP Functions
+- LIMS Functions
 
 These functions may integrate with Lab APS in future versions.
 
@@ -421,11 +421,11 @@ This document serves as the entry point for all subsequent requirements.
 
 The remaining SRS documents define:
 
-* Business Process
-* Functional Requirements
-* Business Rules
-* Use Cases
-* User Interface Requirements
-* Non-functional Requirements
+- Business Process
+- Functional Requirements
+- Business Rules
+- Use Cases
+- User Interface Requirements
+- Non-functional Requirements
 
 Each requirement defined in later chapters shall trace back to the objectives established in this document.

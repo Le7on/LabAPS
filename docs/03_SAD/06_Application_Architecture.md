@@ -51,19 +51,19 @@ The Application Layer is the only layer that coordinates multiple domains.
 
 The Application Layer is responsible for:
 
-* Executing use cases
-* Transaction management
-* Repository coordination
-* Calling Domain Services
-* Calling Infrastructure Services
-* Returning DTOs to Presentation
+- Executing use cases
+- Transaction management
+- Repository coordination
+- Calling Domain Services
+- Calling Infrastructure Services
+- Returning DTOs to Presentation
 
 The Application Layer shall never:
 
-* Implement business rules
-* Build optimization models
-* Query OR-Tools directly
-* Contain SQL
+- Implement business rules
+- Build optimization models
+- Query OR-Tools directly
+- Contain SQL
 
 ---
 
@@ -95,21 +95,21 @@ Responsible for Plan lifecycle management.
 
 Supported use cases:
 
-* Create Plan
-* Copy Plan
-* Load Plan
-* Publish Plan
-* Archive Plan
-* Create New Version
+- Create Plan
+- Copy Plan
+- Load Plan
+- Publish Plan
+- Archive Plan
+- Create New Version
 
 Input
 
-* Planning Horizon
-* Plan Name
+- Planning Horizon
+- Plan Name
 
 Output
 
-* Plan DTO
+- Plan DTO
 
 ---
 
@@ -119,11 +119,11 @@ Responsible for coordinating planning.
 
 Supported use cases:
 
-* Validate Planning Context
-* Generate Workflow Instances
-* Generate Operations
-* Calculate Material Forecast
-* Calculate KPI
+- Validate Planning Context
+- Generate Workflow Instances
+- Generate Operations
+- Calculate Material Forecast
+- Calculate KPI
 
 Typical workflow
 
@@ -157,9 +157,9 @@ Responsible for scheduling execution.
 
 Supported use cases:
 
-* Generate Schedule
-* Recalculate Schedule
-* Validate Schedule
+- Generate Schedule
+- Recalculate Schedule
+- Validate Schedule
 
 Typical workflow
 
@@ -191,10 +191,10 @@ Responsible for execution management.
 
 Supported use cases:
 
-* Start Assignment
-* Complete Assignment
-* Update Assignment Status
-* Complete Plan
+- Start Assignment
+- Complete Assignment
+- Update Assignment Status
+- Complete Plan
 
 Execution never modifies scheduling decisions.
 
@@ -206,10 +206,10 @@ Responsible for report generation.
 
 Supported use cases:
 
-* Equipment Utilization
-* Staff Utilization
-* Material Forecast Report
-* Weekly Planning Report
+- Equipment Utilization
+- Staff Utilization
+- Material Forecast Report
+- Weekly Planning Report
 
 Reports are generated from published Plans.
 
@@ -221,13 +221,13 @@ Responsible for laboratory configuration.
 
 Supported use cases:
 
-* Manage Staff
-* Manage Equipment
-* Manage Capability
-* Manage Skills
-* Manage Shift
-* Manage Holidays
-* Manage Maintenance
+- Manage Staff
+- Manage Equipment
+- Manage Capability
+- Manage Skills
+- Manage Shift
+- Manage Holidays
+- Manage Maintenance
 
 This service belongs to the Foundation Domain.
 
@@ -371,11 +371,11 @@ Infrastructure
 
 Forbidden dependencies
 
-* Presentation → Domain
-* Presentation → Repository
-* Domain → Flask
-* Domain → SQLAlchemy
-* Domain → OR-Tools
+- Presentation → Domain
+- Presentation → Repository
+- Domain → Flask
+- Domain → SQLAlchemy
+- Domain → OR-Tools
 
 ---
 
@@ -413,10 +413,10 @@ Authentication and authorization are enforced by the Application Layer.
 
 Typical authorization examples
 
-* Planner may publish Plans.
-* Operator may update Assignment status.
-* Engineer may modify Workflow Templates.
-* Administrator may modify laboratory configuration.
+- Planner may publish Plans.
+- Operator may update Assignment status.
+- Engineer may modify Workflow Templates.
+- Administrator may modify laboratory configuration.
 
 Authorization rules shall not exist in the Presentation Layer.
 
@@ -456,10 +456,10 @@ Business-oriented naming improves maintainability.
 
 Future services may include
 
-* ScenarioApplicationService
-* NotificationApplicationService
-* AuditApplicationService
-* IntegrationApplicationService
+- ScenarioApplicationService
+- NotificationApplicationService
+- AuditApplicationService
+- IntegrationApplicationService
 
 Existing Application Services shall remain stable.
 

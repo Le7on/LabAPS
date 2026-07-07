@@ -82,9 +82,9 @@ The staff member is temporarily excluded from planning.
 
 Typical reasons
 
-* Temporary suspension
-* Training
-* Administrative decision
+- Temporary suspension
+- Training
+- Administrative decision
 
 Historical planning remains unchanged.
 
@@ -126,9 +126,9 @@ The staff member satisfies all scheduling conditions.
 
 Examples
 
-* Active
-* Working Day
-* Not on Leave
+- Active
+- Working Day
+- Not on Leave
 
 Available staff may receive Assignments.
 
@@ -140,9 +140,9 @@ The staff member cannot participate in scheduling.
 
 Typical causes include:
 
-* Leave
-* Holiday
-* Outside Working Calendar
+- Leave
+- Holiday
+- Outside Working Calendar
 
 The reason shall be traceable.
 
@@ -222,9 +222,9 @@ Availability is recalculated whenever a Planning Context is generated.
 
 Typical inputs
 
-* Staff Leave
-* Calendar
-* Working Hours
+- Staff Leave
+- Calendar
+- Working Hours
 
 Availability is not persisted as a manually maintained business value.
 
@@ -280,16 +280,16 @@ Configuration View
 
 Actions
 
-* Activate
-* Disable
-* Deactivate
+- Activate
+- Disable
+- Deactivate
 
 Planning View
 
 Displays
 
-* Available
-* Unavailable
+- Available
+- Unavailable
 
 Operational availability is read-only.
 
@@ -370,10 +370,10 @@ This provides a unified Resource Model for the Planning Engine.
 
 # 14. Related Documents
 
-* State Model — State Transition Rules
-* State Model — Equipment State
-* Planning Context
-* Constraint Framework
-* Planning Problem
+- State Model — State Transition Rules
+- State Model — Equipment State
+- Planning Context
+- Constraint Framework
+- Planning Problem
 
 The Scheduling Engine treats Staff and Equipment uniformly through the Resource Availability model.

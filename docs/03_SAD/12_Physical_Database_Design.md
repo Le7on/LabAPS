@@ -18,11 +18,11 @@ This document defines the physical database model for Lab APS.
 
 It specifies:
 
-* Physical tables
-* Primary keys
-* Foreign key relationships
-* Naming conventions
-* Audit columns
+- Physical tables
+- Primary keys
+- Foreign key relationships
+- Naming conventions
+- Audit columns
 
 This design is derived directly from the Domain Model and Conceptual ERD.
 
@@ -196,10 +196,10 @@ Store equipment capabilities.
 
 Examples
 
-* 384 Head
-* 96 Head
-* 16 Channel
-* iSWAP
+- 384 Head
+- 96 Head
+- 16 Channel
+- iSWAP
 
 Many-to-many relationship between Equipment and Capability.
 
@@ -307,10 +307,10 @@ Maintain material definitions.
 
 Examples
 
-* Tips
-* Plate
-* Deepwell Block
-* FV Kit
+- Tips
+- Plate
+- Deepwell Block
+- FV Kit
 
 No inventory quantities are stored.
 
@@ -636,32 +636,32 @@ Recommended indexes
 
 ## plan
 
-* plan_code
-* planning_horizon
+- plan_code
+- planning_horizon
 
 ---
 
 ## plan_version
 
-* plan_id
-* status
-* version_no
+- plan_id
+- status
+- version_no
 
 ---
 
 ## assignment
 
-* equipment_id
-* staff_id
-* shift_id
-* operation_instance_id
+- equipment_id
+- staff_id
+- shift_id
+- operation_instance_id
 
 ---
 
 ## operation_instance
 
-* workflow_instance_id
-* status
+- workflow_instance_id
+- status
 
 ---
 
@@ -669,9 +669,9 @@ Recommended indexes
 
 The following information may be stored as JSON snapshots.
 
-* Planning Context
-* Solver Parameters
-* Snapshot Metadata
+- Planning Context
+- Solver Parameters
+- Snapshot Metadata
 
 Business entities shall not be stored entirely as JSON.
 
@@ -683,16 +683,16 @@ Only immutable snapshots are allowed.
 
 The database is responsible for:
 
-* Persistence
-* Referential Integrity
-* Historical Data
+- Persistence
+- Referential Integrity
+- Historical Data
 
 The database is NOT responsible for:
 
-* Business Rules
-* Scheduling Logic
-* Workflow Generation
-* Material Calculation
+- Business Rules
+- Scheduling Logic
+- Workflow Generation
+- Material Calculation
 
 These responsibilities belong to the Domain Layer.
 
@@ -702,9 +702,9 @@ These responsibilities belong to the Domain Layer.
 
 Future schema evolution shall follow these rules.
 
-* Add new tables instead of changing historical semantics.
-* Preserve backward compatibility whenever possible.
-* Never change the meaning of an existing column.
-* Introduce new versions through migration scripts.
+- Add new tables instead of changing historical semantics.
+- Preserve backward compatibility whenever possible.
+- Never change the meaning of an existing column.
+- Introduce new versions through migration scripts.
 
 The physical database shall evolve without changing the core Domain Model.

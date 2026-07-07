@@ -28,12 +28,12 @@ Neither the Domain Model nor the Solver shall depend directly on each other.
 
 The Solver Model shall satisfy the following goals.
 
-* Independent of OR-Tools implementation
-* Independent of database schema
-* Independent of Flask
-* Independent of SQLAlchemy
-* Deterministic
-* Immutable during solving
+- Independent of OR-Tools implementation
+- Independent of database schema
+- Independent of Flask
+- Independent of SQLAlchemy
+- Deterministic
+- Immutable during solving
 
 The Solver Model exists only in memory.
 
@@ -113,21 +113,21 @@ Resource attributes include:
 
 Equipment
 
-* ResourceId
-* Capability Set
-* Available Time Windows
+- ResourceId
+- Capability Set
+- Available Time Windows
 
 Staff
 
-* ResourceId
-* Skill Set
-* Available Time Windows
+- ResourceId
+- Skill Set
+- Available Time Windows
 
 Shift
 
-* ShiftId
-* Start Time
-* End Time
+- ShiftId
+- Start Time
+- End Time
 
 Future versions may introduce additional resource types without changing the Solver interface.
 
@@ -185,10 +185,10 @@ Lag defaults to zero.
 
 Future versions may support:
 
-* Start-to-Start
-* Finish-to-Finish
-* Finish-to-Finish
-* Positive / Negative Lag
+- Start-to-Start
+- Finish-to-Finish
+- Finish-to-Finish
+- Positive / Negative Lag
 
 ---
 
@@ -198,10 +198,10 @@ CalendarSet represents effective scheduling availability.
 
 Sources include:
 
-* Shift Definition
-* Holidays
-* Staff Leave
-* Equipment Maintenance
+- Shift Definition
+- Holidays
+- Staff Leave
+- Equipment Maintenance
 
 The builder converts these into scheduling windows.
 
@@ -235,8 +235,8 @@ Constraint categories:
 
 Examples
 
-* One Equipment executes only one Operation at a time.
-* One Staff executes only one Operation at a time.
+- One Equipment executes only one Operation at a time.
+- One Staff executes only one Operation at a time.
 
 ---
 
@@ -244,8 +244,8 @@ Examples
 
 Examples
 
-* Equipment satisfies Capability Requirements.
-* Staff satisfies Skill Requirements.
+- Equipment satisfies Capability Requirements.
+- Staff satisfies Skill Requirements.
 
 ---
 
@@ -253,8 +253,8 @@ Examples
 
 Examples
 
-* SAP starts after SMDP completes.
-* SP starts after CP completes.
+- SAP starts after SMDP completes.
+- SP starts after CP completes.
 
 ---
 
@@ -270,10 +270,10 @@ Equipment FV qualification must be valid.
 
 Examples
 
-* Staff Leave
-* Equipment Maintenance
-* Holiday
-* Shift Availability
+- Staff Leave
+- Equipment Maintenance
+- Holiday
+- Shift Availability
 
 Each constraint is represented as data rather than executable code.
 
@@ -316,11 +316,11 @@ SchedulingModel
 
 Responsibilities
 
-* Extract Operations
-* Resolve Resource Requirements
-* Build Dependency Graph
-* Build Calendar Windows
-* Normalize data
+- Extract Operations
+- Resolve Resource Requirements
+- Build Dependency Graph
+- Build Calendar Windows
+- Normalize data
 
 SchedulingModelBuilder performs no optimization.
 
@@ -344,9 +344,9 @@ SchedulingSolution
 
 Responsibilities
 
-* Create optimization model
-* Execute optimization
-* Return normalized solution
+- Create optimization model
+- Execute optimization
+- Return normalized solution
 
 SolverAdapter never constructs business objects.
 
@@ -380,10 +380,10 @@ AssignmentBuilder converts SchedulingSolution into domain objects.
 
 Responsibilities
 
-* Create Assignment
-* Populate Planned Start
-* Populate Planned End
-* Attach Assignment to PlanVersion
+- Create Assignment
+- Populate Planned Start
+- Populate Planned End
+- Attach Assignment to PlanVersion
 
 Business reconstruction occurs only here.
 
@@ -395,10 +395,10 @@ Validation is completed before the Solver starts.
 
 Examples
 
-* Missing Workflow Definition
-* Missing Staff Skill Mapping
-* Missing Equipment Capability
-* Invalid Planning Context
+- Missing Workflow Definition
+- Missing Staff Skill Mapping
+- Missing Equipment Capability
+- Invalid Planning Context
 
 Validation failures prevent SchedulingModel creation.
 
@@ -412,10 +412,10 @@ The Scheduling Model shall minimize unnecessary data.
 
 Recommended practices:
 
-* Use IDs instead of full entities.
-* Convert business objects into immutable records.
-* Remove unused metadata.
-* Build lookup dictionaries before solving.
+- Use IDs instead of full entities.
+- Convert business objects into immutable records.
+- Remove unused metadata.
+- Build lookup dictionaries before solving.
 
 This reduces Solver overhead.
 
@@ -427,11 +427,11 @@ Future scheduling features shall be implemented by extending the Scheduling Mode
 
 Examples:
 
-* Intermediate Resource Constraints
-* Resource Groups
-* Parallel Operations
-* Batch Scheduling
-* Multi-week Planning
+- Intermediate Resource Constraints
+- Resource Groups
+- Parallel Operations
+- Batch Scheduling
+- Multi-week Planning
 
 Existing interfaces shall remain unchanged.
 
@@ -463,10 +463,10 @@ Version 1.0 deliberately keeps the Scheduling Model generic.
 
 Future implementations may replace OR-Tools with another optimization engine without changing:
 
-* Plan
-* PlanVersion
-* WorkflowInstance
-* OperationInstance
-* Assignment
+- Plan
+- PlanVersion
+- WorkflowInstance
+- OperationInstance
+- Assignment
 
 The SchedulingModel remains the stable contract between the Planning Domain and the optimization engine.

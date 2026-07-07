@@ -200,12 +200,12 @@ Review Results
 
 System Activities
 
-* Build Planning Problem
-* Build Scheduling Model
-* Execute Solver
-* Generate Assignments
-* Calculate Material Forecast
-* Calculate KPI
+- Build Planning Problem
+- Build Scheduling Model
+- Execute Solver
+- Generate Assignments
+- Calculate Material Forecast
+- Calculate KPI
 
 The planner interacts only with the business process.
 
@@ -277,9 +277,9 @@ Published
 
 Effects
 
-* Version becomes immutable.
-* Execution becomes available.
-* Previous Published Version is retired.
+- Version becomes immutable.
+- Execution becomes available.
+- Previous Published Version is retired.
 
 ---
 
@@ -487,9 +487,9 @@ Warnings are informational unless explicitly configured as blocking policies.
 
 Users should never need to:
 
-* search for the next action
-* remember hidden state
-* edit the same business object in multiple locations
+- search for the next action
+- remember hidden state
+- edit the same business object in multiple locations
 
 Each workflow should require as few steps as possible while preserving business correctness.
 

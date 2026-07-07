@@ -16,11 +16,11 @@ This document defines the standard response format used by every REST API in Lab
 
 A unified response model simplifies:
 
-* Frontend implementation
-* Error handling
-* Logging
-* Integration
-* Future API evolution
+- Frontend implementation
+- Error handling
+- Logging
+- Integration
+- Future API evolution
 
 Every endpoint shall follow this specification.
 
@@ -46,9 +46,9 @@ Every successful response follows the structure below.
 
 ```json
 {
-    "success": true,
-    "data": {},
-    "meta": {}
+  "success": true,
+  "data": {},
+  "meta": {}
 }
 ```
 
@@ -74,10 +74,10 @@ Contains the requested business object.
 
 Examples
 
-* Plan
-* Plan Version
-* Staff
-* Equipment
+- Plan
+- Plan Version
+- Staff
+- Equipment
 
 Collections are returned as arrays.
 
@@ -91,9 +91,9 @@ Typical fields
 
 ```json
 {
-    "timestamp":"...",
-    "requestId":"...",
-    "durationMs":35
+  "timestamp": "...",
+  "requestId": "...",
+  "durationMs": 35
 }
 ```
 
@@ -105,13 +105,13 @@ Every failed request follows the structure below.
 
 ```json
 {
-    "success": false,
-    "error": {
-        "code":"PLAN_VERSION_NOT_FOUND",
-        "message":"Plan Version does not exist.",
-        "details":[]
-    },
-    "meta":{}
+  "success": false,
+  "error": {
+    "code": "PLAN_VERSION_NOT_FOUND",
+    "message": "Plan Version does not exist.",
+    "details": []
+  },
+  "meta": {}
 }
 ```
 
@@ -183,12 +183,12 @@ Example
 {
   "success": false,
   "error": {
-    "code":"VALIDATION_FAILED",
-    "message":"Validation failed.",
-    "details":[
+    "code": "VALIDATION_FAILED",
+    "message": "Validation failed.",
+    "details": [
       {
-        "field":"planningHorizon",
-        "message":"Planning horizon is required."
+        "field": "planningHorizon",
+        "message": "Planning horizon is required."
       }
     ]
   }
@@ -203,9 +203,9 @@ Business conflicts occur when the request is valid but violates business rules.
 
 Examples
 
-* Publishing an already published version.
-* Editing an archived Plan.
-* Creating duplicate business codes.
+- Publishing an already published version.
+- Editing an archived Plan.
+- Creating duplicate business codes.
 
 HTTP
 
@@ -225,9 +225,9 @@ Unexpected failures return
 
 The response shall never expose:
 
-* Stack traces
-* SQL
-* Internal exception types
+- Stack traces
+- SQL
+- Internal exception types
 
 Detailed information shall be written to the application log.
 
@@ -241,13 +241,13 @@ Response example
 
 ```json
 {
-    "success": true,
-    "data": [],
-    "meta": {
-        "page":1,
-        "pageSize":20,
-        "total":135
-    }
+  "success": true,
+  "data": [],
+  "meta": {
+    "page": 1,
+    "pageSize": 20,
+    "total": 135
+  }
 }
 ```
 
@@ -257,9 +257,9 @@ Response example
 
 Business commands such as:
 
-* Generate Schedule
-* Publish Plan
-* Archive Plan
+- Generate Schedule
+- Publish Plan
+- Archive Plan
 
 shall return the updated resource together with execution metadata.
 
@@ -267,13 +267,13 @@ Example
 
 ```json
 {
-    "success": true,
-    "data": {
-        "status":"Published"
-    },
-    "meta":{
-        "runtimeMs":5321
-    }
+  "success": true,
+  "data": {
+    "status": "Published"
+  },
+  "meta": {
+    "runtimeMs": 5321
+  }
 }
 ```
 

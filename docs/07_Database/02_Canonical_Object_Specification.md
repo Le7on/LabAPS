@@ -20,11 +20,11 @@ Every implementation shall derive its data definition from this specification.
 
 This document is independent of:
 
-* Database
-* ORM
-* REST API
-* JSON
-* Programming Language
+- Database
+- ORM
+- REST API
+- JSON
+- Programming Language
 
 ---
 
@@ -34,14 +34,14 @@ Every canonical object shall be described using the same structure.
 
 Each object defines:
 
-* Purpose
-* Owner
-* Identity
-* Business Attributes
-* Relationships
-* Mutable Attributes
-* Derived Attributes
-* Lifecycle
+- Purpose
+- Owner
+- Identity
+- Business Attributes
+- Relationships
+- Mutable Attributes
+- Derived Attributes
+- Lifecycle
 
 This template shall be used consistently throughout the project.
 
@@ -87,19 +87,19 @@ Planning Domain
 
 Technical
 
-* UUID
+- UUID
 
 Business
 
-* Plan Code
+- Plan Code
 
 ---
 
 ## Business Attributes
 
-* Name
-* Planning Horizon
-* Description
+- Name
+- Planning Horizon
+- Description
 
 ---
 
@@ -107,7 +107,7 @@ Business
 
 Owns
 
-* Plan Versions
+- Plan Versions
 
 References
 
@@ -117,8 +117,8 @@ None
 
 ## Mutable Attributes
 
-* Name
-* Description
+- Name
+- Description
 
 Planning Horizon becomes immutable after the first Plan Version is created.
 
@@ -166,10 +166,10 @@ Version Number
 
 ## Business Attributes
 
-* Version Type
-* Status
-* Solver Runtime
-* Objective Score
+- Version Type
+- Status
+- Solver Runtime
+- Objective Score
 
 ---
 
@@ -177,12 +177,12 @@ Version Number
 
 Owns
 
-* Planning Context
-* Demand
-* Workflow Instances
-* Assignments
-* Material Forecast
-* KPI
+- Planning Context
+- Demand
+- Workflow Instances
+- Assignments
+- Material Forecast
+- KPI
 
 ---
 
@@ -242,11 +242,11 @@ Plan Version
 
 ## Business Attributes
 
-* Calendar Snapshot
-* Equipment Availability Snapshot
-* Staff Availability Snapshot
-* Shift Profile
-* Solver Profile
+- Calendar Snapshot
+- Equipment Availability Snapshot
+- Staff Availability Snapshot
+- Shift Profile
+- Solver Profile
 
 ---
 
@@ -280,8 +280,8 @@ Plan Version
 
 ## Business Attributes
 
-* Business Code
-* Status
+- Business Code
+- Status
 
 ---
 
@@ -289,11 +289,11 @@ Plan Version
 
 Owns
 
-* Operation Instances
+- Operation Instances
 
 References
 
-* Workflow Definition
+- Workflow Definition
 
 ---
 
@@ -327,9 +327,9 @@ Workflow Instance
 
 ## Business Attributes
 
-* Operation Type
-* Duration
-* Status
+- Operation Type
+- Duration
+- Status
 
 ---
 
@@ -337,7 +337,7 @@ Workflow Instance
 
 References
 
-* Operation Definition
+- Operation Definition
 
 Owns
 
@@ -375,9 +375,9 @@ Plan Version
 
 ## Business Attributes
 
-* Planned Start
-* Planned End
-* Status
+- Planned Start
+- Planned End
+- Status
 
 ---
 
@@ -385,10 +385,10 @@ Plan Version
 
 References
 
-* Operation Instance
-* Equipment
-* Staff
-* Shift
+- Operation Instance
+- Equipment
+- Staff
+- Shift
 
 ---
 
@@ -424,9 +424,9 @@ Plan Version
 
 ## Business Attributes
 
-* Material
-* Quantity
-* Warning Level
+- Material
+- Quantity
+- Warning Level
 
 ---
 
@@ -470,10 +470,10 @@ KPI values are system-generated.
 
 ## Derived Attributes
 
-* Equipment Utilization
-* Staff Utilization
-* Completion Rate
-* Solver Runtime
+- Equipment Utilization
+- Staff Utilization
+- Completion Rate
+- Solver Runtime
 
 ---
 
@@ -499,11 +499,11 @@ Every canonical object follows the rules below.
 
 This specification is the direct input for:
 
-* Physical ERD
-* SQLAlchemy Models
-* DTO Definitions
-* OpenAPI Schemas
-* Import/Export Models
+- Physical ERD
+- SQLAlchemy Models
+- DTO Definitions
+- OpenAPI Schemas
+- Import/Export Models
 
 No implementation may redefine object structure independently.
 
@@ -515,7 +515,7 @@ The Canonical Object Specification becomes the definitive description of all bus
 
 Future changes to object structure require both:
 
-* an Architecture Decision Record (ADR)
-* an update to this document
+- an Architecture Decision Record (ADR)
+- an update to this document
 
 This ensures long-term consistency across the entire platform.

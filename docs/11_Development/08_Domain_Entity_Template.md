@@ -46,19 +46,19 @@ Business behaviour is always more important than data structure.
 
 A Domain Entity shall:
 
-* protect business invariants
-* expose business behaviour
-* validate state transitions
-* generate domain events
+- protect business invariants
+- expose business behaviour
+- validate state transitions
+- generate domain events
 
 A Domain Entity shall not:
 
-* execute SQL
-* call repositories
-* call REST APIs
-* know about Flask
-* know about SQLAlchemy
-* know about OR-Tools
+- execute SQL
+- call repositories
+- call REST APIs
+- know about Flask
+- know about SQLAlchemy
+- know about OR-Tools
 
 ---
 
@@ -134,9 +134,9 @@ plan_version.publish()
 
 The entity validates:
 
-* Current state
-* Business invariants
-* Transition rules
+- Current state
+- Business invariants
+- Transition rules
 
 The caller does not manipulate status directly.
 
@@ -182,8 +182,8 @@ Every Entity has an immutable identity.
 
 Identity consists of:
 
-* Technical Identifier (UUID)
-* Business Identifier (where applicable)
+- Technical Identifier (UUID)
+- Business Identifier (where applicable)
 
 Identity never changes during the lifetime of the entity.
 
@@ -215,11 +215,11 @@ Immutable concepts shall be represented as Value Objects.
 
 Examples
 
-* PlanningHorizon
-* ShiftWindow
-* MaterialQuantity
-* CapabilitySet
-* SkillSet
+- PlanningHorizon
+- ShiftWindow
+- MaterialQuantity
+- CapabilitySet
+- SkillSet
 
 Entities own Value Objects.
 
@@ -235,15 +235,15 @@ Examples
 
 PlanVersion
 
-* Published versions are immutable.
+- Published versions are immutable.
 
 Assignment
 
-* Only Ready assignments may start.
+- Only Ready assignments may start.
 
 Execution
 
-* Completed executions cannot restart.
+- Completed executions cannot restart.
 
 Business invariants shall never be duplicated in Use Cases.
 
@@ -315,9 +315,9 @@ assignment.staff = ...
 
 Entities collaborate only through:
 
-* Aggregate Root
-* Domain Services
-* Value Objects
+- Aggregate Root
+- Domain Services
+- Value Objects
 
 Entities shall not communicate through repositories or infrastructure components.
 
@@ -327,12 +327,12 @@ Entities shall not communicate through repositories or infrastructure components
 
 Each Entity shall have dedicated unit tests covering:
 
-* Object creation
-* Valid behaviour
-* Invalid behaviour
-* State transitions
-* Business invariants
-* Generated Domain Events
+- Object creation
+- Valid behaviour
+- Invalid behaviour
+- State transitions
+- Business invariants
+- Generated Domain Events
 
 Entities shall be testable entirely in memory.
 
@@ -342,12 +342,12 @@ Entities shall be testable entirely in memory.
 
 Before approving a Domain Entity implementation, verify:
 
-* Does the Entity expose behaviour instead of setters?
-* Does it protect its own invariants?
-* Does it avoid framework dependencies?
-* Does it avoid persistence concerns?
-* Does it generate Domain Events where appropriate?
-* Does it preserve Aggregate consistency?
+- Does the Entity expose behaviour instead of setters?
+- Does it protect its own invariants?
+- Does it avoid framework dependencies?
+- Does it avoid persistence concerns?
+- Does it generate Domain Events where appropriate?
+- Does it preserve Aggregate consistency?
 
 ---
 

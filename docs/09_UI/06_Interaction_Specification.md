@@ -74,10 +74,10 @@ Generate Schedule
 
 Immediately after clicking
 
-* Disable Generate button.
-* Disable Demand editing.
-* Display progress indicator.
-* Display current pipeline step.
+- Disable Generate button.
+- Disable Demand editing.
+- Display progress indicator.
+- Display current pipeline step.
 
 Example
 
@@ -105,11 +105,11 @@ Generating Schedule...
 
 When scheduling completes
 
-* Refresh Schedule View.
-* Refresh Forecast.
-* Refresh KPI.
-* Enable Generate button.
-* Enable Publish button (if validation succeeds).
+- Refresh Schedule View.
+- Refresh Forecast.
+- Refresh KPI.
+- Enable Generate button.
+- Enable Publish button (if validation succeeds).
 
 ---
 
@@ -153,9 +153,9 @@ Plan Version Published Successfully.
 
 Refresh
 
-* Version List
-* Header
-* Dashboard
+- Version List
+- Header
+- Dashboard
 
 ---
 
@@ -165,11 +165,11 @@ When the user selects another Plan Version
 
 The system reloads:
 
-* Demand
-* Schedule
-* Forecast
-* KPI
-* Activity
+- Demand
+- Schedule
+- Forecast
+- KPI
+- Activity
 
 The current workspace tab remains unchanged.
 
@@ -233,7 +233,7 @@ Red
 
 Blocking Errors disable:
 
-* Publish
+- Publish
 
 Warnings do not disable scheduling unless configured by policy.
 
@@ -323,9 +323,9 @@ Data loading shall display placeholders rather than empty pages.
 
 Examples
 
-* Loading Plan
-* Loading Schedule
-* Loading Report
+- Loading Plan
+- Loading Schedule
+- Loading Report
 
 The application shall remain responsive while loading.
 
@@ -383,9 +383,9 @@ Generate Schedule
 
 Refresh
 
-* Schedule
-* Forecast
-* KPI
+- Schedule
+- Forecast
+- KPI
 
 Do not reload the entire application.
 
@@ -415,10 +415,10 @@ Do not reload the entire application.
 
 Future versions may introduce:
 
-* Background scheduling
-* Live progress updates
-* Compare Versions side-by-side
-* AI recommendations
-* Drag-and-drop manual adjustment
+- Background scheduling
+- Live progress updates
+- Compare Versions side-by-side
+- AI recommendations
+- Drag-and-drop manual adjustment
 
 These features shall extend the existing interaction model without changing the primary planning workflow.

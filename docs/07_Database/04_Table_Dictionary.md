@@ -16,13 +16,13 @@ This document defines every physical table used by Lab APS.
 
 For each table, the following information is specified:
 
-* Purpose
-* Aggregate Owner
-* Primary Key
-* Columns
-* Relationships
-* Index Strategy
-* Business Constraints
+- Purpose
+- Aggregate Owner
+- Primary Key
+- Columns
+- Relationships
+- Index Strategy
+- Business Constraints
 
 This document is the implementation specification for SQLAlchemy models and Alembic migrations.
 
@@ -187,12 +187,12 @@ id
 
 Owns
 
-* PlanningContext
-* Demand
-* WorkflowInstance
-* Assignment
-* MaterialForecast
-* PlanKPI
+- PlanningContext
+- Demand
+- WorkflowInstance
+- Assignment
+- MaterialForecast
+- PlanKPI
 
 ---
 
@@ -419,11 +419,11 @@ Execution tables reference Assignments but never modify planning data.
 
 The following constraints apply to all tables.
 
-* Every table has a UUID primary key.
-* Foreign keys reference Aggregate ownership.
-* Business codes are unique where applicable.
-* Published planning data is immutable.
-* Historical records are append-only.
+- Every table has a UUID primary key.
+- Foreign keys reference Aggregate ownership.
+- Business codes are unique where applicable.
+- Published planning data is immutable.
+- Historical records are append-only.
 
 ---
 
@@ -435,10 +435,10 @@ The next document is:
 
 It defines:
 
-* ORM class organization
-* Relationship mapping
-* Cascade strategy
-* Lazy loading strategy
-* Repository implementation guidelines
+- ORM class organization
+- Relationship mapping
+- Cascade strategy
+- Lazy loading strategy
+- Repository implementation guidelines
 
 This document bridges the gap between the physical schema and the Python implementation.

@@ -18,10 +18,10 @@ This document defines how business objects are persisted.
 
 The persistence architecture shall preserve:
 
-* Domain boundaries
-* Aggregate consistency
-* Historical traceability
-* Version isolation
+- Domain boundaries
+- Aggregate consistency
+- Historical traceability
+- Version isolation
 
 Persistence is an implementation of the Domain Model.
 
@@ -109,11 +109,11 @@ PlanRepository
 
 Repositories never exist for:
 
-* Assignment
-* OperationInstance
-* Demand
-* KPI
-* MaterialForecast
+- Assignment
+- OperationInstance
+- Demand
+- KPI
+- MaterialForecast
 
 These objects belong to PlanVersion.
 
@@ -180,8 +180,8 @@ Equipment
 
 The Assignment stores:
 
-* EquipmentId
-* StaffId
+- EquipmentId
+- StaffId
 
 It does not own Equipment or Staff.
 
@@ -379,13 +379,13 @@ Persistence architecture is independent of database technology.
 
 Supported databases
 
-* SQLite
-* PostgreSQL
+- SQLite
+- PostgreSQL
 
 Future support
 
-* SQL Server
-* Oracle
+- SQL Server
+- Oracle
 
 Domain logic shall remain unchanged.
 

@@ -20,11 +20,11 @@ Business Capabilities represent what the platform is able to do.
 
 Business Capabilities are independent of:
 
-* User Interface
-* Database
-* Programming Language
-* Framework
-* OR-Tools
+- User Interface
+- Database
+- Programming Language
+- Framework
+- OR-Tools
 
 They represent stable business responsibilities.
 
@@ -85,11 +85,11 @@ Everything else exists to support Planning.
 
 Planning owns:
 
-* Plan
-* Demand
-* Workflow Instance
-* Assignment
-* Material Forecast
+- Plan
+- Demand
+- Workflow Instance
+- Assignment
+- Material Forecast
 
 Planning is therefore the Core Domain.
 
@@ -103,12 +103,12 @@ Provides stable laboratory information.
 
 Responsibilities
 
-* Staff
-* Equipment
-* Workflow Template
-* Capability
-* Skill
-* Material Definition
+- Staff
+- Equipment
+- Workflow Template
+- Capability
+- Skill
+- Material Definition
 
 Master Data never performs scheduling.
 
@@ -120,11 +120,11 @@ Defines operational parameters.
 
 Responsibilities
 
-* Shift
-* Holiday
-* Leave
-* Maintenance
-* Solver Profile
+- Shift
+- Holiday
+- Leave
+- Maintenance
+- Solver Profile
 
 Configuration modifies planning behavior.
 
@@ -138,11 +138,11 @@ Responsible for converting laboratory Projects into executable Operations.
 
 Responsibilities
 
-* Workflow Template
-* Workflow Instance Generation
-* Dependency Generation
-* Intermediate Resource Generation
-* Material BOM Resolution
+- Workflow Template
+- Workflow Instance Generation
+- Dependency Generation
+- Intermediate Resource Generation
+- Material BOM Resolution
 
 Workflow owns execution logic.
 
@@ -156,11 +156,11 @@ Responsible for optimization.
 
 Responsibilities
 
-* Variable Builder
-* Constraint Builder
-* Objective Builder
-* Solver Adapter
-* Result Parser
+- Variable Builder
+- Constraint Builder
+- Objective Builder
+- Solver Adapter
+- Result Parser
 
 Scheduling receives Operations.
 
@@ -176,9 +176,9 @@ Responsible for execution tracking.
 
 Responsibilities
 
-* Assignment Status
-* Workflow Progress
-* Plan Progress
+- Assignment Status
+- Workflow Progress
+- Plan Progress
 
 Execution never changes scheduling logic.
 
@@ -190,10 +190,10 @@ Responsible for material estimation.
 
 Responsibilities
 
-* Material Consumption
-* Daily Summary
-* Weekly Summary
-* Inventory Warning
+- Material Consumption
+- Daily Summary
+- Weekly Summary
+- Inventory Warning
 
 Material Forecast is derived from the Schedule.
 
@@ -205,10 +205,10 @@ Responsible for information presentation.
 
 Responsibilities
 
-* KPI
-* Utilization
-* Schedule Export
-* Material Report
+- KPI
+- Utilization
+- Schedule Export
+- Material Report
 
 Reporting owns no business logic.
 
@@ -359,12 +359,12 @@ Future capabilities shall be added as independent modules.
 
 Examples
 
-* Scenario Planning
-* Notification Center
-* LIMS Connector
-* Instrument Connector
-* AI Recommendation
-* Audit Center
+- Scenario Planning
+- Notification Center
+- LIMS Connector
+- Instrument Connector
+- AI Recommendation
+- Audit Center
 
 Existing capabilities should not require redesign to support these extensions.
 

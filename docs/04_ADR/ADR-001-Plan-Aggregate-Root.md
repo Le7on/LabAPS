@@ -14,21 +14,21 @@ Lab APS is a laboratory planning platform rather than a laboratory execution sys
 
 During architecture design, several candidate Aggregate Roots were considered:
 
-* Demand
-* Workflow Instance
-* Operation Instance
-* Assignment
-* Planning Session
-* Plan
+- Demand
+- Workflow Instance
+- Operation Instance
+- Assignment
+- Planning Session
+- Plan
 
 Each candidate was evaluated against the following requirements:
 
-* Represent one complete planning cycle.
-* Support multiple schedule generations.
-* Support historical traceability.
-* Support future scenario planning.
-* Maintain transactional consistency.
-* Remain understandable to laboratory users.
+- Represent one complete planning cycle.
+- Support multiple schedule generations.
+- Support historical traceability.
+- Support future scenario planning.
+- Maintain transactional consistency.
+- Remain understandable to laboratory users.
 
 ---
 
@@ -40,14 +40,14 @@ All planning data shall belong to exactly one Plan.
 
 A Plan owns:
 
-* Plan Versions
-* Planning Context
-* Demand
-* Workflow Instances
-* Operation Instances
-* Assignments
-* Material Forecast
-* KPI
+- Plan Versions
+- Planning Context
+- Demand
+- Workflow Instances
+- Operation Instances
+- Assignments
+- Material Forecast
+- KPI
 
 No planning object may exist independently of a Plan.
 
@@ -59,8 +59,8 @@ No planning object may exist independently of a Plan.
 
 Laboratory managers naturally think in terms of:
 
-* Week 32 Production Plan
-* Week 33 Production Plan
+- Week 32 Production Plan
+- Week 33 Production Plan
 
 They do not think in terms of individual Workflow Instances.
 
@@ -72,10 +72,10 @@ Therefore the Aggregate Root should match the business identity.
 
 Publishing a schedule requires consistency across:
 
-* Demand
-* Assignments
-* Material Forecast
-* KPI
+- Demand
+- Assignments
+- Material Forecast
+- KPI
 
 Managing these through separate aggregates would require distributed coordination.
 
@@ -87,9 +87,9 @@ Using Plan as the Aggregate Root provides a single transactional boundary.
 
 Every planning artifact can be traced back to:
 
-* one Plan
-* one Planning Horizon
-* one Plan Version
+- one Plan
+- one Planning Horizon
+- one Plan Version
 
 This greatly simplifies auditing and reporting.
 
@@ -99,9 +99,9 @@ This greatly simplifies auditing and reporting.
 
 Future features such as:
 
-* Scenario Planning
-* Multi-week Planning
-* AI Recommendations
+- Scenario Planning
+- Multi-week Planning
+- AI Recommendations
 
 can be introduced without changing the Aggregate Root.
 
@@ -165,22 +165,22 @@ The existing Plan + Plan Version model satisfies current requirements while rema
 
 Positive:
 
-* Clear ownership of planning data.
-* Simple repository structure.
-* Straightforward API design.
-* Strong transactional consistency.
-* Easy version management.
+- Clear ownership of planning data.
+- Simple repository structure.
+- Straightforward API design.
+- Strong transactional consistency.
+- Easy version management.
 
 Negative:
 
-* Plan Aggregate becomes relatively large.
-* Loading strategy must be optimized to avoid unnecessary data retrieval.
+- Plan Aggregate becomes relatively large.
+- Loading strategy must be optimized to avoid unnecessary data retrieval.
 
 These concerns are addressed through:
 
-* lazy loading
-* DTO projections
-* dedicated reporting queries
+- lazy loading
+- DTO projections
+- dedicated reporting queries
 
 rather than changing the aggregate boundary.
 
@@ -188,11 +188,11 @@ rather than changing the aggregate boundary.
 
 # Related Documents
 
-* SRS Chapter 3 — Business Process
-* SAD Chapter 4 — Plan Aggregate
-* SAD Chapter 8 — Plan Lifecycle
-* SAD Chapter 9 — Plan Version Architecture
-* SAD Chapter 10 — Persistence Architecture
+- SRS Chapter 3 — Business Process
+- SAD Chapter 4 — Plan Aggregate
+- SAD Chapter 8 — Plan Lifecycle
+- SAD Chapter 9 — Plan Version Architecture
+- SAD Chapter 10 — Persistence Architecture
 
 ---
 

@@ -24,11 +24,11 @@ Domains communicate through Application Services only.
 
 This document serves as the foundation for:
 
-* Project Structure
-* Package Organization
-* Repository Design
-* Database Design
-* API Design
+- Project Structure
+- Package Organization
+- Repository Design
+- Database Design
+- API Design
 
 ---
 
@@ -38,11 +38,11 @@ The Domain Architecture follows Domain-Driven Design (DDD).
 
 The following principles shall always be respected.
 
-* Business owns technology.
-* Domains own data.
-* Domains communicate through services.
-* Infrastructure supports domains.
-* The Solver is not a domain.
+- Business owns technology.
+- Domains own data.
+- Domains communicate through services.
+- Infrastructure supports domains.
+- The Solver is not a domain.
 
 ---
 
@@ -88,17 +88,17 @@ Foundation Domain does not participate directly in scheduling.
 
 ## Responsibilities
 
-* Staff
-* Equipment
-* Capability
-* Skill
-* Workflow Template
-* Material Definition
-* Shift Definition
-* Holiday Calendar
-* Leave
-* Maintenance
-* Solver Profile
+- Staff
+- Equipment
+- Capability
+- Skill
+- Workflow Template
+- Material Definition
+- Shift Definition
+- Holiday Calendar
+- Leave
+- Maintenance
+- Solver Profile
 
 ---
 
@@ -132,10 +132,10 @@ Maintenance
 
 Foundation Domain never owns:
 
-* Plans
-* Schedule
-* Assignment
-* Material Forecast
+- Plans
+- Schedule
+- Assignment
+- Material Forecast
 
 Foundation Domain provides reference information only.
 
@@ -153,14 +153,14 @@ Every business process revolves around Planning.
 
 ## Responsibilities
 
-* Plan Management
-* Demand Management
-* Planning Context
-* Workflow Generation
-* Scheduling Coordination
-* Material Forecast
-* Plan Version
-* Publish
+- Plan Management
+- Demand Management
+- Planning Context
+- Workflow Generation
+- Scheduling Coordination
+- Material Forecast
+- Plan Version
+- Publish
 
 ---
 
@@ -214,11 +214,11 @@ It captures the planning environment at scheduling time.
 
 Planning Context contains snapshots of:
 
-* Calendar
-* Equipment Availability
-* Staff Availability
-* Shift Configuration
-* Solver Profile
+- Calendar
+- Equipment Availability
+- Staff Availability
+- Shift Configuration
+- Solver Profile
 
 Planning Context guarantees reproducible planning.
 
@@ -266,10 +266,10 @@ Supporting Domain never changes planning decisions.
 
 ## Responsibilities
 
-* Execution Tracking
-* Dashboard
-* Reporting
-* KPI Visualization
+- Execution Tracking
+- Dashboard
+- Reporting
+- KPI Visualization
 
 ---
 
@@ -291,9 +291,9 @@ Reports
 
 Supporting Domain shall never
 
-* Generate Plans
-* Modify Plans
-* Execute Scheduling
+- Generate Plans
+- Modify Plans
+- Execute Scheduling
 
 Supporting Domain is read-oriented.
 
@@ -372,10 +372,10 @@ Supporting
 
 Forbidden dependencies
 
-* Supporting → Foundation Repository
-* Supporting → Scheduling
-* Scheduling → Database
-* Foundation → Planning
+- Supporting → Foundation Repository
+- Supporting → Scheduling
+- Scheduling → Database
+- Foundation → Planning
 
 Dependencies shall always point toward the Core Domain through Application Services.
 
@@ -413,20 +413,20 @@ Examples
 
 Foundation
 
-* Staff
-* Equipment
-* Workflow Template
+- Staff
+- Equipment
+- Workflow Template
 
 Planning
 
-* Plan
-* Demand
-* Assignment
+- Plan
+- Demand
+- Assignment
 
 Supporting
 
-* Execution Log
-* Report Cache
+- Execution Log
+- Report Cache
 
 Cross-domain table updates are prohibited.
 
@@ -438,10 +438,10 @@ Future versions may introduce Domain Events.
 
 Examples
 
-* PlanCreated
-* ScheduleGenerated
-* PlanPublished
-* AssignmentCompleted
+- PlanCreated
+- ScheduleGenerated
+- PlanPublished
+- AssignmentCompleted
 
 Domain Events shall be used for asynchronous communication.
 
@@ -457,20 +457,20 @@ Examples
 
 Foundation Domain
 
-* Equipment Categories
-* Laboratory Sites
+- Equipment Categories
+- Laboratory Sites
 
 Planning Domain
 
-* Scenario Planning
-* Dynamic Rescheduling
-* Multi-week Planning
+- Scenario Planning
+- Dynamic Rescheduling
+- Multi-week Planning
 
 Supporting Domain
 
-* Notification Center
-* Audit Center
-* AI Recommendation
+- Notification Center
+- Audit Center
+- AI Recommendation
 
 Future functionality shall extend existing domains rather than introducing unnecessary new domains.
 

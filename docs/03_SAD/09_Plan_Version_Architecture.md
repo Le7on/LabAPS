@@ -18,15 +18,15 @@ This document defines the relationship between **Plan** and **Plan Version**.
 
 The objective is to separate:
 
-* Business Identity
-* Planning Results
+- Business Identity
+- Planning Results
 
 This design supports:
 
-* Multiple schedule generations
-* Version history
-* Published plans
-* Future scenario planning
+- Multiple schedule generations
+- Version history
+- Published plans
+- Future scenario planning
 
 without introducing additional business objects.
 
@@ -94,9 +94,9 @@ Plan represents one production planning period.
 
 Examples
 
-* Week 32 Production Plan
-* Week 33 Production Plan
-* August Production Plan
+- Week 32 Production Plan
+- Week 33 Production Plan
+- August Production Plan
 
 A Plan does not contain scheduling data.
 
@@ -108,18 +108,18 @@ Instead, it manages multiple Plan Versions.
 
 Plan owns:
 
-* Planning Horizon
-* Name
-* Description
-* Current Published Version
-* Version Collection
+- Planning Horizon
+- Name
+- Description
+- Current Published Version
+- Version Collection
 
 Plan does NOT own:
 
-* Assignments
-* Workflow Instances
-* Material Forecast
-* KPI
+- Assignments
+- Workflow Instances
+- Material Forecast
+- KPI
 
 These belong to Plan Version.
 
@@ -209,11 +209,11 @@ It captures the environment used during scheduling.
 
 Planning Context contains snapshots of:
 
-* Calendar
-* Shift Profile
-* Equipment Availability
-* Staff Availability
-* Solver Profile
+- Calendar
+- Shift Profile
+- Equipment Availability
+- Staff Availability
+- Solver Profile
 
 Planning Context is immutable.
 
@@ -285,10 +285,10 @@ KPIs belong to Plan Version.
 
 Examples
 
-* Equipment Utilization
-* Staff Utilization
-* Completion Rate
-* Solver Runtime
+- Equipment Utilization
+- Staff Utilization
+- Completion Rate
+- Solver Runtime
 
 KPIs are generated automatically after scheduling.
 
@@ -361,12 +361,12 @@ Additional types may be introduced in future versions.
 
 New Plan Versions may be created by:
 
-* Initial planning
-* Demand change
-* Manual recalculation
-* Equipment maintenance
-* Staff leave
-* Emergency request
+- Initial planning
+- Demand change
+- Manual recalculation
+- Equipment maintenance
+- Staff leave
+- Emergency request
 
 Every new version copies the previous Planning Context before applying modifications.
 
@@ -454,10 +454,10 @@ Plan
 
 This structure preserves:
 
-* Historical traceability
-* Auditability
-* Reproducibility
-* Future extensibility
+- Historical traceability
+- Auditability
+- Reproducibility
+- Future extensibility
 
 while keeping the Planning Domain simple.
 
@@ -469,12 +469,12 @@ This document establishes the planning baseline for Lab APS.
 
 Future modules, including:
 
-* Database Design
-* Repository Design
-* REST API
-* Scheduling Engine
-* UI
-* Reporting
+- Database Design
+- Repository Design
+- REST API
+- Scheduling Engine
+- UI
+- Reporting
 
 shall adopt the Plan + Plan Version architecture defined here.
 

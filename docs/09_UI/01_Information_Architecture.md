@@ -18,9 +18,9 @@ This document defines the Information Architecture (IA) of Lab APS.
 
 Information Architecture describes:
 
-* What information the system manages
-* How information is organized
-* How users navigate between business capabilities
+- What information the system manages
+- How information is organized
+- How users navigate between business capabilities
 
 This document intentionally does not define visual layout.
 
@@ -92,12 +92,12 @@ Dashboard answers:
 
 Primary information includes:
 
-* Current Planning Horizon
-* Published Plans
-* Equipment Status
-* Planning Alerts
-* Material Warnings
-* Recent Activity
+- Current Planning Horizon
+- Published Plans
+- Equipment Status
+- Planning Alerts
+- Material Warnings
+- Recent Activity
 
 Dashboard is read-oriented.
 
@@ -183,9 +183,9 @@ Execution answers:
 
 Execution contains:
 
-* Assignment Status
-* Execution Records
-* Execution History
+- Assignment Status
+- Execution Records
+- Execution History
 
 Execution never changes planning decisions.
 
@@ -199,11 +199,11 @@ Reports answer:
 
 Examples
 
-* Equipment Utilization
-* Staff Utilization
-* Material Forecast
-* Planning KPI
-* Historical Plans
+- Equipment Utilization
+- Staff Utilization
+- Material Forecast
+- Planning KPI
+- Historical Plans
 
 Reports are read-only.
 
@@ -215,11 +215,11 @@ Administration manages application behaviour.
 
 Contents
 
-* Users
-* Roles
-* System Settings
-* Solver Profiles
-* Audit Logs
+- Users
+- Roles
+- System Settings
+- Solver Profiles
+- Audit Logs
 
 Administration does not contain laboratory business data.
 
@@ -345,11 +345,11 @@ Administration supports all stages.
 
 Future modules may include:
 
-* Simulation
-* Scenario Planning
-* AI Assistant
-* Notifications
-* Integrations
+- Simulation
+- Scenario Planning
+- AI Assistant
+- Notifications
+- Integrations
 
 New modules shall integrate into the existing navigation hierarchy rather than replacing it.
 

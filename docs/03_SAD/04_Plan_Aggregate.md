@@ -20,11 +20,11 @@ Every planning activity in Lab APS starts from a Plan and produces data owned by
 
 The Plan Aggregate defines:
 
-* Aggregate Boundary
-* Aggregate Ownership
-* Lifecycle
-* Invariants
-* State Transitions
+- Aggregate Boundary
+- Aggregate Ownership
+- Lifecycle
+- Invariants
+- State Transitions
 
 All planning-related business objects belong to exactly one Plan.
 
@@ -107,21 +107,21 @@ The database may additionally use an internal UUID.
 
 Plan is responsible for:
 
-* Managing Demand
-* Managing Workflow Instances
-* Managing Assignments
-* Managing Planning Context
-* Managing Plan Status
-* Publishing
-* Version Control
-* Forecast Ownership
+- Managing Demand
+- Managing Workflow Instances
+- Managing Assignments
+- Managing Planning Context
+- Managing Plan Status
+- Publishing
+- Version Control
+- Forecast Ownership
 
 Plan is **not** responsible for:
 
-* Equipment Definition
-* Staff Definition
-* Workflow Template Definition
-* Scheduling Algorithm
+- Equipment Definition
+- Staff Definition
+- Workflow Template Definition
+- Scheduling Algorithm
 
 ---
 
@@ -203,9 +203,9 @@ Demand defines **what** must be completed.
 
 Demand never defines:
 
-* Equipment
-* Staff
-* Shift
+- Equipment
+- Staff
+- Shift
 
 Demand belongs entirely to the Plan.
 
@@ -301,9 +301,9 @@ It is never edited manually.
 
 Material Forecast contains:
 
-* Daily Consumption
-* Weekly Consumption
-* Inventory Warnings
+- Daily Consumption
+- Weekly Consumption
+- Inventory Warnings
 
 ---
 
@@ -313,11 +313,11 @@ KPIs are generated automatically.
 
 Examples
 
-* Equipment Utilization
-* Staff Utilization
-* Planning Completion
-* Solver Runtime
-* Demand Completion Rate
+- Equipment Utilization
+- Staff Utilization
+- Planning Completion
+- Solver Runtime
+- Demand Completion Rate
 
 KPIs are read-only.
 
@@ -393,10 +393,10 @@ V3 Demand Update
 
 Each version has its own:
 
-* Planning Context
-* Schedule
-* Forecast
-* KPI
+- Planning Context
+- Schedule
+- Forecast
+- KPI
 
 Only one version may be Published.
 
@@ -450,8 +450,8 @@ The Plan Aggregate defines the structure of the Planning Domain.
 
 Future implementations shall follow these principles:
 
-* Every scheduling request operates on one Plan.
-* The Scheduling Engine receives a Plan as input.
-* The Scheduling Engine returns Assignments to the same Plan.
-* Material Forecast and KPI are regenerated whenever the schedule changes.
-* No object outside the Plan Aggregate may directly modify Plan-owned objects.
+- Every scheduling request operates on one Plan.
+- The Scheduling Engine receives a Plan as input.
+- The Scheduling Engine returns Assignments to the same Plan.
+- Material Forecast and KPI are regenerated whenever the schedule changes.
+- No object outside the Plan Aggregate may directly modify Plan-owned objects.

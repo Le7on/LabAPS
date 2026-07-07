@@ -136,15 +136,15 @@ Examples
 
 Planner
 
-* Publish
+- Publish
 
 Operator
 
-* Start Assignment
+- Start Assignment
 
 Administrator
 
-* Archive Plan
+- Archive Plan
 
 Permission validation occurs before Domain validation.
 
@@ -182,13 +182,13 @@ Examples
 
 Publish requires:
 
-* Approved state
-* No blocking validation errors
+- Approved state
+- No blocking validation errors
 
 Start Execution requires:
 
-* Published Plan Version
-* Assignment in Ready state
+- Published Plan Version
+- Assignment in Ready state
 
 Business validation is independent of state validation.
 
@@ -198,9 +198,9 @@ Business validation is independent of state validation.
 
 If validation succeeds:
 
-* Current State changes.
-* Transition timestamp is recorded.
-* Transition user is recorded.
+- Current State changes.
+- Transition timestamp is recorded.
+- Transition user is recorded.
 
 The transition occurs inside one transaction.
 
@@ -240,12 +240,12 @@ Repositories shall never initiate state transitions.
 
 Every transition records:
 
-* Aggregate ID
-* Previous State
-* New State
-* Trigger
-* User
-* Timestamp
+- Aggregate ID
+- Previous State
+- New State
+- Trigger
+- User
+- Timestamp
 
 Audit records are append-only.
 
@@ -255,10 +255,10 @@ Audit records are append-only.
 
 If any validation fails:
 
-* State remains unchanged.
-* No Domain Event is generated.
-* No persistence occurs.
-* No audit record is written.
+- State remains unchanged.
+- No Domain Event is generated.
+- No persistence occurs.
+- No audit record is written.
 
 The transition is atomic.
 
@@ -312,17 +312,17 @@ This document defines the common transition contract.
 
 Individual state machines define:
 
-* valid states
-* valid transitions
-* business-specific rules
+- valid states
+- valid transitions
+- business-specific rules
 
 The transition mechanism defined here applies to:
 
-* Plan
-* Plan Version
-* Assignment
-* Execution
-* Equipment
-* Staff
+- Plan
+- Plan Version
+- Assignment
+- Execution
+- Equipment
+- Staff
 
 without modification.

@@ -28,11 +28,11 @@ It shall not affect the Domain Model.
 
 The deployment architecture shall satisfy the following goals.
 
-* Lightweight
-* Offline capable
-* Simple installation
-* Easy maintenance
-* Future scalability
+- Lightweight
+- Offline capable
+- Simple installation
+- Easy maintenance
+- Future scalability
 
 Version 1.0 targets laboratory desktop deployment.
 
@@ -115,9 +115,9 @@ Single User
 
 Future versions may support:
 
-* Shared PostgreSQL
-* Web Deployment
-* Multi-user Deployment
+- Shared PostgreSQL
+- Web Deployment
+- Multi-user Deployment
 
 No Domain changes shall be required.
 
@@ -173,9 +173,9 @@ Unexpected exceptions shall always be logged.
 
 The following data shall be backed up.
 
-* SQLite Database
-* Configuration Files
-* Exported Plans
+- SQLite Database
+- Configuration Files
+- Exported Plans
 
 Temporary Scheduling Models shall not be backed up.
 

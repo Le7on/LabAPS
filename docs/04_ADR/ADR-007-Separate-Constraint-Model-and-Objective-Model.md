@@ -12,8 +12,8 @@
 
 Scheduling consists of two fundamentally different concepts:
 
-* Feasibility
-* Optimization
+- Feasibility
+- Optimization
 
 A schedule must first satisfy mandatory business rules.
 
@@ -23,10 +23,10 @@ Many scheduling implementations mix these concepts together.
 
 For example:
 
-* Equipment capacity
-* Staff availability
-* Workload balancing
-* Equipment utilization
+- Equipment capacity
+- Staff availability
+- Workload balancing
+- Equipment utilization
 
 are all implemented as "constraints".
 
@@ -77,19 +77,19 @@ Constraints usually remain stable.
 
 Examples
 
-* Equipment capacity
-* Staff availability
-* Workflow dependency
-* FV qualification
+- Equipment capacity
+- Staff availability
+- Workflow dependency
+- FV qualification
 
 Objectives change more frequently.
 
 Examples
 
-* Increase throughput
-* Reduce overtime
-* Balance workload
-* Minimize equipment switching
+- Increase throughput
+- Reduce overtime
+- Balance workload
+- Minimize equipment switching
 
 Keeping them independent reduces maintenance cost.
 
@@ -103,16 +103,16 @@ Examples
 
 Routine Production
 
-* Balance workload
-* Maximize equipment utilization
+- Balance workload
+- Maximize equipment utilization
 
 Rush Order
 
-* Maximize completed demand
+- Maximize completed demand
 
 Validation Week
 
-* Prioritize FV completion
+- Prioritize FV completion
 
 Only the Objective Model changes.
 
@@ -128,36 +128,36 @@ Examples include:
 
 ## Resource Constraints
 
-* Equipment capacity
-* Staff capacity
+- Equipment capacity
+- Staff capacity
 
 ---
 
 ## Requirement Constraints
 
-* Required capability
-* Required skill
+- Required capability
+- Required skill
 
 ---
 
 ## Workflow Constraints
 
-* Operation dependency
-* Intermediate resource dependency
+- Operation dependency
+- Intermediate resource dependency
 
 ---
 
 ## Calendar Constraints
 
-* Shift availability
-* Staff leave
-* Equipment maintenance
+- Shift availability
+- Staff leave
+- Equipment maintenance
 
 ---
 
 ## Qualification Constraints
 
-* FV qualification
+- FV qualification
 
 Violation of any hard constraint produces an infeasible schedule.
 
@@ -171,11 +171,11 @@ Version 1.0 supports weighted objectives.
 
 Examples include:
 
-* Maximize completed demand
-* Maximize equipment utilization
-* Balance staff workload
-* Minimize idle equipment
-* Minimize unnecessary equipment switching
+- Maximize completed demand
+- Maximize equipment utilization
+- Balance staff workload
+- Minimize idle equipment
+- Minimize unnecessary equipment switching
 
 Objectives may be enabled, disabled or weighted through the Solver Profile.
 
@@ -225,15 +225,15 @@ The resulting model is easier to understand, maintain and extend.
 
 Positive
 
-* Clear distinction between hard rules and optimization goals.
-* Easier Solver maintenance.
-* Easier tuning of optimization strategies.
-* Better support for future planning profiles.
+- Clear distinction between hard rules and optimization goals.
+- Easier Solver maintenance.
+- Easier tuning of optimization strategies.
+- Better support for future planning profiles.
 
 Negative
 
-* Additional modeling layer.
-* Slightly more implementation effort.
+- Additional modeling layer.
+- Slightly more implementation effort.
 
 The benefits outweigh the additional complexity.
 
@@ -257,9 +257,9 @@ The benefits outweigh the additional complexity.
 
 # Related Documents
 
-* SAD Chapter 14 — Solver Model
-* ADR-005 — Scheduling Model as an Anti-Corruption Layer
-* ADR-006 — Constraint Model Instead of Direct Solver Constraints
+- SAD Chapter 14 — Solver Model
+- ADR-005 — Scheduling Model as an Anti-Corruption Layer
+- ADR-006 — Constraint Model Instead of Direct Solver Constraints
 
 ---
 
@@ -267,9 +267,9 @@ The benefits outweigh the additional complexity.
 
 Future versions may introduce:
 
-* Optimization Profiles
-* Multi-objective optimization
-* User-defined objective weighting
-* Adaptive optimization strategies
+- Optimization Profiles
+- Multi-objective optimization
+- User-defined objective weighting
+- Adaptive optimization strategies
 
 These enhancements shall extend the Objective Model while preserving the existing Constraint Model.

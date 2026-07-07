@@ -20,10 +20,10 @@ From this point onward, development shall follow incremental milestones.
 
 Each milestone must produce:
 
-* Runnable code
-* Testable functionality
-* Git commits
-* Updated documentation (if required)
+- Runnable code
+- Testable functionality
+- Git commits
+- Updated documentation (if required)
 
 ---
 
@@ -105,13 +105,13 @@ Create a runnable project skeleton.
 
 Deliverables
 
-* Developer CLI
-* Project Generator
-* Backend Skeleton
-* Frontend Skeleton
-* Configuration
-* Logging
-* VS Code Workspace
+- Developer CLI
+- Project Generator
+- Backend Skeleton
+- Frontend Skeleton
+- Configuration
+- Logging
+- VS Code Workspace
 
 Milestones
 
@@ -149,13 +149,13 @@ Build the technical foundation.
 
 Deliverables
 
-* SQLAlchemy
-* Alembic
-* Database Session
-* Repository Framework
-* Query Framework
-* Logging
-* Exception Handling
+- SQLAlchemy
+- Alembic
+- Database Session
+- Repository Framework
+- Query Framework
+- Logging
+- Exception Handling
 
 Exit Criteria
 
@@ -171,11 +171,11 @@ Implement business aggregates.
 
 Deliverables
 
-* Plan
-* Plan Version
-* Planning Context
-* Workflow Instance
-* Operation Instance
+- Plan
+- Plan Version
+- Planning Context
+- Workflow Instance
+- Operation Instance
 
 Exit Criteria
 
@@ -191,12 +191,12 @@ Implement planning and optimization.
 
 Deliverables
 
-* Planning Problem Builder
-* Scheduling Model Builder
-* Constraint Builder
-* Objective Builder
-* Solver Adapter
-* Assignment Builder
+- Planning Problem Builder
+- Scheduling Model Builder
+- Constraint Builder
+- Objective Builder
+- Solver Adapter
+- Assignment Builder
 
 Exit Criteria
 
@@ -212,9 +212,9 @@ Support execution tracking.
 
 Deliverables
 
-* Assignment Execution
-* Execution Record
-* Execution History
+- Assignment Execution
+- Execution Record
+- Execution History
 
 Exit Criteria
 
@@ -230,11 +230,11 @@ Provide operational visibility.
 
 Deliverables
 
-* Dashboard
-* KPI
-* Equipment Utilization
-* Material Forecast
-* Export
+- Dashboard
+- KPI
+- Equipment Utilization
+- Material Forecast
+- Export
 
 Exit Criteria
 
@@ -294,11 +294,11 @@ Only reviewed code may be merged into `main`.
 
 A milestone is complete only if:
 
-* Code builds successfully.
-* Unit tests pass.
-* Documentation is updated.
-* No architectural violations exist.
-* Code review is completed.
+- Code builds successfully.
+- Unit tests pass.
+- Documentation is updated.
+- No architectural violations exist.
+- Code review is completed.
 
 ---
 

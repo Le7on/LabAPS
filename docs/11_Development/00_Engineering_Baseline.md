@@ -150,12 +150,12 @@ Developers working on Planning rarely need to leave the Planning module.
 
 Owns:
 
-* Plan
-* Plan Version
-* Planning Context
-* Workflow Instance
-* Operation Instance
-* Assignment
+- Plan
+- Plan Version
+- Planning Context
+- Workflow Instance
+- Operation Instance
+- Assignment
 
 Planning is the Core Domain.
 
@@ -165,13 +165,13 @@ Planning is the Core Domain.
 
 Owns:
 
-* Staff
-* Equipment
-* Workflow Definition
-* Project
-* Material
-* Capability
-* Skill
+- Staff
+- Equipment
+- Workflow Definition
+- Project
+- Material
+- Capability
+- Skill
 
 Laboratory Definition provides configuration for future planning.
 
@@ -181,8 +181,8 @@ Laboratory Definition provides configuration for future planning.
 
 Owns:
 
-* Execution Record
-* Execution Log
+- Execution Record
+- Execution Log
 
 Execution records actual laboratory activities.
 
@@ -192,10 +192,10 @@ Execution records actual laboratory activities.
 
 Owns:
 
-* Dashboard Queries
-* KPI Queries
-* Forecast Queries
-* Export
+- Dashboard Queries
+- KPI Queries
+- Forecast Queries
+- Export
 
 Reporting is read-only.
 
@@ -207,21 +207,21 @@ Business algorithms are implemented once and shared across modules.
 
 Planning Engines
 
-* PlanningContextBuilder
-* WorkflowGenerator
-* PlanningProblemBuilder
+- PlanningContextBuilder
+- WorkflowGenerator
+- PlanningProblemBuilder
 
 Scheduling Engines
 
-* SchedulingModelBuilder
-* ConstraintBuilder
-* ObjectiveBuilder
-* AssignmentBuilder
+- SchedulingModelBuilder
+- ConstraintBuilder
+- ObjectiveBuilder
+- AssignmentBuilder
 
 Analysis Engines
 
-* MaterialCalculator
-* KPIBuilder
+- MaterialCalculator
+- KPIBuilder
 
 Engines remain stateless.
 
@@ -233,11 +233,11 @@ The Solver remains completely isolated.
 
 Responsibilities
 
-* Variable generation
-* Constraint translation
-* Objective translation
-* Optimization
-* Solution parsing
+- Variable generation
+- Constraint translation
+- Objective translation
+- Optimization
+- Solution parsing
 
 Only the Solver package may import OR-Tools.
 
@@ -249,11 +249,11 @@ Infrastructure contains technical implementation only.
 
 Examples
 
-* SQLAlchemy
-* Alembic
-* Logging
-* Export
-* Persistence
+- SQLAlchemy
+- Alembic
+- Logging
+- Export
+- Persistence
 
 Infrastructure owns no business behaviour.
 
@@ -265,11 +265,11 @@ Frontend is an independent Vue 3 application.
 
 Technology stack
 
-* Vue 3
-* Vite
-* Pinia
-* Vue Router
-* Axios
+- Vue 3
+- Vite
+- Pinia
+- Vue Router
+- Axios
 
 Communication with the backend occurs exclusively through REST APIs.
 
@@ -283,12 +283,12 @@ The `tools` directory contains the Lab APS Developer CLI.
 
 Responsibilities
 
-* Initialize project
-* Generate modules
-* Generate Use Cases
-* Generate Domain Entities
-* Generate API skeletons
-* Verify project health
+- Initialize project
+- Generate modules
+- Generate Use Cases
+- Generate Domain Entities
+- Generate API skeletons
+- Verify project health
 
 The CLI is the only supported project generation mechanism.
 
@@ -330,11 +330,11 @@ Infrastructure
 
 Forbidden
 
-* Domain → Infrastructure
-* Domain → Flask
-* Domain → SQLAlchemy
-* Solver → Repository
-* Frontend → Database
+- Domain → Infrastructure
+- Domain → Flask
+- Domain → SQLAlchemy
+- Solver → Repository
+- Frontend → Database
 
 ---
 
@@ -382,9 +382,9 @@ Git Commit
 
 Every commit shall:
 
-* compile successfully
-* pass existing tests
-* preserve architectural integrity
+- compile successfully
+- pass existing tests
+- preserve architectural integrity
 
 ---
 
@@ -392,14 +392,14 @@ Every commit shall:
 
 The following engineering decisions are frozen.
 
-* Module First architecture
-* Vue 3 + Vite frontend
-* Flask REST backend
-* Shared Planning/Scheduling Engines
-* Isolated Solver
-* Lightweight CQRS (Repository + Query Service)
-* Composition Root with Constructor Injection
-* Domain-driven implementation
+- Module First architecture
+- Vue 3 + Vite frontend
+- Flask REST backend
+- Shared Planning/Scheduling Engines
+- Isolated Solver
+- Lightweight CQRS (Repository + Query Service)
+- Composition Root with Constructor Injection
+- Domain-driven implementation
 
 Future enhancements shall extend this baseline rather than replacing it.
 

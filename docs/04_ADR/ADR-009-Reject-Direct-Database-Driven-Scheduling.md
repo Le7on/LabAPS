@@ -44,11 +44,11 @@ Lab APS explicitly rejects direct database-driven scheduling.
 
 The Solver shall never:
 
-* query the database
-* execute SQL
-* access repositories
-* understand ORM entities
-* understand database relationships
+- query the database
+- execute SQL
+- access repositories
+- understand ORM entities
+- understand database relationships
 
 The Solver shall receive only one Scheduling Model.
 
@@ -144,10 +144,10 @@ A Solver depending on a database cannot be tested independently.
 
 Unit testing would require:
 
-* ORM
-* migrations
-* database setup
-* seed data
+- ORM
+- migrations
+- database setup
+- seed data
 
 By introducing the Scheduling Model, the Solver can be tested entirely in memory.
 
@@ -157,9 +157,9 @@ By introducing the Scheduling Model, the Solver can be tested entirely in memory
 
 Future versions may replace:
 
-* SQLite
-* PostgreSQL
-* SQLAlchemy
+- SQLite
+- PostgreSQL
+- SQLAlchemy
 
 without changing scheduling behaviour.
 
@@ -227,16 +227,16 @@ Persistence and optimization remain independent.
 
 Positive
 
-* Clean architectural boundaries.
-* Independent testing.
-* Easier debugging.
-* Replaceable persistence layer.
-* Replaceable optimization engine.
+- Clean architectural boundaries.
+- Independent testing.
+- Easier debugging.
+- Replaceable persistence layer.
+- Replaceable optimization engine.
 
 Negative
 
-* Additional transformation step.
-* Slight increase in implementation complexity.
+- Additional transformation step.
+- Slight increase in implementation complexity.
 
 The additional complexity is intentional because it significantly improves long-term maintainability.
 
@@ -262,10 +262,10 @@ The additional complexity is intentional because it significantly improves long-
 
 Reject any implementation that:
 
-* executes SQL inside the Solver
-* loads repositories inside the Solver
-* passes ORM entities into the Solver
-* bypasses the Scheduling Model
+- executes SQL inside the Solver
+- loads repositories inside the Solver
+- passes ORM entities into the Solver
+- bypasses the Scheduling Model
 
 Such implementations violate the Lab APS architecture.
 
@@ -273,11 +273,11 @@ Such implementations violate the Lab APS architecture.
 
 # Related Documents
 
-* SAD Chapter 9 — Persistence Architecture
-* SAD Chapter 14 — Solver Model
-* ADR-005 — Scheduling Model as an Anti-Corruption Layer
-* ADR-006 — Constraint Model
-* ADR-008 — Planning Context Uses Snapshots
+- SAD Chapter 9 — Persistence Architecture
+- SAD Chapter 14 — Solver Model
+- ADR-005 — Scheduling Model as an Anti-Corruption Layer
+- ADR-006 — Constraint Model
+- ADR-008 — Planning Context Uses Snapshots
 
 ---
 

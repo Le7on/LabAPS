@@ -18,9 +18,9 @@ This document defines how Business Rules are transformed into scheduling constra
 
 The objective is to completely separate:
 
-* Laboratory business rules
-* Scheduling implementation
-* Solver implementation
+- Laboratory business rules
+- Scheduling implementation
+- Solver implementation
 
 Business Rules shall never be translated directly into OR-Tools constraints.
 
@@ -88,10 +88,10 @@ The Rule Interpreter classifies Business Rules.
 
 It determines:
 
-* Constraint Category
-* Source Object
-* Target Object
-* Parameters
+- Constraint Category
+- Source Object
+- Target Object
+- Parameters
 
 The Rule Interpreter performs classification only.
 
@@ -133,10 +133,10 @@ Constraint Builder converts specifications into solver-independent constraints.
 
 Responsibilities include:
 
-* Resolve references
-* Resolve snapshots
-* Validate completeness
-* Normalize values
+- Resolve references
+- Resolve snapshots
+- Validate completeness
+- Normalize values
 
 Constraint Builder never invokes OR-Tools.
 
@@ -358,11 +358,11 @@ Constraint Builder resolves references before creating the Constraint Model.
 
 Typical resolution steps include:
 
-* Resolve OperationInstance
-* Resolve Equipment Capability
-* Resolve Staff Skill
-* Resolve Planning Context
-* Resolve Calendar Windows
+- Resolve OperationInstance
+- Resolve Equipment Capability
+- Resolve Staff Skill
+- Resolve Planning Context
+- Resolve Calendar Windows
 
 After resolution, the Constraint Model contains only normalized scheduling objects.
 
@@ -374,10 +374,10 @@ Constraint Specifications shall be validated before scheduling.
 
 Validation includes:
 
-* Missing references
-* Invalid parameters
-* Unsupported categories
-* Inconsistent dependencies
+- Missing references
+- Invalid parameters
+- Unsupported categories
+- Inconsistent dependencies
 
 Invalid specifications prevent Scheduling Model creation.
 
@@ -456,8 +456,8 @@ The Constraint Framework is intentionally generic.
 
 Future laboratory rules should be introduced by:
 
-* adding new Business Rules,
-* mapping them to existing Constraint Categories,
-* extending Constraint Specifications where necessary.
+- adding new Business Rules,
+- mapping them to existing Constraint Categories,
+- extending Constraint Specifications where necessary.
 
 The framework itself should evolve slowly, while Business Rules may evolve continuously with laboratory operations.

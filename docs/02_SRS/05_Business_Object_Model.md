@@ -20,11 +20,11 @@ Business Objects represent the fundamental concepts of the planning domain.
 
 These objects are independent of:
 
-* Database Design
-* REST API
-* User Interface
-* OR-Tools
-* Programming Language
+- Database Design
+- REST API
+- User Interface
+- OR-Tools
+- Programming Language
 
 Every subsequent design artifact shall derive from this model.
 
@@ -119,18 +119,18 @@ Archived
 
 A Plan is responsible for
 
-* Planning Horizon
-* Demand
-* Workflow Generation
-* Scheduling Result
-* Material Forecast
-* Planning KPI
+- Planning Horizon
+- Demand
+- Workflow Generation
+- Scheduling Result
+- Material Forecast
+- Planning KPI
 
 A Plan is NOT responsible for
 
-* Equipment Configuration
-* Workflow Definition
-* User Management
+- Equipment Configuration
+- Workflow Definition
+- User Management
 
 ---
 

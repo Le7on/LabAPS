@@ -26,12 +26,12 @@ It serves as the implementation blueprint for the Python project.
 
 The runtime architecture shall satisfy the following goals.
 
-* Clear startup sequence
-* Dependency isolation
-* Testability
-* Replaceable infrastructure
-* Simple deployment
-* Minimal framework coupling
+- Clear startup sequence
+- Dependency isolation
+- Testability
+- Replaceable infrastructure
+- Simple deployment
+- Minimal framework coupling
 
 ---
 
@@ -85,12 +85,12 @@ The Application Factory creates the runtime environment.
 
 Responsibilities include:
 
-* Load configuration
-* Initialize Flask
-* Initialize SQLAlchemy
-* Register Blueprints
-* Register global error handlers
-* Register dependency container
+- Load configuration
+- Initialize Flask
+- Initialize SQLAlchemy
+- Register Blueprints
+- Register global error handlers
+- Register dependency container
 
 Business logic shall never exist inside the Application Factory.
 
@@ -171,10 +171,10 @@ Repositories are created during application startup.
 
 Examples
 
-* PlanRepository
-* StaffRepository
-* EquipmentRepository
-* WorkflowDefinitionRepository
+- PlanRepository
+- StaffRepository
+- EquipmentRepository
+- WorkflowDefinitionRepository
 
 Repositories are shared by Application Use Cases through dependency injection.
 
@@ -214,9 +214,9 @@ Engines are stateless and reusable.
 
 After initialization completes:
 
-* Flask REST API starts.
-* PyWebView loads the local web application.
-* The user enters through the Dashboard.
+- Flask REST API starts.
+- PyWebView loads the local web application.
+- The user enters through the Dashboard.
 
 The Presentation Layer never initializes business services directly.
 

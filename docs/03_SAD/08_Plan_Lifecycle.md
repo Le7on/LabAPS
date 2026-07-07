@@ -18,10 +18,10 @@ This document defines the lifecycle of a Plan.
 
 The lifecycle specifies:
 
-* Valid states
-* State transitions
-* Allowed operations
-* Ownership of each transition
+- Valid states
+- State transitions
+- Allowed operations
+- Ownership of each transition
 
 The lifecycle guarantees that every Plan follows the same business process.
 
@@ -70,9 +70,9 @@ Initial planning stage.
 
 Characteristics
 
-* Demand may be edited.
-* Planning Context may be regenerated.
-* Workflow Instances may be regenerated.
+- Demand may be edited.
+- Planning Context may be regenerated.
+- Workflow Instances may be regenerated.
 
 Assignments do not yet exist.
 
@@ -86,11 +86,11 @@ All planning prerequisites have passed validation.
 
 Validation includes:
 
-* Staff availability
-* Equipment availability
-* Workflow completeness
-* Calendar
-* Qualification
+- Staff availability
+- Equipment availability
+- Workflow completeness
+- Calendar
+- Qualification
 
 The Plan is ready for scheduling.
 
@@ -118,9 +118,9 @@ Planner has reviewed the generated schedule.
 
 The review includes:
 
-* Resource allocation
-* Material forecast
-* Planning warnings
+- Resource allocation
+- Material forecast
+- Planning warnings
 
 The Plan is awaiting publication.
 
@@ -134,9 +134,9 @@ The Plan becomes the official execution plan.
 
 Characteristics
 
-* Assignments are frozen.
-* Workflow structure cannot change.
-* Demand cannot change.
+- Assignments are frozen.
+- Workflow structure cannot change.
+- Demand cannot change.
 
 Execution may begin.
 
@@ -216,14 +216,14 @@ Replanning is handled through Plan Versioning.
 
 | Operation         | Draft | Validated | Scheduled | Reviewed | Published | Executing | Completed |
 | ----------------- | :---: | :-------: | :-------: | :------: | :-------: | :-------: | :-------: |
-| Edit Demand       |   ✓   |     ✓     |     ✗     |     ✗    |     ✗     |     ✗     |     ✗     |
-| Validate          |   ✓   |     ✓     |     ✗     |     ✗    |     ✗     |     ✗     |     ✗     |
-| Generate Workflow |   ✓   |     ✓     |     ✗     |     ✗    |     ✗     |     ✗     |     ✗     |
-| Run Solver        |   ✓   |     ✓     |     ✓     |     ✓    |     ✗     |     ✗     |     ✗     |
-| Review Result     |   ✗   |     ✗     |     ✓     |     ✓    |     ✗     |     ✗     |     ✗     |
-| Publish           |   ✗   |     ✗     |     ✗     |     ✓    |     ✗     |     ✗     |     ✗     |
-| Update Execution  |   ✗   |     ✗     |     ✗     |     ✗    |     ✓     |     ✓     |     ✗     |
-| Archive           |   ✗   |     ✗     |     ✗     |     ✗    |     ✗     |     ✓     |     ✓     |
+| Edit Demand       |   ✓   |     ✓     |     ✗     |    ✗     |     ✗     |     ✗     |     ✗     |
+| Validate          |   ✓   |     ✓     |     ✗     |    ✗     |     ✗     |     ✗     |     ✗     |
+| Generate Workflow |   ✓   |     ✓     |     ✗     |    ✗     |     ✗     |     ✗     |     ✗     |
+| Run Solver        |   ✓   |     ✓     |     ✓     |    ✓     |     ✗     |     ✗     |     ✗     |
+| Review Result     |   ✗   |     ✗     |     ✓     |    ✓     |     ✗     |     ✗     |     ✗     |
+| Publish           |   ✗   |     ✗     |     ✗     |    ✓     |     ✗     |     ✗     |     ✗     |
+| Update Execution  |   ✗   |     ✗     |     ✗     |    ✗     |     ✓     |     ✓     |     ✗     |
+| Archive           |   ✗   |     ✗     |     ✗     |    ✗     |     ✗     |     ✓     |     ✓     |
 
 ---
 
@@ -243,9 +243,9 @@ Week 32
 
 Rules
 
-* Only one version may be Published.
-* Older versions remain available.
-* Versions are immutable after publication.
+- Only one version may be Published.
+- Older versions remain available.
+- Versions are immutable after publication.
 
 ---
 
@@ -306,14 +306,14 @@ The original version remains unchanged.
 
 The following business events are generated during the lifecycle.
 
-* PlanCreated
-* PlanValidated
-* ScheduleGenerated
-* PlanReviewed
-* PlanPublished
-* ExecutionStarted
-* PlanCompleted
-* PlanArchived
+- PlanCreated
+- PlanValidated
+- ScheduleGenerated
+- PlanReviewed
+- PlanPublished
+- ExecutionStarted
+- PlanCompleted
+- PlanArchived
 
 Version 1.0 records these events for audit purposes.
 

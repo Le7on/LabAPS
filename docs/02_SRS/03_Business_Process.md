@@ -20,12 +20,12 @@ It describes how a production plan is created, reviewed, published and executed.
 
 The business process described here serves as the foundation for:
 
-* Planning Engine
-* Workflow Engine
-* Scheduling Engine
-* User Interface
-* Database Design
-* REST API
+- Planning Engine
+- Workflow Engine
+- Scheduling Engine
+- User Interface
+- Database Design
+- REST API
 
 ---
 
@@ -75,10 +75,10 @@ Principal Investigator
 
 Input
 
-* Planning Horizon
-* Required Projects
-* Required Run Quantity
-* Priority (Optional)
+- Planning Horizon
+- Required Projects
+- Required Run Quantity
+- Priority (Optional)
 
 Output
 
@@ -107,9 +107,9 @@ Create a new production plan.
 
 Input
 
-* Planning Horizon
-* Demand
-* Planning Calendar
+- Planning Horizon
+- Demand
+- Planning Calendar
 
 Output
 
@@ -139,22 +139,22 @@ Validation includes
 
 ### Calendar
 
-* Working Days
-* Holidays
-* Shift Definitions
+- Working Days
+- Holidays
+- Shift Definitions
 
 ### Staff
 
-* Active Staff
-* Leave
-* Skills
+- Active Staff
+- Leave
+- Skills
 
 ### Equipment
 
-* Equipment Status
-* Maintenance
-* Capability
-* FV Qualification
+- Equipment Status
+- Maintenance
+- Capability
+- FV Qualification
 
 Validation failures must be reported before scheduling.
 
@@ -234,11 +234,11 @@ Planning Engine converts Operations into a scheduling model.
 
 The Scheduling Engine generates:
 
-* Scheduling Variables
-* Resource Constraints
-* Dependency Constraints
-* Calendar Constraints
-* Optimization Objectives
+- Scheduling Variables
+- Resource Constraints
+- Dependency Constraints
+- Calendar Constraints
+- Optimization Objectives
 
 The Scheduling Engine remains independent of laboratory business logic.
 
@@ -250,9 +250,9 @@ Scheduling Engine invokes the Solver.
 
 Inputs
 
-* Operations
-* Resources
-* Constraints
+- Operations
+- Resources
+- Constraints
 
 Outputs
 
@@ -260,10 +260,10 @@ Assignments
 
 Each Assignment contains
 
-* Operation
-* Equipment
-* Staff
-* Shift
+- Operation
+- Equipment
+- Staff
+- Shift
 
 ---
 
@@ -275,9 +275,9 @@ Material Calculator estimates material consumption.
 
 Outputs
 
-* Daily Consumption
-* Weekly Consumption
-* Material Summary
+- Daily Consumption
+- Weekly Consumption
+- Material Summary
 
 Inventory is not modified.
 
@@ -321,11 +321,11 @@ Shortage
 
 Production Laboratory Manager reviews:
 
-* Schedule
-* Equipment Utilization
-* Staff Allocation
-* Material Forecast
-* Planning Warnings
+- Schedule
+- Equipment Utilization
+- Staff Allocation
+- Material Forecast
+- Planning Warnings
 
 If necessary,
 
@@ -353,10 +353,10 @@ Execution status is recorded.
 
 Examples
 
-* Not Started
-* Running
-* Completed
-* Failed
+- Not Started
+- Running
+- Completed
+- Failed
 
 Version 1.0 records execution status only.
 
@@ -435,10 +435,10 @@ Production changes may require replanning.
 
 Examples
 
-* PI changes production demand
-* Equipment failure
-* Staff leave
-* Equipment maintenance
+- PI changes production demand
+- Equipment failure
+- Staff leave
+- Equipment maintenance
 
 Lab APS supports recalculating Draft or Reviewed Plans.
 
@@ -482,11 +482,11 @@ Historical versions remain available.
 
 Responsible for
 
-* Production Demand
+- Production Demand
 
 Not responsible for
 
-* Scheduling
+- Scheduling
 
 ---
 
@@ -494,10 +494,10 @@ Not responsible for
 
 Responsible for
 
-* Planning
-* Scheduling
-* Review
-* Publish
+- Planning
+- Scheduling
+- Review
+- Publish
 
 ---
 
@@ -505,11 +505,11 @@ Responsible for
 
 Responsible for
 
-* Configuration
-* Workflow Templates
-* Equipment
-* Capability
-* Skills
+- Configuration
+- Workflow Templates
+- Equipment
+- Capability
+- Skills
 
 ---
 
@@ -517,7 +517,7 @@ Responsible for
 
 Responsible for
 
-* Execution
+- Execution
 
 ---
 
@@ -525,10 +525,10 @@ Responsible for
 
 Responsible for
 
-* Workflow Generation
-* Schedule Optimization
-* Material Forecast
-* Validation
+- Workflow Generation
+- Schedule Optimization
+- Material Forecast
+- Validation
 
 ---
 
@@ -554,10 +554,10 @@ The business process is designed to support future capabilities without changing
 
 Examples include
 
-* Scenario Planning
-* Multi-week Planning
-* Dynamic Rescheduling
-* AI-assisted Planning
-* Automatic Instrument Integration
+- Scenario Planning
+- Multi-week Planning
+- Dynamic Rescheduling
+- AI-assisted Planning
+- Automatic Instrument Integration
 
 These capabilities extend existing business steps rather than replacing them.

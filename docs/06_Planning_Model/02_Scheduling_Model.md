@@ -64,18 +64,18 @@ The Scheduling Model exists only during optimization.
 
 The Scheduling Model is responsible for:
 
-* Normalizing planning data
-* Preparing optimization objects
-* Holding optimization variables
-* Holding normalized constraints
-* Holding optimization objectives
+- Normalizing planning data
+- Preparing optimization objects
+- Holding optimization variables
+- Holding normalized constraints
+- Holding optimization objectives
 
 The Scheduling Model is NOT responsible for:
 
-* Business validation
-* Workflow generation
-* Database persistence
-* Material calculation
+- Business validation
+- Workflow generation
+- Database persistence
+- Material calculation
 
 ---
 
@@ -107,9 +107,9 @@ The Resource Graph represents all schedulable resources.
 
 Version 1.0 supports:
 
-* Equipment
-* Staff
-* Shift
+- Equipment
+- Staff
+- Shift
 
 Resources contain only scheduling attributes.
 
@@ -145,9 +145,9 @@ Variable Model represents optimization variables.
 
 Typical variables include:
 
-* Assignment Variable
-* Start Variable
-* End Variable
+- Assignment Variable
+- Start Variable
+- End Variable
 
 Variables are created after the Scheduling Model is fully constructed.
 
@@ -161,12 +161,12 @@ Constraint Model contains normalized scheduling constraints.
 
 Categories include:
 
-* Resource Constraints
-* Capability Constraints
-* Qualification Constraints
-* Dependency Constraints
-* Calendar Constraints
-* Policy Constraints
+- Resource Constraints
+- Capability Constraints
+- Qualification Constraints
+- Dependency Constraints
+- Calendar Constraints
+- Policy Constraints
 
 Constraint Model contains scheduling semantics only.
 
@@ -180,9 +180,9 @@ Objective Model defines optimization goals.
 
 Examples
 
-* Maximize completed demand
-* Balance workload
-* Maximize equipment utilization
+- Maximize completed demand
+- Balance workload
+- Maximize equipment utilization
 
 Objective weights originate from the Solver Profile.
 
@@ -196,10 +196,10 @@ The Solver returns a Scheduling Solution.
 
 Scheduling Solution contains:
 
-* Assignment Results
-* Objective Score
-* Solver Runtime
-* Diagnostics
+- Assignment Results
+- Objective Score
+- Solver Runtime
+- Diagnostics
 
 Scheduling Solution contains no Domain Objects.
 

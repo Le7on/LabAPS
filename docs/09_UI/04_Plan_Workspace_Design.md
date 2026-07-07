@@ -28,10 +28,10 @@ This workspace is centered on one **Plan Version**.
 
 The user should always know:
 
-* Which Plan is currently open.
-* Which Plan Version is currently being edited.
-* What planning stage has been completed.
-* What action should be performed next.
+- Which Plan is currently open.
+- Which Plan Version is currently being edited.
+- What planning stage has been completed.
+- What action should be performed next.
 
 The workspace minimizes context switching.
 
@@ -85,17 +85,17 @@ The header always displays the planning identity.
 
 Required information
 
-* Plan Name
-* Planning Horizon
-* Current Version
-* Version Type
-* Plan Status
+- Plan Name
+- Planning Horizon
+- Current Version
+- Version Type
+- Plan Status
 
 Optional information
 
-* Planner
-* Last Updated
-* Solver Profile
+- Planner
+- Last Updated
+- Solver Profile
 
 The header never scrolls.
 
@@ -133,15 +133,15 @@ Define production demand.
 
 Typical information
 
-* Project
-* Quantity
-* Priority
+- Project
+- Quantity
+- Priority
 
 Available actions
 
-* Add Demand
-* Edit Demand
-* Remove Demand
+- Add Demand
+- Edit Demand
+- Remove Demand
 
 Demand editing is allowed only while the Plan Version is editable.
 
@@ -155,9 +155,9 @@ Display generated assignments.
 
 Recommended layout
 
-* Timeline (Gantt)
-* Equipment View
-* Staff View
+- Timeline (Gantt)
+- Equipment View
+- Staff View
 
 Users may switch between views without leaving the workspace.
 
@@ -173,10 +173,10 @@ Display expected material consumption.
 
 Typical information
 
-* Material Summary
-* Daily Consumption
-* Weekly Consumption
-* Inventory Warnings (if available)
+- Material Summary
+- Daily Consumption
+- Weekly Consumption
+- Inventory Warnings (if available)
 
 Forecast is read-only.
 
@@ -190,10 +190,10 @@ Evaluate planning quality.
 
 Recommended metrics
 
-* Demand Completion
-* Equipment Utilization
-* Staff Utilization
-* Solver Runtime
+- Demand Completion
+- Equipment Utilization
+- Staff Utilization
+- Solver Runtime
 
 KPIs are regenerated after every scheduling execution.
 
@@ -207,17 +207,17 @@ Manage Plan Versions.
 
 Typical information
 
-* Version Number
-* Version Type
-* Status
-* Created Time
-* Comment
+- Version Number
+- Version Type
+- Status
+- Created Time
+- Comment
 
 Available actions
 
-* Create Version
-* Compare Version
-* Publish Version
+- Create Version
+- Compare Version
+- Publish Version
 
 Historical versions remain read-only.
 
@@ -231,10 +231,10 @@ Display the planning history.
 
 Examples
 
-* Version Created
-* Schedule Generated
-* Published
-* Archived
+- Version Created
+- Schedule Generated
+- Published
+- Archived
 
 Activity provides audit visibility.
 
@@ -248,17 +248,17 @@ Warnings remain visible regardless of the active tab.
 
 Typical warnings
 
-* No feasible schedule
-* Material shortage
-* Missing capability
-* Missing qualification
-* Calendar conflict
+- No feasible schedule
+- Material shortage
+- Missing capability
+- Missing qualification
+- Calendar conflict
 
 Warnings are categorized as:
 
-* Information
-* Warning
-* Blocking Error
+- Information
+- Warning
+- Blocking Error
 
 Blocking errors prevent publication.
 

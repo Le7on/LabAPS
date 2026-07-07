@@ -97,10 +97,10 @@ application/
 
 Rules
 
-* One file implements one Use Case.
-* No ORM code.
-* No SQL.
-* No OR-Tools.
+- One file implements one Use Case.
+- No ORM code.
+- No SQL.
+- No OR-Tools.
 
 ---
 
@@ -132,26 +132,26 @@ Examples
 
 Aggregates
 
-* Plan
+- Plan
 
 Entities
 
-* PlanVersion
-* WorkflowInstance
-* OperationInstance
-* Assignment
+- PlanVersion
+- WorkflowInstance
+- OperationInstance
+- Assignment
 
 Services
 
-* PlanningContextBuilder
-* WorkflowGenerator
+- PlanningContextBuilder
+- WorkflowGenerator
 
 Rules
 
-* Pure Python only.
-* No Flask.
-* No SQLAlchemy.
-* No OR-Tools.
+- Pure Python only.
+- No Flask.
+- No SQLAlchemy.
+- No OR-Tools.
 
 ---
 
@@ -187,9 +187,9 @@ engines/
 
 Rules
 
-* Stateless.
-* Reusable.
-* No persistence.
+- Stateless.
+- Reusable.
+- No persistence.
 
 ---
 
@@ -215,11 +215,11 @@ solver/
 
 Responsibilities
 
-* Variable generation
-* Constraint translation
-* Objective translation
-* Solver execution
-* Solution parsing
+- Variable generation
+- Constraint translation
+- Objective translation
+- Solver execution
+- Solution parsing
 
 Only this package may import OR-Tools.
 
@@ -247,11 +247,11 @@ infrastructure/
 
 Responsibilities
 
-* SQLAlchemy
-* Alembic
-* File export
-* Logging
-* External integrations
+- SQLAlchemy
+- Alembic
+- File export
+- Logging
+- External integrations
 
 Business logic is prohibited.
 
@@ -275,10 +275,10 @@ api/
 
 Responsibilities
 
-* Request parsing
-* DTO conversion
-* HTTP response
-* Authentication hooks
+- Request parsing
+- DTO conversion
+- HTTP response
+- Authentication hooks
 
 No business logic.
 
@@ -306,10 +306,10 @@ ui/
 
 Responsibilities
 
-* HTML
-* JavaScript
-* Bootstrap
-* Icons
+- HTML
+- JavaScript
+- Bootstrap
+- Icons
 
 The UI never accesses repositories directly.
 
@@ -341,16 +341,16 @@ Shared contains cross-cutting components only.
 
 Allowed
 
-* Exceptions
-* Enums
-* Value Objects
-* Generic utilities
+- Exceptions
+- Enums
+- Value Objects
+- Generic utilities
 
 Forbidden
 
-* Business entities
-* Use Cases
-* Scheduling logic
+- Business entities
+- Use Cases
+- Scheduling logic
 
 ---
 
@@ -384,11 +384,11 @@ Infrastructure
 
 Forbidden
 
-* Domain → Infrastructure
-* Domain → API
-* Solver → Repository
-* UI → Domain
-* Engines → ORM
+- Domain → Infrastructure
+- Domain → API
+- Solver → Repository
+- UI → Domain
+- Engines → ORM
 
 ---
 
@@ -450,12 +450,12 @@ ConstraintBuilder
 
 Before merging code, verify:
 
-* Is the code placed in the correct package?
-* Does it introduce an illegal dependency?
-* Does it duplicate an existing Engine?
-* Does it violate Aggregate boundaries?
-* Does it expose ORM models outside Infrastructure?
-* Does it introduce business logic outside the Domain?
+- Is the code placed in the correct package?
+- Does it introduce an illegal dependency?
+- Does it duplicate an existing Engine?
+- Does it violate Aggregate boundaries?
+- Does it expose ORM models outside Infrastructure?
+- Does it introduce business logic outside the Domain?
 
 Only code satisfying all checks may be merged.
 

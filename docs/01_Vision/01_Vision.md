@@ -32,10 +32,10 @@ Lab APS is an **Advanced Planning & Scheduling Platform**.
 
 It is **not** intended to replace:
 
-* Laboratory Information Management System (LIMS)
-* Inventory Management System
-* Enterprise Resource Planning (ERP)
-* Instrument Control Software
+- Laboratory Information Management System (LIMS)
+- Inventory Management System
+- Enterprise Resource Planning (ERP)
+- Instrument Control Software
 
 Instead, Lab APS acts as the planning center between laboratory demand and laboratory execution.
 
@@ -60,12 +60,12 @@ Current laboratory planning relies heavily on manual scheduling using spreadshee
 
 As laboratory complexity increases, planning becomes difficult because of:
 
-* Different equipment capabilities
-* Different operator skills
-* Workflow dependencies
-* Instrument qualification requirements
-* Multiple working shifts
-* Increasing production demand
+- Different equipment capabilities
+- Different operator skills
+- Workflow dependencies
+- Instrument qualification requirements
+- Multiple working shifts
+- Increasing production demand
 
 Manual scheduling becomes difficult to maintain and difficult to optimize.
 
@@ -125,12 +125,12 @@ Laboratory configuration must be data-driven rather than hardcoded.
 
 Examples include:
 
-* Staff
-* Equipment
-* Skills
-* Shifts
-* Holidays
-* Workflow Templates
+- Staff
+- Equipment
+- Skills
+- Shifts
+- Holidays
+- Workflow Templates
 
 ---
 
@@ -142,10 +142,10 @@ Each laboratory project shall be represented by a Workflow Template.
 
 Workflow Templates describe:
 
-* Operations
-* Dependencies
-* Intermediate outputs
-* Material requirements
+- Operations
+- Dependencies
+- Intermediate outputs
+- Material requirements
 
 Workflow Templates are reusable.
 
@@ -195,26 +195,26 @@ Instead, material consumption is calculated after scheduling and used for foreca
 
 ## Included in Version 1
 
-* Master Data Management
-* Workflow Template Management
-* Weekly Planning
-* Automatic Scheduling
-* Material Consumption Forecast
-* Gantt Schedule Visualization
-* Excel Export
+- Master Data Management
+- Workflow Template Management
+- Weekly Planning
+- Automatic Scheduling
+- Material Consumption Forecast
+- Gantt Schedule Visualization
+- Excel Export
 
 ---
 
 ## Planned for Future Versions
 
-* Scenario Comparison
-* Dynamic Rescheduling
-* Multi-week Planning
-* KPI Dashboard
-* LIMS Integration
-* Instrument Integration
-* REST API
-* AI-assisted Planning
+- Scenario Comparison
+- Dynamic Rescheduling
+- Multi-week Planning
+- KPI Dashboard
+- LIMS Integration
+- Instrument Integration
+- REST API
+- AI-assisted Planning
 
 ---
 
@@ -292,14 +292,14 @@ Published Plan
 
 The first release of Lab APS will be considered successful if it can:
 
-* Generate a complete weekly laboratory schedule automatically.
-* Allocate operators and equipment correctly.
-* Respect workflow dependencies.
-* Respect equipment capabilities.
-* Respect operator qualifications.
-* Support multiple working shifts.
-* Produce material consumption forecasts.
-* Export the final schedule for laboratory execution.
+- Generate a complete weekly laboratory schedule automatically.
+- Allocate operators and equipment correctly.
+- Respect workflow dependencies.
+- Respect equipment capabilities.
+- Respect operator qualifications.
+- Support multiple working shifts.
+- Produce material consumption forecasts.
+- Export the final schedule for laboratory execution.
 
 ---
 

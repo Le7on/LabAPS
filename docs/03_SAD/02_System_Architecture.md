@@ -26,12 +26,12 @@ This chapter focuses on software architecture rather than business requirements.
 
 The architecture is designed to satisfy the following objectives.
 
-* High Maintainability
-* Clear Separation of Responsibilities
-* Configurable Laboratory Definition
-* Replaceable Scheduling Engine
-* Reproducible Planning
-* Future Extensibility
+- High Maintainability
+- Clear Separation of Responsibilities
+- Configurable Laboratory Definition
+- Replaceable Scheduling Engine
+- Reproducible Planning
+- Future Extensibility
 
 ---
 
@@ -115,19 +115,19 @@ Business modules never communicate directly with OR-Tools.
 
 Responsibilities
 
-* Desktop User Interface
-* User Interaction
-* Data Presentation
-* Input Validation
-* Gantt Chart
-* Dashboard
+- Desktop User Interface
+- User Interaction
+- Data Presentation
+- Input Validation
+- Gantt Chart
+- Dashboard
 
 Technology
 
-* PyWebView
-* HTML5
-* Bootstrap
-* JavaScript
+- PyWebView
+- HTML5
+- Bootstrap
+- JavaScript
 
 The Presentation Layer shall not contain business logic.
 
@@ -139,10 +139,10 @@ The Application Layer coordinates use cases.
 
 Typical responsibilities include:
 
-* Create Plan
-* Generate Schedule
-* Publish Plan
-* Export Report
+- Create Plan
+- Generate Schedule
+- Publish Plan
+- Export Report
 
 Application Services coordinate multiple domain services.
 
@@ -156,19 +156,19 @@ The Domain Layer contains all business knowledge.
 
 The Domain Layer owns:
 
-* Plan
-* Demand
-* Planning Context
-* Workflow Generator
-* Scheduling Policies
-* Material Calculator
+- Plan
+- Demand
+- Planning Context
+- Workflow Generator
+- Scheduling Policies
+- Material Calculator
 
 The Domain Layer is independent of:
 
-* Flask
-* SQLAlchemy
-* OR-Tools
-* Database
+- Flask
+- SQLAlchemy
+- OR-Tools
+- Database
 
 ---
 
@@ -176,11 +176,11 @@ The Domain Layer is independent of:
 
 Responsibilities
 
-* Database
-* ORM
-* Logging
-* File Export
-* Solver Adapter
+- Database
+- ORM
+- Logging
+- File Export
+- Solver Adapter
 
 Infrastructure implements technical details only.
 
@@ -244,11 +244,11 @@ Scheduling is an independent optimization module.
 
 Responsibilities
 
-* Build Variables
-* Build Constraints
-* Define Objectives
-* Invoke Solver
-* Parse Solver Results
+- Build Variables
+- Build Constraints
+- Define Objectives
+- Invoke Solver
+- Parse Solver Results
 
 Input
 
@@ -268,12 +268,12 @@ Master Data maintains stable laboratory definitions.
 
 Objects include
 
-* Staff
-* Equipment
-* Capability
-* Skill
-* Workflow Template
-* Material Definition
+- Staff
+- Equipment
+- Capability
+- Skill
+- Workflow Template
+- Material Definition
 
 Master Data never stores planning results.
 
@@ -285,11 +285,11 @@ Configuration defines operational behavior.
 
 Objects include
 
-* Shift
-* Holiday
-* Leave
-* Maintenance
-* Solver Profile
+- Shift
+- Holiday
+- Leave
+- Maintenance
+- Solver Profile
 
 Configuration data may change frequently.
 
@@ -303,9 +303,9 @@ Execution tracks plan execution.
 
 Responsibilities
 
-* Assignment Status
-* Plan Progress
-* Execution History
+- Assignment Status
+- Plan Progress
+- Execution History
 
 Execution shall never modify scheduling decisions.
 
@@ -325,9 +325,9 @@ Published Schedule
 
 Output
 
-* Daily Consumption
-* Weekly Consumption
-* Material Warning
+- Daily Consumption
+- Weekly Consumption
+- Material Warning
 
 Material Forecast is deterministic.
 
@@ -341,11 +341,11 @@ Reporting consumes information from other modules.
 
 Responsibilities
 
-* Dashboard
-* Schedule Export
-* KPI
-* Utilization Report
-* Material Report
+- Dashboard
+- Schedule Export
+- KPI
+- Utilization Report
+- Material Report
 
 Reporting contains no business rules.
 
@@ -381,10 +381,10 @@ Infrastructure
 
 The following dependencies are prohibited.
 
-* Reporting → Planning
-* Execution → Scheduling
-* Scheduling → Master Data Repository
-* Scheduling → Database
+- Reporting → Planning
+- Execution → Scheduling
+- Scheduling → Master Data Repository
+- Scheduling → Database
 
 ---
 
@@ -446,10 +446,10 @@ Business validation errors shall be detected before scheduling.
 
 Examples
 
-* Missing Workflow Template
-* Missing Equipment Capability
-* Missing Staff Skill
-* Invalid Planning Calendar
+- Missing Workflow Template
+- Missing Equipment Capability
+- Missing Staff Skill
+- Invalid Planning Calendar
 
 Scheduling errors shall only represent optimization failures.
 
@@ -483,12 +483,12 @@ The architecture is designed to support future extensions without changing the c
 
 Future modules may include:
 
-* Scenario Planning
-* Dynamic Rescheduling
-* LIMS Connector
-* Instrument Connector
-* AI Recommendation
-* Notification Center
-* Audit Center
+- Scenario Planning
+- Dynamic Rescheduling
+- LIMS Connector
+- Instrument Connector
+- AI Recommendation
+- Notification Center
+- Audit Center
 
 These modules shall integrate through Application Services without modifying existing domain responsibilities.
