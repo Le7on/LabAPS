@@ -26,6 +26,34 @@ class PlanRepository:
     def add(self, plan: Plan) -> None:
         self.session.add(self._to_orm(plan))
 
+    def save(self, plan: Plan) -> None:
+        """Persist changes to an existing aggregate (e.g. a new version).
+
+        Loads the aggregate root and syncs its owned children, honoring the rule
+        that child entities are never updated directly.
+        """
+
+        orm = self.session.get(PlanORM, plan.id)
+        if orm is None:
+            self.session.add(self._to_orm(plan))
+            return
+
+        orm.name = plan.name
+        orm.description = plan.description
+        orm.status = plan.status.value
+
+        existing_ids = {v.id for v in orm.versions}
+        for version in plan.versions:
+            if version.id not in existing_ids:
+                orm.versions.append(
+                    PlanVersionORM(
+                        id=version.id,
+                        version_number=version.version_number,
+                        version_type=version.version_type.value,
+                        status=version.status.value,
+                    )
+                )
+
     def get(self, plan_id: str) -> Plan | None:
         orm = self.session.get(PlanORM, plan_id)
         return self._to_domain(orm) if orm else None

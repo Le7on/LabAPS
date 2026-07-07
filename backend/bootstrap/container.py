@@ -11,19 +11,23 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from backend.config.settings import AppConfig
+from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.infrastructure.persistence.database import Database
+from backend.solver.adapter.ortools_solver_adapter import ORToolsSolverAdapter
 
 
 @dataclass(slots=True)
 class Container:
     """Holds the assembled application dependencies.
 
-    Later phases extend this with engines and additional repositories/use cases.
-    The database and its session factory are constructed once and shared.
+    The database/session factory and the (stateless) scheduling engine are
+    constructed once and shared. Later phases extend this with additional
+    repositories and use cases.
     """
 
     config: AppConfig
     database: Database
+    scheduling_engine: SchedulingEngine
 
     @property
     def session_factory(self):
@@ -35,4 +39,11 @@ def build_container(config: AppConfig) -> Container:
 
     database = Database(config.database.url)
 
-    return Container(config=config, database=database)
+    # Stateless scheduling engine with the OR-Tools solver adapter injected.
+    scheduling_engine = SchedulingEngine(solver_adapter=ORToolsSolverAdapter())
+
+    return Container(
+        config=config,
+        database=database,
+        scheduling_engine=scheduling_engine,
+    )
