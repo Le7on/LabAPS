@@ -9,7 +9,12 @@ import {
   reviewVersion,
   scheduleFromWorkflow,
 } from '../api/plans'
-import { completeAssignment, startAssignment } from '../api/executions'
+import {
+  cancelAssignment,
+  completeAssignment,
+  failAssignment,
+  startAssignment,
+} from '../api/executions'
 
 const plans = ref([])
 const workflows = ref([])
@@ -79,6 +84,20 @@ async function complete(id) {
   await run(() => completeAssignment(id), 'Completed')
   await refreshAssignments()
 }
+
+async function fail(id) {
+  const reason = window.prompt('Failure reason?')
+  if (!reason) return
+  await run(() => failAssignment(id, reason), 'Failed')
+  await refreshAssignments()
+}
+
+async function cancel(id) {
+  const reason = window.prompt('Cancellation reason?')
+  if (!reason) return
+  await run(() => cancelAssignment(id, reason), 'Cancelled')
+  await refreshAssignments()
+}
 </script>
 
 <template>
@@ -122,8 +141,14 @@ async function complete(id) {
           <td>{{ a.staffId || '—' }}</td>
           <td>{{ a.status }}</td>
           <td>
-            <button v-if="a.status === 'ready'" @click="start(a.id)">Start</button>
-            <button v-else-if="a.status === 'running'" @click="complete(a.id)">Complete</button>
+            <template v-if="a.status === 'ready'">
+              <button @click="start(a.id)">Start</button>
+              <button @click="cancel(a.id)">Cancel</button>
+            </template>
+            <template v-else-if="a.status === 'running'">
+              <button @click="complete(a.id)">Complete</button>
+              <button @click="fail(a.id)">Fail</button>
+            </template>
             <span v-else>—</span>
           </td>
         </tr>
