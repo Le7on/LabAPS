@@ -26,4 +26,5 @@ class AssignmentORM(BaseEntity):
     staff_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
     planned_start: Mapped[int] = mapped_column(Integer)
     planned_end: Mapped[int] = mapped_column(Integer)
-    status: Mapped[str] = mapped_column(String(20), default="planned")
+    status: Mapped[str] = mapped_column(String(20), default="pending")
+    reason: Mapped[str | None] = mapped_column(String(500), nullable=True)

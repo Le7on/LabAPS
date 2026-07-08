@@ -35,9 +35,13 @@ class _PlanVersionTransitionUseCase:
 
             version = getattr(plan, self._action)(version_id)
             uow.plans.save(plan)
+            self._after_transition(uow, version_id)
             result = _version_dict(plan_id, version)
 
         return result
+
+    def _after_transition(self, uow, version_id: str) -> None:
+        """Hook for extra work in the same transaction (overridden as needed)."""
 
 
 class ReviewPlanVersionUseCase(_PlanVersionTransitionUseCase):
@@ -46,6 +50,10 @@ class ReviewPlanVersionUseCase(_PlanVersionTransitionUseCase):
 
 class PublishPlanVersionUseCase(_PlanVersionTransitionUseCase):
     _action = "publish_version"
+
+    def _after_transition(self, uow, version_id: str) -> None:
+        # BR-AS-002: publishing makes the version's assignments executable.
+        uow.assignments.mark_version_ready(version_id)
 
 
 class ArchivePlanVersionUseCase(_PlanVersionTransitionUseCase):

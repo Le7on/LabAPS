@@ -142,7 +142,8 @@ def test_assignments_are_persisted_and_retrievable(client):
     assert body["meta"]["total"] == 1
     assignment = body["data"][0]
     assert assignment["operationId"]
-    assert assignment["status"] == "planned"
+    # Newly scheduled assignments are Pending until the version is published.
+    assert assignment["status"] == "pending"
     assert assignment["end"] == 3
 
 

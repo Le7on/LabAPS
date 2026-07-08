@@ -125,6 +125,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M6.2_Frontend_Laboratory_Views.md](12_Development_Log/M6.2_Frontend_Laboratory_Views.md) — M6.2 frontend laboratory views.
 - [12_Development_Log/M6.3_Frontend_Dashboard_View.md](12_Development_Log/M6.3_Frontend_Dashboard_View.md) — M6.3 frontend dashboard view.
 - [12_Development_Log/M8.1_Reporting_Dashboard.md](12_Development_Log/M8.1_Reporting_Dashboard.md) — M8.1 reporting dashboard.
+- [12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md](12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md) — M9.1 execution assignment lifecycle.
 - [12_Development_Log/M7.1_API_Response_Envelope.md](12_Development_Log/M7.1_API_Response_Envelope.md) — M7.1 API response envelope.
 - [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md) — session index across milestones.
 - [12_Development_Log/Documentation_Improvement_Plan.md](12_Development_Log/Documentation_Improvement_Plan.md) — current documentation improvement plan.
