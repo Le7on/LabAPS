@@ -8,6 +8,8 @@
       <h1>Lab APS</h1>
       <nav>
         <RouterLink to="/plans">Plans</RouterLink>
+        <RouterLink to="/equipment">Equipment</RouterLink>
+        <RouterLink to="/staff">Staff</RouterLink>
       </nav>
     </header>
     <main class="app-main">

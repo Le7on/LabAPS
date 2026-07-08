@@ -121,6 +121,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M5.1_Laboratory_Equipment.md](12_Development_Log/M5.1_Laboratory_Equipment.md) — M5.1 laboratory equipment.
 - [12_Development_Log/M5.2_Staff_and_Workflow_Definition.md](12_Development_Log/M5.2_Staff_and_Workflow_Definition.md) — M5.2 staff and workflow definition.
 - [12_Development_Log/M6.1_Frontend_Plans_View.md](12_Development_Log/M6.1_Frontend_Plans_View.md) — M6.1 frontend plans view.
+- [12_Development_Log/M6.2_Frontend_Laboratory_Views.md](12_Development_Log/M6.2_Frontend_Laboratory_Views.md) — M6.2 frontend laboratory views.
 - [12_Development_Log/M7.1_API_Response_Envelope.md](12_Development_Log/M7.1_API_Response_Envelope.md) — M7.1 API response envelope.
 - [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md) — session index across milestones.
 - [12_Development_Log/Documentation_Improvement_Plan.md](12_Development_Log/Documentation_Improvement_Plan.md) — current documentation improvement plan.
