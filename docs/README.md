@@ -109,7 +109,15 @@ This directory contains the architecture, requirements, implementation guidance,
 - [11_Development/Developer_Onboarding.md](11_Development/Developer_Onboarding.md) — contributor onboarding guide.
 - [11_Development/Testing_and_Validation_Guide.md](11_Development/Testing_and_Validation_Guide.md) — testing and validation guidance.
 - [11_Development/Deployment_and_Operations_Guide.md](11_Development/Deployment_and_Operations_Guide.md) — deployment and operations guidance.
-- [12_Development_Log/M1.1_Project_Bootstrap.md](12_Development_Log/M1.1_Project_Bootstrap.md) — milestone log.
+- [12_Development_Log/M1.1_Project_Bootstrap.md](12_Development_Log/M1.1_Project_Bootstrap.md) — M1.1 project bootstrap.
+- [12_Development_Log/M1.2_Backend_Framework.md](12_Development_Log/M1.2_Backend_Framework.md) — M1.2 backend framework.
+- [12_Development_Log/M2.1_Infrastructure.md](12_Development_Log/M2.1_Infrastructure.md) — M2.1 infrastructure.
+- [12_Development_Log/M3.1_Planning_Domain.md](12_Development_Log/M3.1_Planning_Domain.md) — M3.1 planning domain.
+- [12_Development_Log/M4.1_Scheduling_Engine.md](12_Development_Log/M4.1_Scheduling_Engine.md) — M4.1 scheduling engine.
+- [12_Development_Log/M5.1_Laboratory_Equipment.md](12_Development_Log/M5.1_Laboratory_Equipment.md) — M5.1 laboratory equipment.
+- [12_Development_Log/M6.1_Frontend_Plans_View.md](12_Development_Log/M6.1_Frontend_Plans_View.md) — M6.1 frontend plans view.
+- [12_Development_Log/M7.1_API_Response_Envelope.md](12_Development_Log/M7.1_API_Response_Envelope.md) — M7.1 API response envelope.
+- [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md) — session index across milestones.
 - [12_Development_Log/Documentation_Improvement_Plan.md](12_Development_Log/Documentation_Improvement_Plan.md) — current documentation improvement plan.
 
 ## Recommended Reading Order

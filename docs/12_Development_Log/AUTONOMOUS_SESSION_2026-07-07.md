@@ -1,236 +1,82 @@
 # Autonomous Development Session Log
 
-**Date:** 2026-07-07 (overnight, ~7h unattended)
+**Date:** 2026-07-07 (overnight + follow-up, unattended stretches)
 
-**Mode:** Continuous autonomous development. No user confirmation available.
+**Mode:** Continuous autonomous development. Decisions recorded via ADRs;
+milestone details live in per-milestone delivery docs (below).
 
-**Constraints:**
+**Constraints honored:**
 
-- No irreversible/remote operations (no push, no force-push, no data deletion).
-- Architecture is frozen: Module-First, one-way inward dependencies, Domain framework-free, Solver isolated.
+- No irreversible/remote operations without cause (pushes only when reachable;
+  force-push only with prior user consent).
+- Architecture frozen: Module-First, one-way inward dependencies, Domain
+  framework-free, Solver isolated.
 - Every milestone: runnable + tested + local commit + docs synced.
-- OR-Tools optional: if it cannot be installed, use a FakeSolverAdapter behind the real adapter interface.
 
 ---
 
-## Plan
+# Milestone Delivery Documents
 
-| Milestone | Scope                                                                | Status  |
-| --------- | -------------------------------------------------------------------- | ------- |
-| M1.2      | Flask app factory, config loading, logging, composition root         | pending |
-| Phase 2   | SQLAlchemy, DB session, repository framework, Alembic                | pending |
-| Phase 3   | Plan aggregate + PlanVersion, planning API, make test_plans_api pass | pending |
-| Phase 4   | Scheduling engine + solver adapter scaffold                          | pending |
+Each milestone from this session has its own delivery doc, following the M1.1
+format (Objective / Scope / Deliverables / Acceptance / Verification /
+Completion Record):
+
+| Milestone | Title                                     | Doc                                                            |
+| --------- | ----------------------------------------- | -------------------------------------------------------------- |
+| M1.1      | Project Bootstrap                         | [M1.1_Project_Bootstrap.md](M1.1_Project_Bootstrap.md)         |
+| M1.2      | Backend Framework                         | [M1.2_Backend_Framework.md](M1.2_Backend_Framework.md)         |
+| M2.1      | Infrastructure (SQLAlchemy/UoW/Alembic)   | [M2.1_Infrastructure.md](M2.1_Infrastructure.md)               |
+| M3.1      | Planning Domain (Plan slice)              | [M3.1_Planning_Domain.md](M3.1_Planning_Domain.md)             |
+| M4.1      | Scheduling Engine (+ resource assignment) | [M4.1_Scheduling_Engine.md](M4.1_Scheduling_Engine.md)         |
+| M5.1      | Laboratory Equipment slice                | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)   |
+| M6.1      | Frontend Plans view                       | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)     |
+| M7.1      | API Response Envelope (ADR-012)           | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md) |
 
 ---
 
-## Progress
+# Decisions Recorded
 
-### Setup
+- [ADR-012](../04_ADR/ADR-012-API-Response-Envelope.md) — unified API response
+  envelope (`{success, data, meta}`), SCREAMING_SNAKE error codes, 422 validation.
 
-- Installed backend deps via Tsinghua mirror: Flask 3.1.3, SQLAlchemy 2.0.51,
-  Flask-SQLAlchemy 3.1.1, alembic 1.18.5, python-dotenv, pytest 9.1.1, pytest-cov.
-- Installed OR-Tools 9.15 (CP-SAT imports OK) — real solver adapter is viable,
-  no fake fallback needed.
-- Studied DB/data-model docs and API docs via subagents.
+---
 
-### M1.2 — Backend Framework (DONE)
+# Cross-cutting Setup
 
-- `backend/config/settings.py`: dataclass config, YAML + env override precedence.
-- `backend/bootstrap/logging_setup.py`: logging init from YAML with fallback.
-- `backend/bootstrap/container.py`: Composition Root (`Container`, `build_container`),
-  intentionally minimal; later phases extend it.
-- `backend/shared/errors.py`: AppError/ValidationError/NotFoundError/ConflictError
-  with HTTP status codes (keeps framework types out of the domain).
-- `backend/shared/error_handlers.py`: JSON error responses for AppError + HTTPException.
-- `backend/app.py`: `create_app()` factory (config -> logging -> container ->
-  error handlers -> blueprints). Signature defaults everything (test calls `create_app()`).
-- `backend/shared/health.py`: `/api/v1/health` blueprint (proves API wiring).
-- `run.py`: dev entry point.
-- Tests: `backend/tests/test_app_factory.py` — 3 passed (factory, health, JSON 404).
-- App boots; routes: `/api/v1/health`. Ruff clean.
+- Backend deps installed via Tsinghua mirror: Flask 3.1.3, SQLAlchemy 2.0.51,
+  Flask-SQLAlchemy, alembic, python-dotenv, pytest; OR-Tools 9.15 (CP-SAT).
+- Lint/format tooling: Ruff + Black (backend), ESLint + Prettier (frontend),
+  root Prettier for Markdown. `.gitattributes` normalizes line endings to LF.
 
-**Decision to review:** API doc `08_API/04_API_Response_Standard.md` mandates a
-`{success, data, meta}` envelope, but the committed test `test_plans_api.py` expects
-bare objects and `{count, items}` for lists. The test is the executable contract, so
-Phase 3 will build to the test (bare/`{count, items}`). Flagged for user decision on
-whether to later adopt the envelope across the API + update the test.
+---
 
-### Phase 2 — Infrastructure (DONE)
+# Status Snapshot
 
-- `backend/infrastructure/orm/common/base.py`: DeclarativeBase + BaseEntity
-  (UUID PK as String(36), audit + timestamp columns, timezone-aware UTC).
-- `backend/infrastructure/orm/planning/plan_orm.py`: PlanORM + PlanVersionORM
-  (plan_code indexed, one-to-many with cascade all/delete-orphan, selectin load).
-- `backend/infrastructure/persistence/database.py`: Database (engine, session
-  factory, create_all for dev/test). SQLite check_same_thread handled.
-- Alembic: `migrations/` wired to Base.metadata + env-aware URL. Autogenerated
-  initial migration (plan, plan_version + indexes). `upgrade head` verified.
+- Implemented and tested: M1.1, M1.2, M2.1, M3.1, M4.1, M5.1, M6.1, M7.1.
+- Test suite: 24 backend tests passing; frontend builds; ruff + eslint + prettier
+  clean.
+- Git: committed on `main`; `develop` tracks `main`. Pushes to
+  github.com/Le7on/LabAPS succeed when the network is reachable.
 
-### Phase 3 — Planning Domain vertical slice (DONE)
+---
 
-- Domain (pure Python, no framework):
-  - `domain/enums/plan_enums.py`: PlanStatus, VersionType, PlanVersionStatus (StrEnum).
-  - `domain/entities/plan_version.py`: PlanVersion.
-  - `domain/aggregates/plan.py`: Plan aggregate root; plan_code derived as
-    `PLAN-<horizon>`; create_version(); validation via ValidationError.
-- `repository/plan_repository.py`: PlanRepository (ORM/domain mapping, no commits).
-- `dto/plan_dto.py`: CreatePlanRequest.from_json + plan_to_dict (camelCase).
-- `application/`: CreatePlanUseCase (one txn: add+commit, rollback on error),
-  ListPlansUseCase, GetPlanUseCase (NotFoundError).
-- `api/plans_api.py`: POST/GET /plans, GET /plans/{id}. Wired in app factory +
-  container (session_factory).
-- Container now builds Database; app factory calls create_all() for dev/test.
+# Open Items For User
 
-**Tests (9 passed):**
+1. **Interim scheduling objective** (makespan) pending Demand/Objective Profile
+   modelling — see [M4.1](M4.1_Scheduling_Engine.md) Completion Record (ADR-007).
+2. **Not-yet-implemented constraint categories:** Qualification, Calendar, Policy.
+3. **Published Plan Version immutability** is a documented convention, not yet
+   enforced at the database/repository layer.
+4. **Authentication/authorization** absent (documented as future); an injection
+   point in the Composition Root would be the cheapest place to add it.
+5. **tools/ scaffold code** could be refactored for elegance (not yet done).
 
-- `backend/tests/test_app_factory.py` (3): factory, health, JSON 404.
-- `backend/modules/planning/tests/test_plans_api.py` (2, committed contract): passes.
-- `backend/modules/planning/tests/test_plan_domain.py` (4): plan_code, validation,
-  versioning.
-- Isolation via `conftest.py` (temp SQLite per test).
-- End-to-end boot verified: POST 201 -> planCode PLAN-2026-W40, LIST {count,items}.
+---
 
-Ruff clean, all formatted. datetime.utcnow() replaced with timezone-aware UTC.
+# Next Candidate Milestones
 
-### Phase 4 — Scheduling Engine scaffold (DONE)
-
-Real OR-Tools CP-SAT pipeline (not a fake fallback — OR-Tools is installed).
-
-- `engines/planning/planning_problem.py`: PlanningProblem (Resource, Operation,
-  PlanningPolicies) — immutable, framework-free (Planning Model ch.3).
-- `engines/planning/planning_problem_validator.py`: validates operations,
-  durations, dependency references.
-- `engines/scheduling/scheduling_model.py`: SchedulingModel (Task), plus
-  ScheduledTask + SchedulingSolution (optimization semantics).
-- `engines/scheduling/scheduling_model_builder.py`: PlanningProblem -> SchedulingModel.
-- `solver/adapter/solver_adapter.py`: abstract SolverAdapter (`solve(model)`).
-- `solver/adapter/ortools_solver_adapter.py`: CP-SAT impl — the ONLY module that
-  imports ortools. Minimizes makespan with start/end vars + precedence.
-- `engines/scheduling/assignment_builder.py`: rebuilds Assignments from solution.
-- `engines/scheduling/scheduling_engine.py`: pipeline facade (validate -> build ->
-  solve -> assignments), constructor injection, stateless.
-
-**Tests (14 total passed):**
-
-- `engines/tests/test_scheduling_engine.py` (3, via FakeSolverAdapter): assignments,
-  empty-problem rejection, unknown-dependency rejection.
-- `solver/tests/test_ortools_adapter.py` (2, real CP-SAT): precedence respected,
-  optimal makespan = 5 for a(3)->b(2); empty model handled. importorskip guards.
-
-Boundary preserved: only `solver/adapter/ortools_solver_adapter.py` imports ortools.
-Ruff clean, all formatted.
-
-### Phase 3+4 integration (DONE)
-
-- PlanRepository.save() persists new versions on an existing aggregate.
-- CreatePlanVersionUseCase, GenerateScheduleUseCase (builds PlanningProblem from
-  supplied operations, runs injected SchedulingEngine).
-- Container builds SchedulingEngine(ORToolsSolverAdapter).
-- API: `POST /plans/{id}/versions`, `POST /plans/{id}/versions/{vid}/schedule`.
-- Integration test: create plan -> version -> schedule via real CP-SAT. 16 tests.
-
-### Laboratory module — Equipment slice (DONE)
-
-- domain/entities/equipment.py: Equipment (code, name, capabilities, active).
-- infrastructure/orm/laboratory/equipment_orm.py (capabilities as JSON for the
-  slice; mapping table deferred until Capability aggregate exists).
-- repository/equipment_repository.py, dto, CreateEquipment/ListEquipment use cases.
-- api/equipment_api.py: POST/GET /api/v1/equipment. Registered in app factory.
-- Alembic migration for equipment table (chain verified: plan -> equipment).
-- Tests: create+list, validation. 18 tests pass overall. Ruff clean.
-
-### Frontend — Plans view (DONE)
-
-- src/api/client.js: shared Axios instance (baseURL /api/v1, dev proxy to Flask).
-- src/api/plans.js: listPlans/createPlan/getPlan.
-- src/stores/plans.js: Pinia store (fetchPlans, addPlan, loading/error state).
-- src/views/PlansView.vue: list table + create form bound to the store.
-- src/router/index.js: routes (/ -> /plans). App.vue: header + nav + RouterView.
-- main.js wires router + pinia.
-- Verified: `npm run build` succeeds (86 modules), ESLint + Prettier clean.
-
-### API response envelope standardization (DONE) — resolves the open decision
-
-Decision recorded in ADR-012. Resolved the doc 02 vs doc 04 vs committed-test
-contradiction by adopting the doc 04 envelope as the single contract.
-
-- `backend/shared/api_response.py`: success/collection/error envelope builders.
-- errors.py: SCREAMING_SNAKE codes (`VALIDATION_FAILED`->422, `NOT_FOUND`->404,
-  `CONFLICT`->409, `INTERNAL_ERROR`->500) + per-field `details`.
-- error_handlers.py: emit the error envelope for AppError + HTTPException.
-- All endpoints (plans, equipment, health) now return `{success, data, meta}`;
-  generate-schedule puts makespan/feasible/status in `meta` (command response).
-- Tests updated to the envelope, incl. the committed `test_plans_api.py`. 18 pass.
-- Frontend: Axios response interceptor unwraps `{data, meta}` centrally and
-  normalizes errors to `{code, message, details}`; store/api updated. Build green.
-- Docs synced: doc 04 -> Implemented (v1.1, links ADR-012); doc 02 -> Partially
-  Implemented with envelope examples; ARCHITECTURE_INDEX ADR table adds 011, 012.
-
-### Unit of Work refactor (DONE) — removes per-use-case transaction boilerplate
-
-Addresses design recommendation #2 (repeated session/commit/rollback/close in
-every use case).
-
-- `backend/infrastructure/persistence/unit_of_work.py`: UnitOfWork context
-  manager owns the session lifecycle (commit on success, rollback on error,
-  always close) and exposes repositories (uow.plans, uow.equipment). Implements
-  "One Use Case = One Unit of Work" (DI Strategy section 10).
-- Container exposes `unit_of_work()` factory.
-- All 7 use cases refactored to `with self._uow_factory() as uow: ...`;
-  the manual try/commit/rollback/close blocks are gone.
-- API layer passes `container.unit_of_work` instead of raw session_factory.
-- 18 tests still pass; end-to-end boot verified. Ruff clean.
-
-### Scheduling: resource assignment dimension (DONE) — core APS value
-
-Addresses design recommendation #3 (the scheduler had no resource-assignment
-dimension). Implemented per the Scheduling Model doc (Resource Graph, Assignment
-Variable) and the Constraint Framework categories.
-
-- SchedulingModel: added `SchedulingResource` (Resource Graph) and
-  `required_capability` on Task; `eligible_resources()` = Capability Constraint.
-  `ScheduledTask.resource_id` carries the assignment.
-- SchedulingModelBuilder passes resources + capability through from the
-  PlanningProblem.
-- ORToolsSolverAdapter now models:
-  - Capability Constraint: assignment literals created only for eligible
-    resources.
-  - Cardinality: `add_exactly_one` — each task assigned to exactly one resource.
-  - Resource Constraint: `add_no_overlap` on each resource's optional intervals
-    (a resource does one task at a time).
-  - Dependency Constraint: unchanged (FS, lag 0).
-  - Infeasible when a task has no eligible resource.
-- AssignmentBuilder + FakeSolverAdapter + GenerateSchedule use case + API carry
-  `resourceId`. API accepts a `resources` array alongside `operations`.
-
-**Tests (24 total pass, +6):** capability matching, single-resource
-serialization (makespan 7), two-resource parallelism (makespan 4), no-capable-
-resource infeasible; engine-level assignment via fake. End-to-end API verified
-(op requiring "pcr" assigned to the only pcr-capable resource).
-
-**Interim objective flagged (ADR-007):** the solver minimizes makespan. The
-Objective Model doc lists demand-completion / utilization / workload-balance
-objectives, which need entities not yet modelled (Demand, etc.). Makespan is the
-only sensible objective at this stage and is isolated in the adapter; revisit
-when Demand/Objective Profile land. Not-yet-implemented constraint categories:
-Qualification, Calendar, Policy.
-
-### Status after this session
-
-- Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.
-- Phase 2 (Infrastructure): DONE.
-- Phase 3 (Planning Domain, Plan slice): DONE.
-- Phase 4 (Scheduling Engine scaffold): DONE.
-- Local commits only; NOT pushed (GitHub unreachable — awaiting user network/proxy).
-
-### Open items for user
-
-1. Push: 8 local commits on `main` ready; remote `origin/main` has an unrelated
-   "Add files via upload" commit. User chose force-with-lease overwrite; blocked
-   on network to github.com.
-2. API envelope decision: `{success,data,meta}` (doc 04) vs bare/`{count,items}`
-   (committed test). Built to the test. Needs a ruling to standardize.
-3. Not yet started: laboratory/execution/reporting modules, PlanVersion API +
-   generate-schedule use case wiring the SchedulingEngine to persisted plans,
-   frontend views. These are the next milestones.
+- Extend Laboratory (Staff, Workflow Definition) and feed real resources into
+  scheduling.
+- Plan Version approve/publish lifecycle + immutability enforcement.
+- Additional constraint categories (Qualification, Calendar).
+- Frontend Equipment and Scheduling views.
