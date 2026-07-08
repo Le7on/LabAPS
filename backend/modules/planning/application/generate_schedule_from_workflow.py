@@ -33,17 +33,21 @@ class GenerateScheduleFromWorkflowUseCase:
             workflow = uow.workflow_definitions.get(workflow_definition_id)
             equipment = [e for e in uow.equipment.list() if e.active]
 
-        if plan is None:
-            raise NotFoundError(f"Plan {plan_id} not found")
-        if not any(v.id == version_id for v in plan.versions):
-            raise NotFoundError(f"Plan version {version_id} not found")
-        if workflow is None:
-            raise NotFoundError(f"Workflow definition {workflow_definition_id} not found")
-        if not workflow.operations:
-            raise ValidationError("Workflow definition has no operations")
+            if plan is None:
+                raise NotFoundError(f"Plan {plan_id} not found")
+            plan.get_version(version_id)  # raises NotFoundError if missing
+            if workflow is None:
+                raise NotFoundError(f"Workflow definition {workflow_definition_id} not found")
+            if not workflow.operations:
+                raise ValidationError("Workflow definition has no operations")
 
-        problem = self._build_problem(workflow, equipment)
-        result = self._engine.schedule(problem)
+            problem = self._build_problem(workflow, equipment)
+            result = self._engine.schedule(problem)
+
+            # BR-PV-002: a feasible schedule moves the version to Scheduled.
+            if result.feasible:
+                plan.mark_version_scheduled(version_id)
+                uow.plans.save(plan)
 
         return {
             "planId": plan_id,

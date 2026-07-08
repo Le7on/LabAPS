@@ -22,7 +22,13 @@ class VersionType(StrEnum):
 
 
 class PlanVersionStatus(StrEnum):
-    DRAFT = "draft"
+    """Plan Version lifecycle states (State Model, chapter 3).
+
+    Working -> Scheduled -> Reviewed -> Published -> Archived.
+    """
+
+    WORKING = "working"
     SCHEDULED = "scheduled"
-    APPROVED = "approved"
+    REVIEWED = "reviewed"
     PUBLISHED = "published"
+    ARCHIVED = "archived"

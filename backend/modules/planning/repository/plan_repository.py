@@ -42,9 +42,14 @@ class PlanRepository:
         orm.description = plan.description
         orm.status = plan.status.value
 
-        existing_ids = {v.id for v in orm.versions}
+        existing = {v.id: v for v in orm.versions}
         for version in plan.versions:
-            if version.id not in existing_ids:
+            if version.id in existing:
+                # Sync mutable state on existing versions (e.g. lifecycle status).
+                orm_version = existing[version.id]
+                orm_version.version_type = version.version_type.value
+                orm_version.status = version.status.value
+            else:
                 orm.versions.append(
                     PlanVersionORM(
                         id=version.id,

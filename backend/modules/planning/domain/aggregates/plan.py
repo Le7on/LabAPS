@@ -11,8 +11,12 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
 from backend.modules.planning.domain.entities.plan_version import PlanVersion
-from backend.modules.planning.domain.enums.plan_enums import PlanStatus, VersionType
-from backend.shared.errors import ValidationError
+from backend.modules.planning.domain.enums.plan_enums import (
+    PlanStatus,
+    PlanVersionStatus,
+    VersionType,
+)
+from backend.shared.errors import NotFoundError, ValidationError
 
 PLAN_CODE_PREFIX = "PLAN-"
 
@@ -54,4 +58,37 @@ class Plan:
             version_type=version_type,
         )
         self.versions.append(version)
+        return version
+
+    # -- version lifecycle (aggregate coordinates its children) ----------
+
+    def get_version(self, version_id: str) -> PlanVersion:
+        for version in self.versions:
+            if version.id == version_id:
+                return version
+        raise NotFoundError(f"Plan version {version_id} not found")
+
+    def mark_version_scheduled(self, version_id: str) -> PlanVersion:
+        version = self.get_version(version_id)
+        version.mark_scheduled()
+        return version
+
+    def review_version(self, version_id: str) -> PlanVersion:
+        version = self.get_version(version_id)
+        version.mark_reviewed()
+        return version
+
+    def publish_version(self, version_id: str) -> PlanVersion:
+        """Publish a version, enforcing one published version per plan (BR-PV-004)."""
+        version = self.get_version(version_id)
+        version.publish()
+        # Any previously published version is superseded and archived.
+        for other in self.versions:
+            if other.id != version_id and other.status == PlanVersionStatus.PUBLISHED:
+                other.status = PlanVersionStatus.ARCHIVED
+        return version
+
+    def archive_version(self, version_id: str) -> PlanVersion:
+        version = self.get_version(version_id)
+        version.archive()
         return version

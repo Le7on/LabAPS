@@ -35,14 +35,17 @@ class GenerateScheduleUseCase:
     ) -> dict:
         with self._uow_factory() as uow:
             plan = uow.plans.get(plan_id)
+            if plan is None:
+                raise NotFoundError(f"Plan {plan_id} not found")
+            plan.get_version(version_id)  # raises NotFoundError if missing
 
-        if plan is None:
-            raise NotFoundError(f"Plan {plan_id} not found")
-        if not any(v.id == version_id for v in plan.versions):
-            raise NotFoundError(f"Plan version {version_id} not found")
+            problem = self._build_problem(operations, resources or [])
+            result = self._engine.schedule(problem)
 
-        problem = self._build_problem(operations, resources or [])
-        result = self._engine.schedule(problem)
+            # BR-PV-002: a feasible schedule moves the version to Scheduled.
+            if result.feasible:
+                plan.mark_version_scheduled(version_id)
+                uow.plans.save(plan)
 
         return {
             "planId": plan_id,

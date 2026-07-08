@@ -114,6 +114,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M1.3_Developer_CLI_Generators.md](12_Development_Log/M1.3_Developer_CLI_Generators.md) — M1.3 developer CLI code generators.
 - [12_Development_Log/M2.1_Infrastructure.md](12_Development_Log/M2.1_Infrastructure.md) — M2.1 infrastructure.
 - [12_Development_Log/M3.1_Planning_Domain.md](12_Development_Log/M3.1_Planning_Domain.md) — M3.1 planning domain.
+- [12_Development_Log/M3.2_Plan_Version_Lifecycle.md](12_Development_Log/M3.2_Plan_Version_Lifecycle.md) — M3.2 plan version lifecycle.
 - [12_Development_Log/M4.1_Scheduling_Engine.md](12_Development_Log/M4.1_Scheduling_Engine.md) — M4.1 scheduling engine.
 - [12_Development_Log/M4.2_Schedule_From_Workflow.md](12_Development_Log/M4.2_Schedule_From_Workflow.md) — M4.2 schedule from persisted laboratory data.
 - [12_Development_Log/M5.1_Laboratory_Equipment.md](12_Development_Log/M5.1_Laboratory_Equipment.md) — M5.1 laboratory equipment.

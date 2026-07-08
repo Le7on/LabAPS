@@ -20,6 +20,11 @@ from backend.modules.planning.application.generate_schedule_from_workflow import
 )
 from backend.modules.planning.application.get_plan import GetPlanUseCase
 from backend.modules.planning.application.list_plans import ListPlansUseCase
+from backend.modules.planning.application.plan_version_lifecycle import (
+    ArchivePlanVersionUseCase,
+    PublishPlanVersionUseCase,
+    ReviewPlanVersionUseCase,
+)
 from backend.modules.planning.dto.plan_dto import CreatePlanRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -80,6 +85,24 @@ def generate_schedule(plan_id: str, version_id: str):
         "runtimeStatus": result["status"],
     }
     return api_response.success(result, meta=meta)
+
+
+@plans_bp.post("/plans/<plan_id>/versions/<version_id>/review")
+def review_plan_version(plan_id: str, version_id: str):
+    use_case = ReviewPlanVersionUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, version_id))
+
+
+@plans_bp.post("/plans/<plan_id>/versions/<version_id>/publish")
+def publish_plan_version(plan_id: str, version_id: str):
+    use_case = PublishPlanVersionUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, version_id))
+
+
+@plans_bp.post("/plans/<plan_id>/versions/<version_id>/archive")
+def archive_plan_version(plan_id: str, version_id: str):
+    use_case = ArchivePlanVersionUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, version_id))
 
 
 @plans_bp.post("/plans/<plan_id>/versions/<version_id>/schedule-from-workflow")

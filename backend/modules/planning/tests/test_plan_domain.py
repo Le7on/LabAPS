@@ -39,5 +39,5 @@ def test_create_version_appends_incrementing_versions():
     assert second.version_number == 2
     assert second.version_type == VersionType.SIMULATION
     assert len(plan.versions) == 2
-    assert first.status == PlanVersionStatus.DRAFT
+    assert first.status == PlanVersionStatus.WORKING
     assert not first.is_published

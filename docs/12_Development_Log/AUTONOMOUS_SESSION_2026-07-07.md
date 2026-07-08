@@ -28,6 +28,7 @@ Completion Record):
 | M1.3      | Developer CLI Code Generators             | [M1.3_Developer_CLI_Generators.md](M1.3_Developer_CLI_Generators.md)           |
 | M2.1      | Infrastructure (SQLAlchemy/UoW/Alembic)   | [M2.1_Infrastructure.md](M2.1_Infrastructure.md)                               |
 | M3.1      | Planning Domain (Plan slice)              | [M3.1_Planning_Domain.md](M3.1_Planning_Domain.md)                             |
+| M3.2      | Plan Version Lifecycle                    | [M3.2_Plan_Version_Lifecycle.md](M3.2_Plan_Version_Lifecycle.md)               |
 | M4.1      | Scheduling Engine (+ resource assignment) | [M4.1_Scheduling_Engine.md](M4.1_Scheduling_Engine.md)                         |
 | M4.2      | Schedule From Persisted Laboratory Data   | [M4.2_Schedule_From_Workflow.md](M4.2_Schedule_From_Workflow.md)               |
 | M5.1      | Laboratory Equipment slice                | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                   |
