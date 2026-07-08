@@ -147,6 +147,35 @@ def test_assignments_are_persisted_and_retrievable(client):
     assert assignment["end"] == 3
 
 
+def test_rescheduling_replaces_prior_assignments(client):
+    client.post(
+        "/api/v1/equipment",
+        json={"equipmentCode": "EQ-1", "name": "M", "capabilities": ["pcr"]},
+    )
+    workflow_id = client.post(
+        "/api/v1/workflow-definitions",
+        json={
+            "workflowCode": "WF-4",
+            "name": "PCR",
+            "operations": [
+                {"operationType": "amplify", "duration": 3, "requiredCapability": "pcr"}
+            ],
+        },
+    ).get_json()["data"]["id"]
+    plan_id = client.post(
+        "/api/v1/plans", json={"planningHorizon": "2026-W40", "name": "P"}
+    ).get_json()["data"]["id"]
+    version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
+    base = f"/api/v1/plans/{plan_id}/versions/{version_id}"
+
+    # Schedule twice; the version must still hold exactly one assignment.
+    client.post(f"{base}/schedule-from-workflow", json={"workflowDefinitionId": workflow_id})
+    client.post(f"{base}/schedule-from-workflow", json={"workflowDefinitionId": workflow_id})
+
+    listing = client.get(f"{base}/assignments").get_json()
+    assert listing["meta"]["total"] == 1
+
+
 def test_schedule_from_unknown_workflow_returns_404(client):
     plan_id = client.post(
         "/api/v1/plans", json={"planningHorizon": "2026-W51", "name": "P"}
