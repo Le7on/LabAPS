@@ -8,6 +8,7 @@ This directory contains the architecture, requirements, implementation guidance,
 
 - [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) — project purpose, architecture freeze, and current working rules.
 - [ARCHITECTURE_INDEX.md](ARCHITECTURE_INDEX.md) — high-level index of all architecture documents.
+- [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) — current build state, module map, ADR/state/API traceability.
 - [ARCHITECTURE_LOG.md](ARCHITECTURE_LOG.md) — current milestone and progress snapshot.
 
 ### 2. Requirements and Vision
