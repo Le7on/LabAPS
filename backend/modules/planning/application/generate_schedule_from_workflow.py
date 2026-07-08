@@ -13,6 +13,8 @@ stay module-independent.
 from __future__ import annotations
 
 from backend.engines.planning.planning_problem import (
+    EQUIPMENT,
+    STAFF,
     Operation,
     PlanningPolicies,
     PlanningProblem,
@@ -32,6 +34,7 @@ class GenerateScheduleFromWorkflowUseCase:
             plan = uow.plans.get(plan_id)
             workflow = uow.workflow_definitions.get(workflow_definition_id)
             equipment = [e for e in uow.equipment.list() if e.active]
+            staff = [s for s in uow.staff.list() if s.active]
 
             if plan is None:
                 raise NotFoundError(f"Plan {plan_id} not found")
@@ -41,7 +44,7 @@ class GenerateScheduleFromWorkflowUseCase:
             if not workflow.operations:
                 raise ValidationError("Workflow definition has no operations")
 
-            problem = self._build_problem(workflow, equipment)
+            problem = self._build_problem(workflow, equipment, staff)
             result = self._engine.schedule(problem)
 
             # BR-PV-002: a feasible schedule moves the version to Scheduled.
@@ -62,13 +65,15 @@ class GenerateScheduleFromWorkflowUseCase:
                     "start": a.start,
                     "end": a.end,
                     "resourceId": a.resource_id,
+                    "equipmentId": a.equipment_id,
+                    "staffId": a.staff_id,
                 }
                 for a in result.assignments
             ],
         }
 
     @staticmethod
-    def _build_problem(workflow, equipment) -> PlanningProblem:
+    def _build_problem(workflow, equipment, staff) -> PlanningProblem:
         # Operation identity is the operation definition id; dependencies in the
         # definition reference the same ids.
         operations = tuple(
@@ -76,12 +81,16 @@ class GenerateScheduleFromWorkflowUseCase:
                 identifier=op.id,
                 duration=op.duration,
                 required_capability=op.required_capability,
+                required_skill=op.required_skill,
                 depends_on=tuple(op.depends_on),
             )
             for op in workflow.operations
         )
         resources = tuple(
-            Resource(identifier=e.id, capabilities=frozenset(e.capabilities)) for e in equipment
+            Resource(identifier=e.id, kind=EQUIPMENT, provides=frozenset(e.capabilities))
+            for e in equipment
+        ) + tuple(
+            Resource(identifier=s.id, kind=STAFF, provides=frozenset(s.skills)) for s in staff
         )
         return PlanningProblem(
             operations=operations,

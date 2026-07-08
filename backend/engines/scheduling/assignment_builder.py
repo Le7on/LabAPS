@@ -9,17 +9,28 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from backend.engines.scheduling.scheduling_model import SchedulingModel, SchedulingSolution
+from backend.engines.scheduling.scheduling_model import (
+    EQUIPMENT,
+    STAFF,
+    SchedulingModel,
+    SchedulingSolution,
+)
 
 
 @dataclass(frozen=True, slots=True)
 class Assignment:
-    """A scheduled operation placement (framework-free result object)."""
+    """A scheduled operation placement (framework-free result object).
+
+    ``resource_id`` is the equipment (kept for backward compatibility);
+    ``equipment_id`` and ``staff_id`` expose the per-kind assignments.
+    """
 
     operation_id: str
     start: int
     end: int
     resource_id: str | None = None
+    equipment_id: str | None = None
+    staff_id: str | None = None
 
 
 class AssignmentBuilder:
@@ -28,13 +39,20 @@ class AssignmentBuilder:
             return ()
 
         known = model.task_map()
-        return tuple(
-            Assignment(
-                operation_id=scheduled.identifier,
-                start=scheduled.start,
-                end=scheduled.end,
-                resource_id=scheduled.resource_id,
+        assignments = []
+        for scheduled in solution.scheduled_tasks:
+            if scheduled.identifier not in known:
+                continue
+            equipment_id = scheduled.resource_of(EQUIPMENT)
+            staff_id = scheduled.resource_of(STAFF)
+            assignments.append(
+                Assignment(
+                    operation_id=scheduled.identifier,
+                    start=scheduled.start,
+                    end=scheduled.end,
+                    resource_id=equipment_id or scheduled.resource_id,
+                    equipment_id=equipment_id,
+                    staff_id=staff_id,
+                )
             )
-            for scheduled in solution.scheduled_tasks
-            if scheduled.identifier in known
-        )
+        return tuple(assignments)

@@ -9,22 +9,34 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+EQUIPMENT = "equipment"
+STAFF = "staff"
+
 
 @dataclass(frozen=True, slots=True)
 class Resource:
-    """Available scheduling capacity (equipment or staff)."""
+    """Available scheduling capacity.
+
+    ``kind`` is "equipment" or "staff"; ``provides`` is the resource's capability
+    set (equipment) or skill set (staff).
+    """
 
     identifier: str
-    capabilities: frozenset[str] = frozenset()
+    kind: str = EQUIPMENT
+    provides: frozenset[str] = frozenset()
 
 
 @dataclass(frozen=True, slots=True)
 class Operation:
-    """Executable work to be scheduled."""
+    """Executable work to be scheduled.
+
+    An operation may require a capability (equipment) and/or a skill (staff).
+    """
 
     identifier: str
     duration: int
     required_capability: str | None = None
+    required_skill: str | None = None
     depends_on: tuple[str, ...] = ()
 
 

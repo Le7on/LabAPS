@@ -71,9 +71,9 @@ class ORToolsSolverAdapter(SolverAdapter):
                 if predecessor in ends:
                     cp.add(starts[task.identifier] >= ends[predecessor])
 
-        assignment = self._add_resource_assignment(cp, model, starts, ends, horizon)
+        assignment = self._add_resource_assignment(cp, model, starts, ends)
         if assignment is None:
-            # An operation has no capable resource: the problem is infeasible.
+            # An operation has no eligible resource for a required kind: infeasible.
             return SchedulingSolution(status="infeasible", feasible=False)
 
         makespan = cp.new_int_var(0, horizon, "makespan")
@@ -93,7 +93,7 @@ class ORToolsSolverAdapter(SolverAdapter):
                 identifier=task.identifier,
                 start=solver.value(starts[task.identifier]),
                 end=solver.value(ends[task.identifier]),
-                resource_id=self._resolve_resource(solver, assignment, task.identifier),
+                assignments=self._resolve_assignments(solver, assignment, task.identifier),
             )
             for task in model.tasks
         )
@@ -106,42 +106,60 @@ class ORToolsSolverAdapter(SolverAdapter):
             diagnostics={"wall_time": solver.wall_time},
         )
 
-    def _add_resource_assignment(self, cp, model, starts, ends, horizon):
-        """Add assignment literals + capability + resource no-overlap.
+    def _add_resource_assignment(self, cp, model, starts, ends):
+        """Add per-kind assignment literals, capability/skill matching and
+        resource no-overlap.
 
-        Returns a map ``{task_id: {resource_id: literal}}``, an empty dict when
-        the model has no resources (timing-only scheduling), or ``None`` when a
-        task has no eligible resource (infeasible).
+        For each resource kind present (equipment, staff), a task that requires
+        that kind is assigned exactly one eligible resource, and no resource does
+        two tasks at once. A kind a task does not require is skipped for it.
+
+        Returns a nested map ``{task_id: {kind: {resource_id: literal}}}``, an
+        empty dict when the model has no resources, or ``None`` when a task has a
+        requirement for a kind but no eligible resource (infeasible).
         """
 
         if not model.resources:
             return {}
 
-        assignment: dict[str, dict[str, cp_model.IntVar]] = {}
-        # Collect optional intervals per resource for the no-overlap constraint.
+        assignment: dict[str, dict[str, dict[str, cp_model.IntVar]]] = {}
         per_resource: dict[str, list] = {r.identifier: [] for r in model.resources}
 
         for task in model.tasks:
-            eligible = model.eligible_resources(task)
-            if not eligible:
-                return None
+            task_literals: dict[str, dict[str, cp_model.IntVar]] = {}
 
-            literals: dict[str, cp_model.IntVar] = {}
-            for resource in eligible:
-                present = cp.new_bool_var(f"assign_{task.identifier}_{resource.identifier}")
-                literals[resource.identifier] = present
-                optional = cp.new_optional_interval_var(
-                    starts[task.identifier],
-                    task.duration,
-                    ends[task.identifier],
-                    present,
-                    f"opt_{task.identifier}_{resource.identifier}",
-                )
-                per_resource[resource.identifier].append(optional)
+            for kind in model.kinds():
+                requirement = task.requirement_for(kind)
+                eligible = model.eligible_resources(task, kind)
 
-            # Cardinality: exactly one resource performs the task.
-            cp.add_exactly_one(literals.values())
-            assignment[task.identifier] = literals
+                # Only enforce a kind when the task requires it. If required but
+                # nothing is eligible, the problem is infeasible.
+                if requirement is None and not eligible:
+                    continue
+                if requirement is not None and not eligible:
+                    return None
+                if requirement is None:
+                    continue
+
+                literals: dict[str, cp_model.IntVar] = {}
+                for resource in eligible:
+                    present = cp.new_bool_var(
+                        f"assign_{task.identifier}_{kind}_{resource.identifier}"
+                    )
+                    literals[resource.identifier] = present
+                    optional = cp.new_optional_interval_var(
+                        starts[task.identifier],
+                        task.duration,
+                        ends[task.identifier],
+                        present,
+                        f"opt_{task.identifier}_{kind}_{resource.identifier}",
+                    )
+                    per_resource[resource.identifier].append(optional)
+
+                cp.add_exactly_one(literals.values())
+                task_literals[kind] = literals
+
+            assignment[task.identifier] = task_literals
 
         # Resource: each resource does one task at a time.
         for optional_intervals in per_resource.values():
@@ -151,11 +169,17 @@ class ORToolsSolverAdapter(SolverAdapter):
         return assignment
 
     @staticmethod
-    def _resolve_resource(solver, assignment, task_id):
-        literals = assignment.get(task_id) if assignment else None
-        if not literals:
-            return None
-        for resource_id, present in literals.items():
-            if solver.value(present) == 1:
-                return resource_id
-        return None
+    def _resolve_assignments(solver, assignment, task_id):
+        from backend.engines.scheduling.scheduling_model import ResourceAssignment
+
+        by_kind = assignment.get(task_id) if assignment else None
+        if not by_kind:
+            return ()
+
+        result = []
+        for kind, literals in by_kind.items():
+            for resource_id, present in literals.items():
+                if solver.value(present) == 1:
+                    result.append(ResourceAssignment(kind=kind, resource_id=resource_id))
+                    break
+        return tuple(result)

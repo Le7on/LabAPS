@@ -7,7 +7,7 @@ does not solve.
 
 from __future__ import annotations
 
-from backend.engines.planning.planning_problem import PlanningProblem
+from backend.engines.planning.planning_problem import EQUIPMENT, STAFF, PlanningProblem
 from backend.engines.scheduling.scheduling_model import (
     SchedulingModel,
     SchedulingResource,
@@ -22,14 +22,15 @@ class SchedulingModelBuilder:
                 identifier=op.identifier,
                 duration=op.duration,
                 predecessors=op.depends_on,
-                required_capability=op.required_capability,
+                requirements=self._requirements(op),
             )
             for op in problem.operations
         )
         resources = tuple(
             SchedulingResource(
                 identifier=r.identifier,
-                capabilities=frozenset(r.capabilities),
+                kind=r.kind,
+                provides=frozenset(r.provides),
             )
             for r in problem.resources
         )
@@ -38,3 +39,12 @@ class SchedulingModelBuilder:
             resources=resources,
             horizon=problem.policies.planning_horizon,
         )
+
+    @staticmethod
+    def _requirements(op) -> frozenset[tuple[str, str]]:
+        reqs: set[tuple[str, str]] = set()
+        if op.required_capability is not None:
+            reqs.add((EQUIPMENT, op.required_capability))
+        if op.required_skill is not None:
+            reqs.add((STAFF, op.required_skill))
+        return frozenset(reqs)

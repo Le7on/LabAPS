@@ -21,20 +21,21 @@ Each milestone from this session has its own delivery doc, following the M1.1
 format (Objective / Scope / Deliverables / Acceptance / Verification /
 Completion Record):
 
-| Milestone | Title                                     | Doc                                                                            |
-| --------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| M1.1      | Project Bootstrap                         | [M1.1_Project_Bootstrap.md](M1.1_Project_Bootstrap.md)                         |
-| M1.2      | Backend Framework                         | [M1.2_Backend_Framework.md](M1.2_Backend_Framework.md)                         |
-| M1.3      | Developer CLI Code Generators             | [M1.3_Developer_CLI_Generators.md](M1.3_Developer_CLI_Generators.md)           |
-| M2.1      | Infrastructure (SQLAlchemy/UoW/Alembic)   | [M2.1_Infrastructure.md](M2.1_Infrastructure.md)                               |
-| M3.1      | Planning Domain (Plan slice)              | [M3.1_Planning_Domain.md](M3.1_Planning_Domain.md)                             |
-| M3.2      | Plan Version Lifecycle                    | [M3.2_Plan_Version_Lifecycle.md](M3.2_Plan_Version_Lifecycle.md)               |
-| M4.1      | Scheduling Engine (+ resource assignment) | [M4.1_Scheduling_Engine.md](M4.1_Scheduling_Engine.md)                         |
-| M4.2      | Schedule From Persisted Laboratory Data   | [M4.2_Schedule_From_Workflow.md](M4.2_Schedule_From_Workflow.md)               |
-| M5.1      | Laboratory Equipment slice                | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                   |
-| M5.2      | Staff and Workflow Definition             | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md) |
-| M6.1      | Frontend Plans view                       | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)                     |
-| M7.1      | API Response Envelope (ADR-012)           | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                 |
+| Milestone | Title                                        | Doc                                                                            |
+| --------- | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| M1.1      | Project Bootstrap                            | [M1.1_Project_Bootstrap.md](M1.1_Project_Bootstrap.md)                         |
+| M1.2      | Backend Framework                            | [M1.2_Backend_Framework.md](M1.2_Backend_Framework.md)                         |
+| M1.3      | Developer CLI Code Generators                | [M1.3_Developer_CLI_Generators.md](M1.3_Developer_CLI_Generators.md)           |
+| M2.1      | Infrastructure (SQLAlchemy/UoW/Alembic)      | [M2.1_Infrastructure.md](M2.1_Infrastructure.md)                               |
+| M3.1      | Planning Domain (Plan slice)                 | [M3.1_Planning_Domain.md](M3.1_Planning_Domain.md)                             |
+| M3.2      | Plan Version Lifecycle                       | [M3.2_Plan_Version_Lifecycle.md](M3.2_Plan_Version_Lifecycle.md)               |
+| M4.1      | Scheduling Engine (+ resource assignment)    | [M4.1_Scheduling_Engine.md](M4.1_Scheduling_Engine.md)                         |
+| M4.2      | Schedule From Persisted Laboratory Data      | [M4.2_Schedule_From_Workflow.md](M4.2_Schedule_From_Workflow.md)               |
+| M4.3      | Skill Constraint (Multi-Resource Assignment) | [M4.3_Skill_Constraint.md](M4.3_Skill_Constraint.md)                           |
+| M5.1      | Laboratory Equipment slice                   | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                   |
+| M5.2      | Staff and Workflow Definition                | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md) |
+| M6.1      | Frontend Plans view                          | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)                     |
+| M7.1      | API Response Envelope (ADR-012)              | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                 |
 
 ---
 

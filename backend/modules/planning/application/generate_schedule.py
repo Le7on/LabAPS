@@ -12,6 +12,7 @@ and the Planning Context snapshot.
 from __future__ import annotations
 
 from backend.engines.planning.planning_problem import (
+    EQUIPMENT,
     Operation,
     PlanningPolicies,
     PlanningProblem,
@@ -75,13 +76,15 @@ class GenerateScheduleUseCase:
                 duration=int(op.get("duration", 0)),
                 depends_on=tuple(op.get("dependsOn", ())),
                 required_capability=op.get("requiredCapability"),
+                required_skill=op.get("requiredSkill"),
             )
             for op in operations
         )
         built_resources = tuple(
             Resource(
                 identifier=str(r.get("id")),
-                capabilities=frozenset(r.get("capabilities", [])),
+                kind=r.get("kind", EQUIPMENT),
+                provides=frozenset(r.get("provides", r.get("capabilities", []))),
             )
             for r in resources
         )

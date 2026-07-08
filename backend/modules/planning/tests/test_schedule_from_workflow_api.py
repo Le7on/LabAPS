@@ -67,6 +67,50 @@ def test_schedule_from_workflow_uses_persisted_data(client):
     assert assignment["resourceId"] == eq_b_id
 
 
+def test_schedule_assigns_equipment_and_staff(client):
+    client.post(
+        "/api/v1/equipment",
+        json={"equipmentCode": "EQ-B", "name": "Thermocycler", "capabilities": ["pcr"]},
+    )
+    client.post(
+        "/api/v1/staff",
+        json={"staffCode": "ST-1", "name": "Alice", "skills": ["pcr-operator"]},
+    )
+    eq_id = client.get("/api/v1/equipment").get_json()["data"][0]["id"]
+    st_id = client.get("/api/v1/staff").get_json()["data"][0]["id"]
+
+    workflow_id = client.post(
+        "/api/v1/workflow-definitions",
+        json={
+            "workflowCode": "WF-2",
+            "name": "PCR",
+            "operations": [
+                {
+                    "operationType": "amplify",
+                    "duration": 3,
+                    "requiredCapability": "pcr",
+                    "requiredSkill": "pcr-operator",
+                }
+            ],
+        },
+    ).get_json()["data"]["id"]
+
+    plan_id = client.post(
+        "/api/v1/plans", json={"planningHorizon": "2026-W52", "name": "P"}
+    ).get_json()["data"]["id"]
+    version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
+
+    response = client.post(
+        f"/api/v1/plans/{plan_id}/versions/{version_id}/schedule-from-workflow",
+        json={"workflowDefinitionId": workflow_id},
+    )
+
+    assert response.status_code == 200
+    assignment = response.get_json()["data"]["assignments"][0]
+    assert assignment["equipmentId"] == eq_id
+    assert assignment["staffId"] == st_id
+
+
 def test_schedule_from_unknown_workflow_returns_404(client):
     plan_id = client.post(
         "/api/v1/plans", json={"planningHorizon": "2026-W51", "name": "P"}
