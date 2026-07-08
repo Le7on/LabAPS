@@ -115,6 +115,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M2.1_Infrastructure.md](12_Development_Log/M2.1_Infrastructure.md) — M2.1 infrastructure.
 - [12_Development_Log/M3.1_Planning_Domain.md](12_Development_Log/M3.1_Planning_Domain.md) — M3.1 planning domain.
 - [12_Development_Log/M4.1_Scheduling_Engine.md](12_Development_Log/M4.1_Scheduling_Engine.md) — M4.1 scheduling engine.
+- [12_Development_Log/M4.2_Schedule_From_Workflow.md](12_Development_Log/M4.2_Schedule_From_Workflow.md) — M4.2 schedule from persisted laboratory data.
 - [12_Development_Log/M5.1_Laboratory_Equipment.md](12_Development_Log/M5.1_Laboratory_Equipment.md) — M5.1 laboratory equipment.
 - [12_Development_Log/M5.2_Staff_and_Workflow_Definition.md](12_Development_Log/M5.2_Staff_and_Workflow_Definition.md) — M5.2 staff and workflow definition.
 - [12_Development_Log/M6.1_Frontend_Plans_View.md](12_Development_Log/M6.1_Frontend_Plans_View.md) — M6.1 frontend plans view.
