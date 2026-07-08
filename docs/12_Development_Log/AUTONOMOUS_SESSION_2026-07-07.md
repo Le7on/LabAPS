@@ -36,6 +36,7 @@ Completion Record):
 | M5.2      | Staff and Workflow Definition                | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md) |
 | M6.1      | Frontend Plans view                          | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)                     |
 | M6.2      | Frontend Laboratory Views                    | [M6.2_Frontend_Laboratory_Views.md](M6.2_Frontend_Laboratory_Views.md)         |
+| M6.3      | Frontend Dashboard View                      | [M6.3_Frontend_Dashboard_View.md](M6.3_Frontend_Dashboard_View.md)             |
 | M8.1      | Reporting Dashboard                          | [M8.1_Reporting_Dashboard.md](M8.1_Reporting_Dashboard.md)                     |
 | M7.1      | API Response Envelope (ADR-012)              | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                 |
 
