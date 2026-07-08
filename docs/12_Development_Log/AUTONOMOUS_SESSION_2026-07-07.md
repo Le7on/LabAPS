@@ -54,11 +54,12 @@ Completion Record):
 
 # Status Snapshot
 
-- Implemented and tested: M1.1, M1.2, M2.1, M3.1, M4.1, M5.1, M6.1, M7.1.
-- Test suite: 24 backend tests passing; frontend builds; ruff + eslint + prettier
-  clean.
-- Git: committed on `main`; `develop` tracks `main`. Pushes to
-  github.com/Le7on/LabAPS succeed when the network is reachable.
+- Implemented and tested: M1.1, M1.2, M1.3, M2.1, M3.1, M4.1, M5.1, M5.2, M6.1,
+  M7.1.
+- Test suite: 41 tests passing (backend and tools); frontend builds; ruff,
+  eslint and prettier clean.
+- Git: committed and pushed on `main`; `develop` tracks `main` at the same commit.
+  Pushes to github.com/Le7on/LabAPS succeed when the network is reachable.
 
 ---
 
