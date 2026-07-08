@@ -16,3 +16,11 @@ export function listStaff() {
 export function createStaff(payload) {
   return client.post('/staff', payload).then((r) => r.data)
 }
+
+export function listWorkflowDefinitions() {
+  return client.get('/workflow-definitions')
+}
+
+export function createWorkflowDefinition(payload) {
+  return client.post('/workflow-definitions', payload).then((r) => r.data)
+}

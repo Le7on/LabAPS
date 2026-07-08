@@ -3,6 +3,7 @@ import DashboardView from '../views/DashboardView.vue'
 import PlansView from '../views/PlansView.vue'
 import EquipmentView from '../views/EquipmentView.vue'
 import StaffView from '../views/StaffView.vue'
+import WorkflowDefinitionsView from '../views/WorkflowDefinitionsView.vue'
 
 // Application routes. The Dashboard is the default landing view.
 const routes = [
@@ -11,6 +12,11 @@ const routes = [
   { path: '/plans', name: 'plans', component: PlansView },
   { path: '/equipment', name: 'equipment', component: EquipmentView },
   { path: '/staff', name: 'staff', component: StaffView },
+  {
+    path: '/workflow-definitions',
+    name: 'workflow-definitions',
+    component: WorkflowDefinitionsView,
+  },
 ]
 
 const router = createRouter({

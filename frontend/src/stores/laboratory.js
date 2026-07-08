@@ -1,11 +1,19 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { createEquipment, createStaff, listEquipment, listStaff } from '../api/laboratory'
+import {
+  createEquipment,
+  createStaff,
+  createWorkflowDefinition,
+  listEquipment,
+  listStaff,
+  listWorkflowDefinitions,
+} from '../api/laboratory'
 
-// Client-side state for Laboratory Definition (equipment + staff).
+// Client-side state for Laboratory Definition (equipment, staff, workflows).
 export const useLaboratoryStore = defineStore('laboratory', () => {
   const equipment = ref([])
   const staff = ref([])
+  const workflows = ref([])
   const error = ref(null)
 
   async function fetchEquipment() {
@@ -52,13 +60,38 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     }
   }
 
+  async function fetchWorkflows() {
+    error.value = null
+    try {
+      const { data } = await listWorkflowDefinitions()
+      workflows.value = data
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to load workflow definitions'
+    }
+  }
+
+  async function addWorkflow(payload) {
+    error.value = null
+    try {
+      await createWorkflowDefinition(payload)
+      await fetchWorkflows()
+      return true
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to create workflow definition'
+      return false
+    }
+  }
+
   return {
     equipment,
     staff,
+    workflows,
     error,
     fetchEquipment,
     addEquipment,
     fetchStaff,
     addStaff,
+    fetchWorkflows,
+    addWorkflow,
   }
 })

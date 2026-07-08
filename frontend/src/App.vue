@@ -11,6 +11,7 @@
         <RouterLink to="/plans">Plans</RouterLink>
         <RouterLink to="/equipment">Equipment</RouterLink>
         <RouterLink to="/staff">Staff</RouterLink>
+        <RouterLink to="/workflow-definitions">Workflows</RouterLink>
       </nav>
     </header>
     <main class="app-main">
