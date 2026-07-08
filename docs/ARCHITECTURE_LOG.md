@@ -8,15 +8,20 @@
 
 ## Current Phase
 
-Implementation — Phases 1-4 core scaffolds complete
+Implementation — Phases 1-6 have working slices (backend + frontend)
 
 Status
 
-🟢 In Progress (Bootstrap, Infrastructure, Planning slice, Scheduling engine done)
+🟢 In Progress (Bootstrap, Infrastructure, Planning + lifecycle, Scheduling with
+resource assignment + persistence, Execution + audit, Reporting, and the SPA all
+have first working slices)
 
 Architecture Baseline
 
 Version 1.0 (Frozen)
+
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for the detailed build
+state and traceability.
 
 ---
 

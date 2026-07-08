@@ -35,22 +35,33 @@ The platform focuses on planning rather than laboratory execution.
 
 The Architecture Design Phase is complete and the architecture baseline is frozen.
 
-Implementation has progressed through Phases 1-4 (core scaffolds):
+Implementation has progressed through Phases 1-6 (first working slices across the
+stack):
 
-- Phase 1 – Bootstrap (M1.1) + M1.2 Backend Framework (Flask app factory,
-  config, logging, Composition Root)
-- Phase 2 – Infrastructure (SQLAlchemy, session, repository, Alembic)
-- Phase 3 – Planning Domain (Plan aggregate vertical slice: domain, repository,
-  use cases, REST API)
-- Phase 4 – Scheduling Engine scaffold (PlanningProblem -> SchedulingModel ->
-  OR-Tools CP-SAT SolverAdapter -> AssignmentBuilder)
+- Phase 1 – Bootstrap: developer CLI + code generators, backend framework.
+- Phase 2 – Infrastructure: SQLAlchemy, Unit of Work, Alembic.
+- Phase 3 – Planning Domain: Plan aggregate + Plan Version lifecycle
+  (Working -> Scheduled -> Reviewed -> Published -> Archived, immutability
+  enforced).
+- Phase 4 – Scheduling Engine: OR-Tools CP-SAT with resource assignment
+  (equipment by capability, staff by skill), scheduling from persisted Workflow
+  Definitions, persisted Assignments.
+- Phase 5 – Execution: assignment lifecycle (start/complete/fail/cancel) with an
+  append-only audit trail.
+- Phase 6 – Reporting: dashboard counts + KPI/equipment utilization (read-only
+  query services).
+- Frontend SPA: dashboard, plans, equipment, staff, workflow definitions and an
+  end-to-end scheduling view.
 
-See the session log: [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md).
+For the full build state and traceability, see
+[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md). Per-milestone delivery docs
+and the session index are under
+[12_Development_Log/](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md).
 
 Current focus:
 
-- Wire GenerateSchedule use case to persisted Plan Versions; extend to
-  laboratory/execution/reporting modules and the frontend.
+- Operation Instances, calendar/qualification constraints, a real objective
+  model (once Demand is modelled), and authentication.
 
 ---
 
@@ -237,11 +248,12 @@ Future
 
 # Next Task
 
-Continue with Milestone **M1.2 – Backend Framework**:
+Phases 1-6 have working slices end to end. Candidate next milestones:
 
-- Flask Application Factory (`backend/app.py`)
-- Configuration loading (`backend/config`)
-- Logging initialization
-- Dependency Composition Root
+- Model Operation Instances so Assignments reference persisted instances.
+- Calendar / availability and qualification constraints in the scheduler.
+- A real objective model once Demand is modelled (replacing interim makespan).
+- Authentication / authorization at the Composition Root.
 
-See [11_Development/00_Project_Bootstrap_Plan.md](11_Development/00_Project_Bootstrap_Plan.md) section 14.
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for the current build
+state and known gaps.
