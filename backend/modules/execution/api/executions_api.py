@@ -14,6 +14,9 @@ from backend.modules.execution.application.execute_assignment import (
     FailAssignmentUseCase,
     StartAssignmentUseCase,
 )
+from backend.modules.execution.application.list_execution_history import (
+    ListExecutionHistoryUseCase,
+)
 from backend.shared import api_response
 
 executions_bp = Blueprint("executions", __name__)
@@ -46,3 +49,9 @@ def fail_assignment(assignment_id: str):
 @executions_bp.post("/executions/<assignment_id>/cancel")
 def cancel_assignment(assignment_id: str):
     return api_response.success(CancelAssignmentUseCase(_uow()).execute(assignment_id, _reason()))
+
+
+@executions_bp.get("/executions/<assignment_id>/history")
+def execution_history(assignment_id: str):
+    result = ListExecutionHistoryUseCase(_uow()).execute(assignment_id)
+    return api_response.collection(result["items"])

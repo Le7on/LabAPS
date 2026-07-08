@@ -82,3 +82,20 @@ def test_fail_requires_reason(client):
     assert with_reason.status_code == 200
     assert with_reason.get_json()["data"]["status"] == "failed"
     assert with_reason.get_json()["data"]["reason"] == "instrument error"
+
+
+def test_execution_history_records_transitions(client):
+    assignment = _scheduled_published_assignment(client)
+    aid = assignment["id"]
+    client.post(f"/api/v1/executions/{aid}/start")
+    client.post(f"/api/v1/executions/{aid}/complete")
+
+    history = client.get(f"/api/v1/executions/{aid}/history")
+    assert history.status_code == 200
+    body = history.get_json()
+    # Two transitions recorded: ready->running (start), running->completed (complete).
+    assert body["meta"]["total"] == 2
+    actions = [r["action"] for r in body["data"]]
+    assert actions == ["start", "complete"]
+    assert body["data"][0]["fromStatus"] == "ready"
+    assert body["data"][1]["toStatus"] == "completed"

@@ -13,6 +13,9 @@ from sqlalchemy.orm import Session, sessionmaker
 from backend.infrastructure.orm.common.base import Base
 
 # Import ORM models so they register on Base.metadata before create_all.
+from backend.infrastructure.orm.execution import (
+    execution_record_orm,  # noqa: F401
+)
 from backend.infrastructure.orm.laboratory import (
     equipment_orm,  # noqa: F401
     staff_orm,  # noqa: F401

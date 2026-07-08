@@ -42,6 +42,7 @@ Completion Record):
 | M6.5      | Frontend Scheduling View                     | [M6.5_Frontend_Scheduling_View.md](M6.5_Frontend_Scheduling_View.md)             |
 | M8.1      | Reporting Dashboard                          | [M8.1_Reporting_Dashboard.md](M8.1_Reporting_Dashboard.md)                       |
 | M9.1      | Execution: Assignment Lifecycle              | [M9.1_Execution_Assignment_Lifecycle.md](M9.1_Execution_Assignment_Lifecycle.md) |
+| M9.2      | Execution History (Audit Trail)              | [M9.2_Execution_History.md](M9.2_Execution_History.md)                           |
 | M7.1      | API Response Envelope (ADR-012)              | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                   |
 
 ---

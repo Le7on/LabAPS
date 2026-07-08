@@ -28,10 +28,22 @@ class _AssignmentActionUseCase:
             if orm is None:
                 raise NotFoundError(f"Assignment {assignment_id} not found")
 
+            from_status = orm.status
             target = next_status(AssignmentStatus(orm.status), self._action)
             orm.status = target.value
+            recorded_reason = None
             if self._needs_reason:
-                orm.reason = require_reason(self._action, reason)
+                recorded_reason = require_reason(self._action, reason)
+                orm.reason = recorded_reason
+
+            # Append an audit record for the transition (State Model rule 5).
+            uow.execution_records.record(
+                assignment_id=assignment_id,
+                from_status=from_status,
+                to_status=target.value,
+                action=self._action,
+                reason=recorded_reason,
+            )
 
             result = uow.assignments.to_dict(orm)
 

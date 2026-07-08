@@ -15,6 +15,9 @@ from types import TracebackType
 
 from sqlalchemy.orm import Session
 
+from backend.modules.execution.repository.execution_record_repository import (
+    ExecutionRecordRepository,
+)
 from backend.modules.laboratory.repository.equipment_repository import (
     EquipmentRepository,
 )
@@ -37,6 +40,7 @@ class UnitOfWork:
         self.session = self._session_factory()
         self.plans = PlanRepository(self.session)
         self.assignments = AssignmentRepository(self.session)
+        self.execution_records = ExecutionRecordRepository(self.session)
         self.equipment = EquipmentRepository(self.session)
         self.staff = StaffRepository(self.session)
         self.workflow_definitions = WorkflowDefinitionRepository(self.session)
