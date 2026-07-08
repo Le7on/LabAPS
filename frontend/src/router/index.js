@@ -4,6 +4,7 @@ import PlansView from '../views/PlansView.vue'
 import EquipmentView from '../views/EquipmentView.vue'
 import StaffView from '../views/StaffView.vue'
 import WorkflowDefinitionsView from '../views/WorkflowDefinitionsView.vue'
+import SchedulingView from '../views/SchedulingView.vue'
 
 // Application routes. The Dashboard is the default landing view.
 const routes = [
@@ -17,6 +18,7 @@ const routes = [
     name: 'workflow-definitions',
     component: WorkflowDefinitionsView,
   },
+  { path: '/scheduling', name: 'scheduling', component: SchedulingView },
 ]
 
 const router = createRouter({
