@@ -19,6 +19,7 @@ from backend.modules.planning.application.generate_schedule_from_workflow import
     GenerateScheduleFromWorkflowUseCase,
 )
 from backend.modules.planning.application.get_plan import GetPlanUseCase
+from backend.modules.planning.application.list_assignments import ListAssignmentsUseCase
 from backend.modules.planning.application.list_plans import ListPlansUseCase
 from backend.modules.planning.application.plan_version_lifecycle import (
     ArchivePlanVersionUseCase,
@@ -85,6 +86,13 @@ def generate_schedule(plan_id: str, version_id: str):
         "runtimeStatus": result["status"],
     }
     return api_response.success(result, meta=meta)
+
+
+@plans_bp.get("/plans/<plan_id>/versions/<version_id>/assignments")
+def list_assignments(plan_id: str, version_id: str):
+    use_case = ListAssignmentsUseCase(_container().unit_of_work)
+    result = use_case.execute(plan_id, version_id)
+    return api_response.collection(result["items"])
 
 
 @plans_bp.post("/plans/<plan_id>/versions/<version_id>/review")

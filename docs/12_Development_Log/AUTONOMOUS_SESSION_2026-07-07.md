@@ -32,6 +32,7 @@ Completion Record):
 | M4.1      | Scheduling Engine (+ resource assignment)    | [M4.1_Scheduling_Engine.md](M4.1_Scheduling_Engine.md)                         |
 | M4.2      | Schedule From Persisted Laboratory Data      | [M4.2_Schedule_From_Workflow.md](M4.2_Schedule_From_Workflow.md)               |
 | M4.3      | Skill Constraint (Multi-Resource Assignment) | [M4.3_Skill_Constraint.md](M4.3_Skill_Constraint.md)                           |
+| M4.4      | Persist Assignments                          | [M4.4_Persist_Assignments.md](M4.4_Persist_Assignments.md)                     |
 | M5.1      | Laboratory Equipment slice                   | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                   |
 | M5.2      | Staff and Workflow Definition                | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md) |
 | M6.1      | Frontend Plans view                          | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)                     |

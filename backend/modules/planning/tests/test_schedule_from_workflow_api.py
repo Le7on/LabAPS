@@ -111,6 +111,41 @@ def test_schedule_assigns_equipment_and_staff(client):
     assert assignment["staffId"] == st_id
 
 
+def test_assignments_are_persisted_and_retrievable(client):
+    client.post(
+        "/api/v1/equipment",
+        json={"equipmentCode": "EQ-B", "name": "Thermocycler", "capabilities": ["pcr"]},
+    )
+    workflow_id = client.post(
+        "/api/v1/workflow-definitions",
+        json={
+            "workflowCode": "WF-3",
+            "name": "PCR",
+            "operations": [
+                {"operationType": "amplify", "duration": 3, "requiredCapability": "pcr"}
+            ],
+        },
+    ).get_json()["data"]["id"]
+    plan_id = client.post(
+        "/api/v1/plans", json={"planningHorizon": "2026-W53", "name": "P"}
+    ).get_json()["data"]["id"]
+    version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
+
+    client.post(
+        f"/api/v1/plans/{plan_id}/versions/{version_id}/schedule-from-workflow",
+        json={"workflowDefinitionId": workflow_id},
+    )
+
+    listing = client.get(f"/api/v1/plans/{plan_id}/versions/{version_id}/assignments")
+    assert listing.status_code == 200
+    body = listing.get_json()
+    assert body["meta"]["total"] == 1
+    assignment = body["data"][0]
+    assert assignment["operationId"]
+    assert assignment["status"] == "planned"
+    assert assignment["end"] == 3
+
+
 def test_schedule_from_unknown_workflow_returns_404(client):
     plan_id = client.post(
         "/api/v1/plans", json={"planningHorizon": "2026-W51", "name": "P"}

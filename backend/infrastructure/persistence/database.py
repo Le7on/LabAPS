@@ -18,7 +18,10 @@ from backend.infrastructure.orm.laboratory import (
     staff_orm,  # noqa: F401
     workflow_definition_orm,  # noqa: F401
 )
-from backend.infrastructure.orm.planning import plan_orm  # noqa: F401
+from backend.infrastructure.orm.planning import (
+    assignment_orm,  # noqa: F401
+    plan_orm,  # noqa: F401
+)
 
 
 class Database:

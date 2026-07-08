@@ -47,19 +47,7 @@ class GenerateScheduleFromWorkflowUseCase:
             problem = self._build_problem(workflow, equipment, staff)
             result = self._engine.schedule(problem)
 
-            # BR-PV-002: a feasible schedule moves the version to Scheduled.
-            if result.feasible:
-                plan.mark_version_scheduled(version_id)
-                uow.plans.save(plan)
-
-        return {
-            "planId": plan_id,
-            "versionId": version_id,
-            "workflowDefinitionId": workflow_definition_id,
-            "status": result.status,
-            "feasible": result.feasible,
-            "makespan": result.makespan,
-            "assignments": [
+            assignments = [
                 {
                     "operationId": a.operation_id,
                     "start": a.start,
@@ -69,7 +57,23 @@ class GenerateScheduleFromWorkflowUseCase:
                     "staffId": a.staff_id,
                 }
                 for a in result.assignments
-            ],
+            ]
+
+            # BR-PV-002: a feasible schedule moves the version to Scheduled and
+            # persists the assignments onto the version (replacing any prior run).
+            if result.feasible:
+                plan.mark_version_scheduled(version_id)
+                uow.plans.save(plan)
+                uow.assignments.replace_for_version(version_id, assignments)
+
+        return {
+            "planId": plan_id,
+            "versionId": version_id,
+            "workflowDefinitionId": workflow_definition_id,
+            "status": result.status,
+            "feasible": result.feasible,
+            "makespan": result.makespan,
+            "assignments": assignments,
         }
 
     @staticmethod

@@ -22,6 +22,9 @@ from backend.modules.laboratory.repository.staff_repository import StaffReposito
 from backend.modules.laboratory.repository.workflow_definition_repository import (
     WorkflowDefinitionRepository,
 )
+from backend.modules.planning.repository.assignment_repository import (
+    AssignmentRepository,
+)
 from backend.modules.planning.repository.plan_repository import PlanRepository
 
 
@@ -33,6 +36,7 @@ class UnitOfWork:
     def __enter__(self) -> UnitOfWork:
         self.session = self._session_factory()
         self.plans = PlanRepository(self.session)
+        self.assignments = AssignmentRepository(self.session)
         self.equipment = EquipmentRepository(self.session)
         self.staff = StaffRepository(self.session)
         self.workflow_definitions = WorkflowDefinitionRepository(self.session)
