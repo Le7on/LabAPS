@@ -19,6 +19,7 @@ class Assignment:
     operation_id: str
     start: int
     end: int
+    resource_id: str | None = None
 
 
 class AssignmentBuilder:
@@ -32,6 +33,7 @@ class AssignmentBuilder:
                 operation_id=scheduled.identifier,
                 start=scheduled.start,
                 end=scheduled.end,
+                resource_id=scheduled.resource_id,
             )
             for scheduled in solution.scheduled_tasks
             if scheduled.identifier in known

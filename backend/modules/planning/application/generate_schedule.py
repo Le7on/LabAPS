@@ -15,6 +15,7 @@ from backend.engines.planning.planning_problem import (
     Operation,
     PlanningPolicies,
     PlanningProblem,
+    Resource,
 )
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.shared.errors import NotFoundError, ValidationError
@@ -25,7 +26,13 @@ class GenerateScheduleUseCase:
         self._uow_factory = uow_factory
         self._engine = scheduling_engine
 
-    def execute(self, plan_id: str, version_id: str, operations: list[dict]) -> dict:
+    def execute(
+        self,
+        plan_id: str,
+        version_id: str,
+        operations: list[dict],
+        resources: list[dict] | None = None,
+    ) -> dict:
         with self._uow_factory() as uow:
             plan = uow.plans.get(plan_id)
 
@@ -34,7 +41,7 @@ class GenerateScheduleUseCase:
         if not any(v.id == version_id for v in plan.versions):
             raise NotFoundError(f"Plan version {version_id} not found")
 
-        problem = self._build_problem(operations)
+        problem = self._build_problem(operations, resources or [])
         result = self._engine.schedule(problem)
 
         return {
@@ -44,22 +51,39 @@ class GenerateScheduleUseCase:
             "feasible": result.feasible,
             "makespan": result.makespan,
             "assignments": [
-                {"operationId": a.operation_id, "start": a.start, "end": a.end}
+                {
+                    "operationId": a.operation_id,
+                    "start": a.start,
+                    "end": a.end,
+                    "resourceId": a.resource_id,
+                }
                 for a in result.assignments
             ],
         }
 
     @staticmethod
-    def _build_problem(operations: list[dict]) -> PlanningProblem:
+    def _build_problem(operations: list[dict], resources: list[dict]) -> PlanningProblem:
         if not operations:
             raise ValidationError("At least one operation is required")
 
-        built = tuple(
+        built_ops = tuple(
             Operation(
                 identifier=str(op.get("id")),
                 duration=int(op.get("duration", 0)),
                 depends_on=tuple(op.get("dependsOn", ())),
+                required_capability=op.get("requiredCapability"),
             )
             for op in operations
         )
-        return PlanningProblem(operations=built, policies=PlanningPolicies())
+        built_resources = tuple(
+            Resource(
+                identifier=str(r.get("id")),
+                capabilities=frozenset(r.get("capabilities", [])),
+            )
+            for r in resources
+        )
+        return PlanningProblem(
+            operations=built_ops,
+            resources=built_resources,
+            policies=PlanningPolicies(),
+        )

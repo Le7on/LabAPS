@@ -67,7 +67,8 @@ def generate_schedule(plan_id: str, version_id: str):
     container = _container()
     use_case = GenerateScheduleUseCase(container.unit_of_work, container.scheduling_engine)
     operations = data.get("operations", [])
-    result = use_case.execute(plan_id, version_id, operations)
+    resources = data.get("resources", [])
+    result = use_case.execute(plan_id, version_id, operations, resources)
 
     # Command response: updated resource in data, execution info in meta (ADR-012).
     meta = {

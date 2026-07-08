@@ -182,6 +182,40 @@ every use case).
 - API layer passes `container.unit_of_work` instead of raw session_factory.
 - 18 tests still pass; end-to-end boot verified. Ruff clean.
 
+### Scheduling: resource assignment dimension (DONE) — core APS value
+
+Addresses design recommendation #3 (the scheduler had no resource-assignment
+dimension). Implemented per the Scheduling Model doc (Resource Graph, Assignment
+Variable) and the Constraint Framework categories.
+
+- SchedulingModel: added `SchedulingResource` (Resource Graph) and
+  `required_capability` on Task; `eligible_resources()` = Capability Constraint.
+  `ScheduledTask.resource_id` carries the assignment.
+- SchedulingModelBuilder passes resources + capability through from the
+  PlanningProblem.
+- ORToolsSolverAdapter now models:
+  - Capability Constraint: assignment literals created only for eligible
+    resources.
+  - Cardinality: `add_exactly_one` — each task assigned to exactly one resource.
+  - Resource Constraint: `add_no_overlap` on each resource's optional intervals
+    (a resource does one task at a time).
+  - Dependency Constraint: unchanged (FS, lag 0).
+  - Infeasible when a task has no eligible resource.
+- AssignmentBuilder + FakeSolverAdapter + GenerateSchedule use case + API carry
+  `resourceId`. API accepts a `resources` array alongside `operations`.
+
+**Tests (24 total pass, +6):** capability matching, single-resource
+serialization (makespan 7), two-resource parallelism (makespan 4), no-capable-
+resource infeasible; engine-level assignment via fake. End-to-end API verified
+(op requiring "pcr" assigned to the only pcr-capable resource).
+
+**Interim objective flagged (ADR-007):** the solver minimizes makespan. The
+Objective Model doc lists demand-completion / utilization / workload-balance
+objectives, which need entities not yet modelled (Demand, etc.). Makespan is the
+only sensible objective at this stage and is isolated in the adapter; revisit
+when Demand/Objective Profile land. Not-yet-implemented constraint categories:
+Qualification, Calendar, Policy.
+
 ### Status after this session
 
 - Phase 1 (Bootstrap M1.1) + M1.2 backend framework: DONE.

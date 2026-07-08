@@ -8,7 +8,11 @@ does not solve.
 from __future__ import annotations
 
 from backend.engines.planning.planning_problem import PlanningProblem
-from backend.engines.scheduling.scheduling_model import SchedulingModel, Task
+from backend.engines.scheduling.scheduling_model import (
+    SchedulingModel,
+    SchedulingResource,
+    Task,
+)
 
 
 class SchedulingModelBuilder:
@@ -18,7 +22,19 @@ class SchedulingModelBuilder:
                 identifier=op.identifier,
                 duration=op.duration,
                 predecessors=op.depends_on,
+                required_capability=op.required_capability,
             )
             for op in problem.operations
         )
-        return SchedulingModel(tasks=tasks, horizon=problem.policies.planning_horizon)
+        resources = tuple(
+            SchedulingResource(
+                identifier=r.identifier,
+                capabilities=frozenset(r.capabilities),
+            )
+            for r in problem.resources
+        )
+        return SchedulingModel(
+            tasks=tasks,
+            resources=resources,
+            horizon=problem.policies.planning_horizon,
+        )
