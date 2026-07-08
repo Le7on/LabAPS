@@ -13,8 +13,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from backend.config.settings import load_config  # noqa: E402
 from backend.infrastructure.orm.common.base import Base  # noqa: E402
 
-# Import all ORM modules so their tables register on Base.metadata.
-from backend.infrastructure.orm.planning import plan_orm  # noqa: E402,F401
+# Importing the persistence module registers every ORM model on Base.metadata
+# (it imports all module ORM packages in one place), so autogenerate sees them.
+from backend.infrastructure.persistence import database  # noqa: E402,F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

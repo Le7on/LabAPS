@@ -51,9 +51,15 @@ def register_blueprints(app: Flask, container: Container) -> None:
     prefix = container.config.api.prefix
 
     from backend.modules.laboratory.api.equipment_api import equipment_bp
+    from backend.modules.laboratory.api.staff_api import staff_bp
+    from backend.modules.laboratory.api.workflow_definition_api import (
+        workflow_definition_bp,
+    )
     from backend.modules.planning.api.plans_api import plans_bp
     from backend.shared.health import health_bp
 
     app.register_blueprint(health_bp, url_prefix=prefix)
     app.register_blueprint(plans_bp, url_prefix=prefix)
     app.register_blueprint(equipment_bp, url_prefix=prefix)
+    app.register_blueprint(staff_bp, url_prefix=prefix)
+    app.register_blueprint(workflow_definition_bp, url_prefix=prefix)
