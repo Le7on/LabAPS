@@ -111,6 +111,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [11_Development/Deployment_and_Operations_Guide.md](11_Development/Deployment_and_Operations_Guide.md) — deployment and operations guidance.
 - [12_Development_Log/M1.1_Project_Bootstrap.md](12_Development_Log/M1.1_Project_Bootstrap.md) — M1.1 project bootstrap.
 - [12_Development_Log/M1.2_Backend_Framework.md](12_Development_Log/M1.2_Backend_Framework.md) — M1.2 backend framework.
+- [12_Development_Log/M1.3_Developer_CLI_Generators.md](12_Development_Log/M1.3_Developer_CLI_Generators.md) — M1.3 developer CLI code generators.
 - [12_Development_Log/M2.1_Infrastructure.md](12_Development_Log/M2.1_Infrastructure.md) — M2.1 infrastructure.
 - [12_Development_Log/M3.1_Planning_Domain.md](12_Development_Log/M3.1_Planning_Domain.md) — M3.1 planning domain.
 - [12_Development_Log/M4.1_Scheduling_Engine.md](12_Development_Log/M4.1_Scheduling_Engine.md) — M4.1 scheduling engine.
