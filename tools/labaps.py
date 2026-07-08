@@ -5,7 +5,6 @@ from engine import BootstrapEngine
 
 
 def build_parser():
-
     parser = argparse.ArgumentParser(
         prog="labaps",
         description="Lab APS Developer CLI",
@@ -41,7 +40,6 @@ def build_parser():
 
 
 def main():
-
     parser = build_parser()
 
     args = parser.parse_args()

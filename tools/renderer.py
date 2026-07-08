@@ -7,7 +7,6 @@ class TemplateRenderer:
         template: str,
         context: dict[str, str],
     ) -> str:
-
         result = template
 
         for key, value in context.items():

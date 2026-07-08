@@ -11,11 +11,9 @@ class ManifestError(Exception):
 
 class ManifestLoader:
     def __init__(self, manifest: Path):
-
         self.manifest = manifest
 
     def load(self) -> dict:
-
         if not self.manifest.exists():
             raise ManifestError(f"Manifest not found:\n{self.manifest}")
 
@@ -35,7 +33,6 @@ class ManifestLoader:
         self,
         manifest: dict,
     ):
-
         if not isinstance(manifest, dict):
             raise ManifestError("Manifest root must be a dictionary.")
 
@@ -61,7 +58,6 @@ class ManifestLoader:
         manifest: dict,
         key: str,
     ):
-
         value = manifest.get(key)
 
         if value is None:

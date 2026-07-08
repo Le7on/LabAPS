@@ -5,7 +5,6 @@ from pathlib import Path
 
 class FileWriter:
     def mkdir(self, path: Path):
-
         path.mkdir(
             parents=True,
             exist_ok=True,
@@ -17,7 +16,6 @@ class FileWriter:
         content: str,
         overwrite: bool = False,
     ):
-
         path.parent.mkdir(
             parents=True,
             exist_ok=True,

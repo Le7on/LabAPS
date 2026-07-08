@@ -9,7 +9,6 @@ from writer import FileWriter
 
 class BootstrapEngine:
     def __init__(self):
-
         self.context = BootstrapContext()
 
         self.loader = ManifestLoader(MANIFEST_FILE)
@@ -19,7 +18,6 @@ class BootstrapEngine:
         self.renderer = TemplateRenderer()
 
     def initialize(self):
-
         print("=" * 60)
         print("Lab APS Bootstrap")
         print("=" * 60)
@@ -52,7 +50,6 @@ class BootstrapEngine:
         return 0
 
     def verify(self):
-
         print("=" * 60)
         print("Lab APS Verify")
         print("=" * 60)
@@ -97,7 +94,6 @@ class BootstrapEngine:
         return 0
 
     def doctor(self):
-
         print("=" * 60)
         print("Lab APS Doctor")
         print("=" * 60)
@@ -133,11 +129,9 @@ class BootstrapEngine:
         return 1
 
     def clean(self):
-
         print("Nothing to clean.")
 
     def create_directories(self, manifest):
-
         print()
 
         print("Creating directories...")
@@ -152,7 +146,6 @@ class BootstrapEngine:
             print(f"[DIR ] {directory}")
 
     def create_packages(self, manifest):
-
         print()
 
         print("Creating python packages...")
@@ -173,7 +166,6 @@ class BootstrapEngine:
             )
 
     def render_templates(self, manifest):
-
         print()
 
         print("Rendering templates...")
