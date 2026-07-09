@@ -37,7 +37,8 @@ def _scheduled_published_assignment(client):
     version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
     base = f"/api/v1/plans/{plan_id}/versions/{version_id}"
 
-    client.post(f"{base}/schedule-from-workflow", json={"workflowDefinitionId": workflow_id})
+    client.post(f"{base}/generate-instances", json={"workflowDefinitionId": workflow_id})
+    client.post(f"{base}/schedule-instances")
     client.post(f"{base}/review")
     client.post(f"{base}/publish")
 

@@ -42,10 +42,9 @@ def test_kpi_reflects_scheduling(client):
         "/api/v1/plans", json={"planningHorizon": "2026-W33", "name": "P"}
     ).get_json()["data"]["id"]
     version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
-    client.post(
-        f"/api/v1/plans/{plan_id}/versions/{version_id}/schedule-from-workflow",
-        json={"workflowDefinitionId": workflow_id},
-    )
+    base = f"/api/v1/plans/{plan_id}/versions/{version_id}"
+    client.post(f"{base}/generate-instances", json={"workflowDefinitionId": workflow_id})
+    client.post(f"{base}/schedule-instances")
 
     data = client.get("/api/v1/reports/kpi").get_json()["data"]
     assert data["assignmentStatus"].get("pending") == 1

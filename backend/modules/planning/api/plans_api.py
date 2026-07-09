@@ -15,9 +15,6 @@ from backend.modules.planning.application.create_plan_version import (
 from backend.modules.planning.application.generate_schedule import (
     GenerateScheduleUseCase,
 )
-from backend.modules.planning.application.generate_schedule_from_workflow import (
-    GenerateScheduleFromWorkflowUseCase,
-)
 from backend.modules.planning.application.generate_workflow_instance import (
     GenerateWorkflowInstanceUseCase,
 )
@@ -163,27 +160,3 @@ def publish_plan_version(plan_id: str, version_id: str):
 def archive_plan_version(plan_id: str, version_id: str):
     use_case = ArchivePlanVersionUseCase(_container().unit_of_work)
     return api_response.success(use_case.execute(plan_id, version_id))
-
-
-@plans_bp.post("/plans/<plan_id>/versions/<version_id>/schedule-from-workflow")
-def generate_schedule_from_workflow(plan_id: str, version_id: str):
-    data = request.get_json(silent=True)
-    if not isinstance(data, dict):
-        raise ValidationError("Request body must be a JSON object")
-
-    workflow_definition_id = data.get("workflowDefinitionId")
-    if not workflow_definition_id:
-        raise ValidationError("workflowDefinitionId is required")
-
-    container = _container()
-    use_case = GenerateScheduleFromWorkflowUseCase(
-        container.unit_of_work, container.scheduling_engine
-    )
-    result = use_case.execute(plan_id, version_id, workflow_definition_id)
-
-    meta = {
-        "makespan": result.pop("makespan"),
-        "feasible": result.pop("feasible"),
-        "runtimeStatus": result["status"],
-    }
-    return api_response.success(result, meta=meta)
