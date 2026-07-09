@@ -36,6 +36,8 @@ class AddDemandUseCase:
             if plan is None:
                 raise NotFoundError(f"Plan {plan_id} not found")
             plan.get_version(version_id)  # raises NotFoundError if missing
+            if uow.projects.get(demand.project_id) is None:
+                raise NotFoundError(f"Project {demand.project_id} not found")
             uow.demands.add(version_id, demand)
 
         return _demand_dict(demand)

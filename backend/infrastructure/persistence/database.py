@@ -21,6 +21,7 @@ from backend.infrastructure.orm.identity import (
 )
 from backend.infrastructure.orm.laboratory import (
     equipment_orm,  # noqa: F401
+    project_orm,  # noqa: F401
     staff_orm,  # noqa: F401
     workflow_definition_orm,  # noqa: F401
 )

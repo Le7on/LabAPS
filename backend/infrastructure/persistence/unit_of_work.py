@@ -21,6 +21,7 @@ from backend.modules.execution.repository.execution_record_repository import (
 from backend.modules.laboratory.repository.equipment_repository import (
     EquipmentRepository,
 )
+from backend.modules.laboratory.repository.project_repository import ProjectRepository
 from backend.modules.laboratory.repository.staff_repository import StaffRepository
 from backend.modules.laboratory.repository.workflow_definition_repository import (
     WorkflowDefinitionRepository,
@@ -49,6 +50,7 @@ class UnitOfWork:
         self.execution_records = ExecutionRecordRepository(self.session)
         self.equipment = EquipmentRepository(self.session)
         self.staff = StaffRepository(self.session)
+        self.projects = ProjectRepository(self.session)
         self.workflow_definitions = WorkflowDefinitionRepository(self.session)
         return self
 

@@ -35,6 +35,7 @@ Completion Record):
 | M4.4      | Persist Assignments                          | [M4.4_Persist_Assignments.md](M4.4_Persist_Assignments.md)                                     |
 | M5.1      | Laboratory Equipment slice                   | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                                   |
 | M5.2      | Staff and Workflow Definition                | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md)                 |
+| M5.3      | Project                                      | [M5.3_Project.md](M5.3_Project.md)                                                             |
 | M6.1      | Frontend Plans view                          | [M6.1_Frontend_Plans_View.md](M6.1_Frontend_Plans_View.md)                                     |
 | M6.2      | Frontend Laboratory Views                    | [M6.2_Frontend_Laboratory_Views.md](M6.2_Frontend_Laboratory_Views.md)                         |
 | M6.3      | Frontend Dashboard View                      | [M6.3_Frontend_Dashboard_View.md](M6.3_Frontend_Dashboard_View.md)                             |
