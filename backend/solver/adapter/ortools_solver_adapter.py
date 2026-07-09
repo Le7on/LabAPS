@@ -10,6 +10,7 @@ from __future__ import annotations
 from ortools.sat.python import cp_model
 
 from backend.engines.scheduling.scheduling_model import (
+    Objective,
     ScheduledTask,
     SchedulingModel,
     SchedulingSolution,
@@ -38,9 +39,10 @@ class ORToolsSolverAdapter(SolverAdapter):
       resource's optional intervals). Cardinality: each task is assigned to
       exactly one resource when resources are present.
 
-    Objective: minimize makespan. Note: makespan is an interim objective — the
-    Objective Model doc lists demand/utilization goals that require entities not
-    yet modelled (see ADR-007, session log).
+    Objective (ADR-007): either minimize makespan, or minimize demand-weighted
+    completion time (sum of weight * end), selected by ``model.objective``. The
+    weighted objective pulls higher-priority demand earlier; makespan is always
+    computed and reported.
     """
 
     def __init__(self, max_time_in_seconds: float = 10.0):
@@ -78,7 +80,13 @@ class ORToolsSolverAdapter(SolverAdapter):
 
         makespan = cp.new_int_var(0, horizon, "makespan")
         cp.add_max_equality(makespan, list(ends.values()))
-        cp.minimize(makespan)
+
+        # Objective (ADR-007): makespan, or demand-weighted completion time.
+        if model.objective == Objective.WEIGHTED_COMPLETION:
+            task_map = model.task_map()
+            cp.minimize(sum(task_map[tid].weight * end for tid, end in ends.items()))
+        else:
+            cp.minimize(makespan)
 
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = self._max_time

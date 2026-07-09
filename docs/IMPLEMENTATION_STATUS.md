@@ -77,8 +77,8 @@ architecture index (design) with the current build state.
 | Calendar / availability | Not yet     |
 | Policy                  | Not yet     |
 
-Objective: makespan (interim; documented Objective Model goals need Demand — see
-ADR-007 and M4.1).
+Objective: demand-weighted completion when a version has demand, else makespan
+(ADR-007; see M11.2). Utilization/balance objectives are future.
 
 ---
 

@@ -14,6 +14,8 @@ from __future__ import annotations
 
 from backend.engines.planning.planning_problem import (
     EQUIPMENT,
+    OBJECTIVE_MAKESPAN,
+    OBJECTIVE_WEIGHTED_COMPLETION,
     STAFF,
     Operation,
     PlanningPolicies,
@@ -44,7 +46,8 @@ class GenerateScheduleFromWorkflowUseCase:
             if not workflow.operations:
                 raise ValidationError("Workflow definition has no operations")
 
-            problem = self._build_problem(workflow, equipment, staff)
+            demands = uow.demands.list_for_version(version_id)
+            problem = self._build_problem(workflow, equipment, staff, demands)
             result = self._engine.schedule(problem)
 
             assignments = [
@@ -77,9 +80,18 @@ class GenerateScheduleFromWorkflowUseCase:
         }
 
     @staticmethod
-    def _build_problem(workflow, equipment, staff) -> PlanningProblem:
-        # Operation identity is the operation definition id; dependencies in the
-        # definition reference the same ids.
+    def _build_problem(workflow, equipment, staff, demands) -> PlanningProblem:
+        # When the version has demand, weight operations by total demand priority
+        # and optimize weighted completion; otherwise minimize makespan. Until
+        # operations are tied to specific demands/projects, the aggregate demand
+        # weight applies uniformly to the workflow's operations.
+        if demands:
+            weight = sum(d.priority.weight * d.quantity for d in demands)
+            objective = OBJECTIVE_WEIGHTED_COMPLETION
+        else:
+            weight = 1
+            objective = OBJECTIVE_MAKESPAN
+
         operations = tuple(
             Operation(
                 identifier=op.id,
@@ -87,6 +99,7 @@ class GenerateScheduleFromWorkflowUseCase:
                 required_capability=op.required_capability,
                 required_skill=op.required_skill,
                 depends_on=tuple(op.depends_on),
+                weight=weight,
             )
             for op in workflow.operations
         )
@@ -99,5 +112,5 @@ class GenerateScheduleFromWorkflowUseCase:
         return PlanningProblem(
             operations=operations,
             resources=resources,
-            policies=PlanningPolicies(),
+            policies=PlanningPolicies(objective=objective),
         )

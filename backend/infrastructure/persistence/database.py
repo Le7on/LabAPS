@@ -26,6 +26,7 @@ from backend.infrastructure.orm.laboratory import (
 )
 from backend.infrastructure.orm.planning import (
     assignment_orm,  # noqa: F401
+    demand_orm,  # noqa: F401
     plan_orm,  # noqa: F401
 )
 

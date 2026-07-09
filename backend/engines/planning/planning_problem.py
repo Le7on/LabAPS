@@ -38,6 +38,13 @@ class Operation:
     required_capability: str | None = None
     required_skill: str | None = None
     depends_on: tuple[str, ...] = ()
+    weight: int = 1
+
+
+# Objective selectors mirrored from the scheduling model (kept as plain strings
+# here so the Planning Problem stays free of optimization types).
+OBJECTIVE_MAKESPAN = "makespan"
+OBJECTIVE_WEIGHTED_COMPLETION = "weighted_completion"
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,6 +52,7 @@ class PlanningPolicies:
     """Planning behaviour (not a business entity)."""
 
     planning_horizon: int = 100
+    objective: str = OBJECTIVE_MAKESPAN
 
 
 @dataclass(frozen=True, slots=True)

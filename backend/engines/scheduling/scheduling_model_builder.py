@@ -7,8 +7,14 @@ does not solve.
 
 from __future__ import annotations
 
-from backend.engines.planning.planning_problem import EQUIPMENT, STAFF, PlanningProblem
+from backend.engines.planning.planning_problem import (
+    EQUIPMENT,
+    OBJECTIVE_WEIGHTED_COMPLETION,
+    STAFF,
+    PlanningProblem,
+)
 from backend.engines.scheduling.scheduling_model import (
+    Objective,
     SchedulingModel,
     SchedulingResource,
     Task,
@@ -23,6 +29,7 @@ class SchedulingModelBuilder:
                 duration=op.duration,
                 predecessors=op.depends_on,
                 requirements=self._requirements(op),
+                weight=op.weight,
             )
             for op in problem.operations
         )
@@ -34,10 +41,16 @@ class SchedulingModelBuilder:
             )
             for r in problem.resources
         )
+        objective = (
+            Objective.WEIGHTED_COMPLETION
+            if problem.policies.objective == OBJECTIVE_WEIGHTED_COMPLETION
+            else Objective.MAKESPAN
+        )
         return SchedulingModel(
             tasks=tasks,
             resources=resources,
             horizon=problem.policies.planning_horizon,
+            objective=objective,
         )
 
     @staticmethod

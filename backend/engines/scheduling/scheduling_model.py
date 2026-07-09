@@ -14,9 +14,23 @@ that kind is assigned and no two tasks share a resource in time.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from enum import StrEnum
 
 EQUIPMENT = "equipment"
 STAFF = "staff"
+
+
+class Objective(StrEnum):
+    """Optimization goal (Objective Model, ADR-007).
+
+    MAKESPAN: minimize the latest end time.
+    WEIGHTED_COMPLETION: minimize sum(weight * end); higher-weight (higher demand
+    priority) work is pulled earlier. Falls back to makespan behaviour when all
+    weights are equal.
+    """
+
+    MAKESPAN = "makespan"
+    WEIGHTED_COMPLETION = "weighted_completion"
 
 
 @dataclass(frozen=True, slots=True)
@@ -48,6 +62,7 @@ class Task:
     duration: int
     predecessors: tuple[str, ...] = ()
     requirements: frozenset[tuple[str, str]] = frozenset()
+    weight: int = 1
 
     def requirement_for(self, kind: str) -> str | None:
         for req_kind, value in self.requirements:
@@ -63,6 +78,7 @@ class SchedulingModel:
     tasks: tuple[Task, ...] = ()
     resources: tuple[SchedulingResource, ...] = ()
     horizon: int = 100
+    objective: Objective = Objective.MAKESPAN
 
     def task_map(self) -> dict[str, Task]:
         return {task.identifier: task for task in self.tasks}

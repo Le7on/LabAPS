@@ -132,6 +132,8 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md](12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md) — M9.1 execution assignment lifecycle.
 - [12_Development_Log/M9.2_Execution_History.md](12_Development_Log/M9.2_Execution_History.md) — M9.2 execution history (audit trail).
 - [12_Development_Log/M10.1_Authentication.md](12_Development_Log/M10.1_Authentication.md) — M10.1 token authentication and roles.
+- [12_Development_Log/M11.1_Demand.md](12_Development_Log/M11.1_Demand.md) — M11.1 demand domain.
+- [12_Development_Log/M11.2_Demand_Driven_Objective.md](12_Development_Log/M11.2_Demand_Driven_Objective.md) — M11.2 demand-driven objective.
 - [12_Development_Log/M7.1_API_Response_Envelope.md](12_Development_Log/M7.1_API_Response_Envelope.md) — M7.1 API response envelope.
 - [12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md](12_Development_Log/AUTONOMOUS_SESSION_2026-07-07.md) — session index across milestones.
 - [12_Development_Log/Documentation_Improvement_Plan.md](12_Development_Log/Documentation_Improvement_Plan.md) — current documentation improvement plan.

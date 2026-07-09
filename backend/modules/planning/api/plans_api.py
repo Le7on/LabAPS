@@ -21,6 +21,10 @@ from backend.modules.planning.application.generate_schedule_from_workflow import
 from backend.modules.planning.application.get_plan import GetPlanUseCase
 from backend.modules.planning.application.list_assignments import ListAssignmentsUseCase
 from backend.modules.planning.application.list_plans import ListPlansUseCase
+from backend.modules.planning.application.manage_demand import (
+    AddDemandUseCase,
+    ListDemandUseCase,
+)
 from backend.modules.planning.application.plan_version_lifecycle import (
     ArchivePlanVersionUseCase,
     PublishPlanVersionUseCase,
@@ -91,6 +95,22 @@ def generate_schedule(plan_id: str, version_id: str):
 @plans_bp.get("/plans/<plan_id>/versions/<version_id>/assignments")
 def list_assignments(plan_id: str, version_id: str):
     use_case = ListAssignmentsUseCase(_container().unit_of_work)
+    result = use_case.execute(plan_id, version_id)
+    return api_response.collection(result["items"])
+
+
+@plans_bp.post("/plans/<plan_id>/versions/<version_id>/demands")
+def add_demand(plan_id: str, version_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = AddDemandUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, version_id, data), status=201)
+
+
+@plans_bp.get("/plans/<plan_id>/versions/<version_id>/demands")
+def list_demands(plan_id: str, version_id: str):
+    use_case = ListDemandUseCase(_container().unit_of_work)
     result = use_case.execute(plan_id, version_id)
     return api_response.collection(result["items"])
 
