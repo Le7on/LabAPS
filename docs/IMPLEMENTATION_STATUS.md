@@ -116,8 +116,8 @@ All responses use the `{success, data, meta}` envelope (ADR-012).
 
 # 8. Known Gaps / Next
 
-- Operation Instances (assignments currently reference the scheduling operation
-  id, not a persisted instance).
+- Project aggregate + per-operation demand attribution (Operation Instances and
+  a Planning Context snapshot now exist; assignments reference instance ids).
 - Calendar/qualification constraints; a real objective model once Demand exists.
 - Execution history/audit records; reporting KPI and utilization.
 - Domain events (documented but deferred until an event bus exists).
