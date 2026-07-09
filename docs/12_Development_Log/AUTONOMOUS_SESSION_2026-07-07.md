@@ -58,6 +58,7 @@ Completion Record):
 | M11.3     | Operation Instances & Planning Context       | [M11.3_Operation_Instances_Planning_Context.md](M11.3_Operation_Instances_Planning_Context.md) |
 | M12.1     | Deactivate / Activate Resources              | [M12.1_Deactivate_Resources.md](M12.1_Deactivate_Resources.md)                                 |
 | M13.1     | PyWebView Desktop Packaging                  | [M13.1_Desktop_Packaging.md](M13.1_Desktop_Packaging.md)                                       |
+| M13.2     | Acceptance Test & Release Readiness          | [M13.2_Acceptance_And_Release.md](M13.2_Acceptance_And_Release.md)                             |
 | M7.1      | API Response Envelope (ADR-012)              | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                                 |
 
 ---
