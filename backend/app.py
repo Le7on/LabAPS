@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flask import Flask
+from flask import Flask, send_from_directory
 
 from backend.bootstrap.container import Container, build_container
 from backend.bootstrap.logging_setup import init_logging
@@ -47,8 +47,36 @@ def create_app(config: AppConfig | None = None, config_file: Path | None = None)
         register_auth_guard(app, container.auth_service)
 
     register_blueprints(app, container)
+    register_frontend(app)
 
     return app
+
+
+def register_frontend(app: Flask) -> None:
+    """Serve the built SPA (frontend/dist) when present, for desktop packaging.
+
+    In development the SPA is served by Vite; in a packaged desktop build the
+    Flask app serves the static bundle and falls back to index.html for client
+    routes. No-op if the build is absent.
+    """
+
+    dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+    index = dist / "index.html"
+    if not index.is_file():
+        return
+
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def _serve_spa(path: str):
+        # API paths are handled by blueprints; never serve the SPA for them.
+        if path.startswith("api/"):
+            from werkzeug.exceptions import NotFound
+
+            raise NotFound()
+        target = dist / path
+        if path and target.is_file():
+            return send_from_directory(dist, path)
+        return send_from_directory(dist, "index.html")
 
 
 def register_blueprints(app: Flask, container: Container) -> None:

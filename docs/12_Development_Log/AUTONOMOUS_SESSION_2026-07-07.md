@@ -57,6 +57,7 @@ Completion Record):
 | M11.2     | Demand-Driven Objective                      | [M11.2_Demand_Driven_Objective.md](M11.2_Demand_Driven_Objective.md)                           |
 | M11.3     | Operation Instances & Planning Context       | [M11.3_Operation_Instances_Planning_Context.md](M11.3_Operation_Instances_Planning_Context.md) |
 | M12.1     | Deactivate / Activate Resources              | [M12.1_Deactivate_Resources.md](M12.1_Deactivate_Resources.md)                                 |
+| M13.1     | PyWebView Desktop Packaging                  | [M13.1_Desktop_Packaging.md](M13.1_Desktop_Packaging.md)                                       |
 | M7.1      | API Response Envelope (ADR-012)              | [M7.1_API_Response_Envelope.md](M7.1_API_Response_Envelope.md)                                 |
 
 ---
