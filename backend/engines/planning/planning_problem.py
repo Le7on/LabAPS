@@ -39,6 +39,7 @@ class Operation:
     duration: int
     required_capability: str | None = None
     required_skill: str | None = None
+    required_qualification: str | None = None
     depends_on: tuple[str, ...] = ()
     weight: int = 1
 

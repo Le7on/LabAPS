@@ -61,4 +61,9 @@ class SchedulingModelBuilder:
             reqs.add((EQUIPMENT, op.required_capability))
         if op.required_skill is not None:
             reqs.add((STAFF, op.required_skill))
+        # A required qualification is another STAFF-kind requirement: the assigned
+        # staff member must provide it (and it must be currently valid, resolved
+        # when the resource's provided set is built).
+        if op.required_qualification is not None:
+            reqs.add((STAFF, op.required_qualification))
         return frozenset(reqs)

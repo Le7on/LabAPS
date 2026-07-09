@@ -22,5 +22,6 @@ class StaffORM(BaseEntity):
     staff_code: Mapped[str] = mapped_column(String(50), index=True)
     name: Mapped[str] = mapped_column(String(200))
     skills: Mapped[list] = mapped_column(JSON, default=list)
+    qualifications: Mapped[dict] = mapped_column(JSON, default=dict)
     availability: Mapped[list] = mapped_column(JSON, default=list)
     active: Mapped[bool] = mapped_column(Boolean, default=True)

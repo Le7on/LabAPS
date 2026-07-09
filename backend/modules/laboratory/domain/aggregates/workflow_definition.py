@@ -37,6 +37,7 @@ class WorkflowDefinition:
         duration: int,
         required_capability: str | None = None,
         required_skill: str | None = None,
+        required_qualification: str | None = None,
         depends_on: tuple[str, ...] = (),
     ) -> OperationDefinition:
         """Add an operation definition to this workflow (aggregate-owned)."""
@@ -46,6 +47,7 @@ class WorkflowDefinition:
             duration=duration,
             required_capability=required_capability,
             required_skill=required_skill,
+            required_qualification=required_qualification,
             depends_on=depends_on,
         )
         self.operations.append(operation)

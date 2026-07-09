@@ -50,6 +50,7 @@ class WorkflowDefinitionRepository:
                     duration=op.duration,
                     required_capability=op.required_capability,
                     required_skill=op.required_skill,
+                    required_qualification=op.required_qualification,
                     depends_on=list(op.depends_on),
                 )
                 for op in workflow.operations
@@ -70,6 +71,7 @@ class WorkflowDefinitionRepository:
                     duration=op.duration,
                     required_capability=op.required_capability,
                     required_skill=op.required_skill,
+                    required_qualification=op.required_qualification,
                     depends_on=tuple(op.depends_on or ()),
                 )
                 for op in orm.operations

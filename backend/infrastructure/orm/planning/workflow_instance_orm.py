@@ -41,6 +41,7 @@ class OperationInstanceORM(BaseEntity):
     duration_shift: Mapped[int] = mapped_column(Integer)
     required_capability: Mapped[str | None] = mapped_column(String(100), nullable=True)
     required_skill: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    required_qualification: Mapped[str | None] = mapped_column(String(100), nullable=True)
     depends_on: Mapped[list] = mapped_column(JSON, default=list)
     status: Mapped[str] = mapped_column(String(20), default="pending")
 

@@ -26,6 +26,7 @@ class CreateWorkflowDefinitionUseCase:
                 duration=op.duration,
                 required_capability=op.required_capability,
                 required_skill=op.required_skill,
+                required_qualification=op.required_qualification,
                 depends_on=op.depends_on,
             )
 

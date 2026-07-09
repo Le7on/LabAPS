@@ -21,6 +21,7 @@ class OperationDefinition:
     duration: int
     required_capability: str | None = None
     required_skill: str | None = None
+    required_qualification: str | None = None
     depends_on: tuple[str, ...] = ()
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 

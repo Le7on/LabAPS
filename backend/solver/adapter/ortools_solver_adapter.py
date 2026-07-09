@@ -137,17 +137,15 @@ class ORToolsSolverAdapter(SolverAdapter):
             task_literals: dict[str, dict[str, cp_model.IntVar]] = {}
 
             for kind in model.kinds():
-                requirement = task.requirement_for(kind)
+                required = task.requires(kind)
                 eligible = model.eligible_resources(task, kind)
 
                 # Only enforce a kind when the task requires it. If required but
                 # nothing is eligible, the problem is infeasible.
-                if requirement is None and not eligible:
+                if not required:
                     continue
-                if requirement is not None and not eligible:
+                if not eligible:
                     return None
-                if requirement is None:
-                    continue
 
                 literals: dict[str, cp_model.IntVar] = {}
                 for resource in eligible:

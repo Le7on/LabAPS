@@ -47,6 +47,7 @@ class WorkflowInstanceRepository:
                     duration_shift=op.duration,
                     required_capability=op.required_capability,
                     required_skill=op.required_skill,
+                    required_qualification=op.required_qualification,
                     depends_on=list(op.depends_on),
                     status="pending",
                 )
@@ -79,6 +80,7 @@ class WorkflowInstanceRepository:
                 "duration": o.duration_shift,
                 "requiredCapability": o.required_capability,
                 "requiredSkill": o.required_skill,
+                "requiredQualification": o.required_qualification,
                 "dependsOn": list(o.depends_on or []),
                 "status": o.status,
             }

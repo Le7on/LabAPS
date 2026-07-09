@@ -15,6 +15,7 @@ class OperationDefinitionInput:
     duration: int
     required_capability: str | None = None
     required_skill: str | None = None
+    required_qualification: str | None = None
     depends_on: tuple[str, ...] = ()
 
     @classmethod
@@ -24,6 +25,7 @@ class OperationDefinitionInput:
             duration=int(data.get("duration", 0)),
             required_capability=data.get("requiredCapability"),
             required_skill=data.get("requiredSkill"),
+            required_qualification=data.get("requiredQualification"),
             depends_on=tuple(data.get("dependsOn", ())),
         )
 
@@ -58,6 +60,7 @@ def workflow_definition_to_dict(workflow: WorkflowDefinition) -> dict:
                 "duration": op.duration,
                 "requiredCapability": op.required_capability,
                 "requiredSkill": op.required_skill,
+                "requiredQualification": op.required_qualification,
                 "dependsOn": list(op.depends_on),
             }
             for op in workflow.operations

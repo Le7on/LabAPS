@@ -43,6 +43,7 @@ class GenerateWorkflowInstanceUseCase:
                     {
                         "id": s.id,
                         "skills": sorted(s.skills),
+                        "qualifications": dict(s.qualifications),
                         "availability": [list(w) for w in s.availability],
                     }
                     for s in uow.staff.list()

@@ -35,6 +35,7 @@ class OperationDefinitionORM(BaseEntity):
     duration: Mapped[int] = mapped_column(Integer)
     required_capability: Mapped[str | None] = mapped_column(String(100), nullable=True)
     required_skill: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    required_qualification: Mapped[str | None] = mapped_column(String(100), nullable=True)
     depends_on: Mapped[list] = mapped_column(JSON, default=list)
 
     workflow: Mapped[WorkflowDefinitionORM] = relationship(back_populates="operations")

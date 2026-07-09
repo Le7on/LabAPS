@@ -51,6 +51,9 @@ class SchedulingResource:
     def satisfies(self, requirement: str | None) -> bool:
         return requirement is None or requirement in self.provides
 
+    def satisfies_all(self, requirements: frozenset[str]) -> bool:
+        return requirements.issubset(self.provides)
+
 
 @dataclass(frozen=True, slots=True)
 class Task:
@@ -72,6 +75,13 @@ class Task:
             if req_kind == kind:
                 return value
         return None
+
+    def requirements_for(self, kind: str) -> frozenset[str]:
+        """All attribute values a resource of ``kind`` must provide for this task."""
+        return frozenset(value for req_kind, value in self.requirements if req_kind == kind)
+
+    def requires(self, kind: str) -> bool:
+        return any(req_kind == kind for req_kind, _ in self.requirements)
 
 
 @dataclass(frozen=True, slots=True)
@@ -95,9 +105,13 @@ class SchedulingModel:
         return tuple(seen)
 
     def eligible_resources(self, task: Task, kind: str) -> tuple[SchedulingResource, ...]:
-        """Resources of ``kind`` that satisfy the task's requirement for it."""
-        requirement = task.requirement_for(kind)
-        return tuple(r for r in self.resources if r.kind == kind and r.satisfies(requirement))
+        """Resources of ``kind`` that satisfy all of the task's requirements for it.
+
+        A staff task may require both a skill and a qualification; a resource is
+        eligible only if it provides every required value.
+        """
+        required = task.requirements_for(kind)
+        return tuple(r for r in self.resources if r.kind == kind and r.satisfies_all(required))
 
 
 @dataclass(frozen=True, slots=True)

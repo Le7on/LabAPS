@@ -8,6 +8,8 @@ resulting assignments and marks the version Scheduled.
 
 from __future__ import annotations
 
+from datetime import date
+
 from backend.engines.planning.planning_problem import (
     EQUIPMENT,
     OBJECTIVE_MAKESPAN,
@@ -20,6 +22,15 @@ from backend.engines.planning.planning_problem import (
 )
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.shared.errors import NotFoundError, ValidationError
+
+
+def _valid_quals(staff_snapshot: dict, reference_date: str) -> frozenset[str]:
+    """Qualifications in a staff snapshot that are unexpired at reference_date."""
+    valid = set()
+    for name, expiry in (staff_snapshot.get("qualifications") or {}).items():
+        if expiry is None or reference_date <= expiry:
+            valid.add(name)
+    return frozenset(valid)
 
 
 class ScheduleInstancesUseCase:
@@ -88,6 +99,7 @@ class ScheduleInstancesUseCase:
                 duration=op["duration"],
                 required_capability=op["requiredCapability"],
                 required_skill=op["requiredSkill"],
+                required_qualification=op.get("requiredQualification"),
                 depends_on=tuple(
                     def_to_instance[d] for d in op["dependsOn"] if d in def_to_instance
                 ),
@@ -95,6 +107,13 @@ class ScheduleInstancesUseCase:
             )
             for op in operations
         )
+
+        # Qualification validity is evaluated at today's date (the scheduling
+        # reference). A staff member provides its skills plus its currently-valid
+        # qualifications; expired qualifications are simply not provided, so the
+        # solver treats a required-but-expired qualification as ineligible.
+        reference_date = date.today().isoformat()
+
         resources = tuple(
             Resource(
                 identifier=e["id"],
@@ -107,7 +126,7 @@ class ScheduleInstancesUseCase:
             Resource(
                 identifier=s["id"],
                 kind=STAFF,
-                provides=frozenset(s["skills"]),
+                provides=frozenset(s["skills"]) | _valid_quals(s, reference_date),
                 windows=tuple(tuple(w) for w in s.get("availability", [])),
             )
             for s in context.get("staff", [])
