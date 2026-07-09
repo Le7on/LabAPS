@@ -9,6 +9,7 @@ import {
   listProjects,
   listStaff,
   listWorkflowDefinitions,
+  setResourceActive,
 } from '../api/laboratory'
 
 // Client-side state for Laboratory Definition (equipment, staff, workflows, projects).
@@ -107,6 +108,24 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     }
   }
 
+  const REFRESH = {
+    equipment: fetchEquipment,
+    staff: fetchStaff,
+    projects: fetchProjects,
+  }
+
+  async function setActive(kind, id, active) {
+    error.value = null
+    try {
+      await setResourceActive(kind, id, active)
+      await REFRESH[kind]()
+      return true
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to update status'
+      return false
+    }
+  }
+
   return {
     equipment,
     staff,
@@ -121,5 +140,6 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     addWorkflow,
     fetchProjects,
     addProject,
+    setActive,
   }
 })

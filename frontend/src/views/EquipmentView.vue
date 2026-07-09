@@ -61,6 +61,7 @@ async function submit() {
             <th>Capabilities</th>
             <th>Availability</th>
             <th>Active</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +77,14 @@ async function submit() {
               <span class="badge" :class="item.active ? 'badge--success' : ''">
                 {{ item.active ? 'active' : 'inactive' }}
               </span>
+            </td>
+            <td>
+              <button
+                class="btn btn--ghost"
+                @click="store.setActive('equipment', item.id, !item.active)"
+              >
+                {{ item.active ? 'Deactivate' : 'Activate' }}
+              </button>
             </td>
           </tr>
         </tbody>

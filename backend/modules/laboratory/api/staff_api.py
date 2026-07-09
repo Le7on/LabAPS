@@ -10,6 +10,9 @@ from flask import Blueprint, current_app, request
 
 from backend.modules.laboratory.application.create_staff import CreateStaffUseCase
 from backend.modules.laboratory.application.list_staff import ListStaffUseCase
+from backend.modules.laboratory.application.set_resource_active import (
+    SetResourceActiveUseCase,
+)
 from backend.modules.laboratory.dto.staff_dto import CreateStaffRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -37,3 +40,15 @@ def list_staff():
     use_case = ListStaffUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@staff_bp.post("/staff/<staff_id>/deactivate")
+def deactivate_staff(staff_id: str):
+    use_case = SetResourceActiveUseCase(_uow())
+    return api_response.success(use_case.execute("staff", staff_id, False))
+
+
+@staff_bp.post("/staff/<staff_id>/activate")
+def activate_staff(staff_id: str):
+    use_case = SetResourceActiveUseCase(_uow())
+    return api_response.success(use_case.execute("staff", staff_id, True))

@@ -79,6 +79,7 @@ async function submit() {
             <th>Skills</th>
             <th>Qualifications</th>
             <th>Availability</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -91,6 +92,11 @@ async function submit() {
             </td>
             <td>{{ formatQualifications(s.qualifications) }}</td>
             <td>{{ formatWindows(s.availability) }}</td>
+            <td>
+              <button class="btn btn--ghost" @click="store.setActive('staff', s.id, !s.active)">
+                {{ s.active ? 'Deactivate' : 'Activate' }}
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -11,6 +11,9 @@ from backend.modules.laboratory.application.create_equipment import (
     CreateEquipmentUseCase,
 )
 from backend.modules.laboratory.application.list_equipment import ListEquipmentUseCase
+from backend.modules.laboratory.application.set_resource_active import (
+    SetResourceActiveUseCase,
+)
 from backend.modules.laboratory.dto.equipment_dto import CreateEquipmentRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -38,3 +41,15 @@ def list_equipment():
     use_case = ListEquipmentUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@equipment_bp.post("/equipment/<equipment_id>/deactivate")
+def deactivate_equipment(equipment_id: str):
+    use_case = SetResourceActiveUseCase(_uow())
+    return api_response.success(use_case.execute("equipment", equipment_id, False))
+
+
+@equipment_bp.post("/equipment/<equipment_id>/activate")
+def activate_equipment(equipment_id: str):
+    use_case = SetResourceActiveUseCase(_uow())
+    return api_response.success(use_case.execute("equipment", equipment_id, True))

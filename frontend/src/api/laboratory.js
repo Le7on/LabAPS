@@ -32,3 +32,9 @@ export function listProjects() {
 export function createProject(payload) {
   return client.post('/projects', payload).then((r) => r.data)
 }
+
+// kind is 'equipment' | 'staff' | 'projects'; verb is 'deactivate' | 'activate'.
+export function setResourceActive(kind, id, active) {
+  const verb = active ? 'activate' : 'deactivate'
+  return client.post(`/${kind}/${id}/${verb}`).then((r) => r.data)
+}

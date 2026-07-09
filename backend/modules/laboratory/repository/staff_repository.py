@@ -28,6 +28,13 @@ class StaffRepository:
         stmt = select(StaffORM).order_by(StaffORM.created_at)
         return [self._to_domain(o) for o in self.session.scalars(stmt).all()]
 
+    def set_active(self, staff_id: str, active: bool) -> bool:
+        orm = self.session.get(StaffORM, staff_id)
+        if orm is None:
+            return False
+        orm.active = active
+        return True
+
     @staticmethod
     def _to_orm(staff: Staff) -> StaffORM:
         return StaffORM(
