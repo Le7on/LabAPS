@@ -44,6 +44,9 @@ class SchedulingResource:
     identifier: str
     kind: str = EQUIPMENT
     provides: frozenset[str] = frozenset()
+    # Availability windows [start, end); empty means always available (Calendar
+    # Constraint). A task assigned to this resource must fit within one window.
+    windows: tuple[tuple[int, int], ...] = ()
 
     def satisfies(self, requirement: str | None) -> bool:
         return requirement is None or requirement in self.provides

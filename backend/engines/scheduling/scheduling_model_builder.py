@@ -38,6 +38,7 @@ class SchedulingModelBuilder:
                 identifier=r.identifier,
                 kind=r.kind,
                 provides=frozenset(r.provides),
+                windows=tuple(r.windows),
             )
             for r in problem.resources
         )

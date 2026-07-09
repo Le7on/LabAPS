@@ -24,6 +24,8 @@ class Resource:
     identifier: str
     kind: str = EQUIPMENT
     provides: frozenset[str] = frozenset()
+    # Availability windows [start, end); empty means always available.
+    windows: tuple[tuple[int, int], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

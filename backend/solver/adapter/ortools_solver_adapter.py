@@ -163,6 +163,7 @@ class ORToolsSolverAdapter(SolverAdapter):
                         f"opt_{task.identifier}_{kind}_{resource.identifier}",
                     )
                     per_resource[resource.identifier].append(optional)
+                    self._add_calendar_constraint(cp, task, resource, present, starts, ends)
 
                 cp.add_exactly_one(literals.values())
                 task_literals[kind] = literals
@@ -175,6 +176,25 @@ class ORToolsSolverAdapter(SolverAdapter):
                 cp.add_no_overlap(optional_intervals)
 
         return assignment
+
+    @staticmethod
+    def _add_calendar_constraint(cp, task, resource, present, starts, ends):
+        """Calendar Constraint: if assigned to a windowed resource, the task must
+        fit entirely within one of the resource's availability windows.
+        """
+        if not resource.windows:
+            return
+
+        start = starts[task.identifier]
+        end = ends[task.identifier]
+        fits = []
+        for w_index, (w_start, w_end) in enumerate(resource.windows):
+            in_window = cp.new_bool_var(f"win_{task.identifier}_{resource.identifier}_{w_index}")
+            cp.add(start >= w_start).only_enforce_if(in_window)
+            cp.add(end <= w_end).only_enforce_if(in_window)
+            fits.append(in_window)
+        # When assigned to this resource, exactly one window must hold.
+        cp.add_exactly_one(fits).only_enforce_if(present)
 
     @staticmethod
     def _resolve_assignments(solver, assignment, task_id):
