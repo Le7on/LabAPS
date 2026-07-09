@@ -1,5 +1,12 @@
 <script setup>
-// Lab APS application shell: sidebar navigation + routed content.
+import { computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from './stores/auth'
+
+const auth = useAuthStore()
+const route = useRoute()
+const router = useRouter()
+
 const nav = [
   { to: '/dashboard', label: 'Dashboard', icon: '▚' },
   { to: '/plans', label: 'Plans', icon: '▤' },
@@ -10,10 +17,21 @@ const nav = [
   { to: '/staff', label: 'Staff', icon: '☺' },
   { to: '/workflow-definitions', label: 'Workflows', icon: '⇄' },
 ]
+
+// Show the chrome-less layout on the public login page.
+const bare = computed(() => route.meta.public)
+
+onMounted(() => auth.restore())
+
+function logout() {
+  auth.logout()
+  router.push('/login')
+}
 </script>
 
 <template>
-  <div class="layout">
+  <RouterView v-if="bare" />
+  <div v-else class="layout">
     <aside class="sidebar">
       <div class="brand">Lab APS</div>
       <nav class="nav">
@@ -25,6 +43,13 @@ const nav = [
           </RouterLink>
         </template>
       </nav>
+      <div class="sidebar__footer">
+        <template v-if="auth.isAuthenticated()">
+          <div class="user">{{ auth.user.username }} · {{ auth.user.role }}</div>
+          <button class="btn btn--ghost logout" @click="logout">Sign out</button>
+        </template>
+        <RouterLink v-else to="/login" class="nav__link">Sign in</RouterLink>
+      </div>
     </aside>
     <main class="content">
       <RouterView />
@@ -43,6 +68,8 @@ const nav = [
   color: #cbd5e1;
   padding: 1.25rem 0.75rem;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
 }
 .brand {
   color: #fff;
@@ -84,6 +111,21 @@ const nav = [
   width: 1.1rem;
   text-align: center;
   opacity: 0.9;
+}
+.sidebar__footer {
+  margin-top: auto;
+  padding: 0.75rem;
+  border-top: 1px solid #1d2939;
+}
+.user {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+.logout {
+  color: #cbd5e1;
+  border-color: #334155;
+  width: 100%;
 }
 .content {
   flex: 1;

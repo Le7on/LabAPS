@@ -52,6 +52,7 @@ Completion Record):
 | M9.1      | Execution: Assignment Lifecycle              | [M9.1_Execution_Assignment_Lifecycle.md](M9.1_Execution_Assignment_Lifecycle.md)               |
 | M9.2      | Execution History (Audit Trail)              | [M9.2_Execution_History.md](M9.2_Execution_History.md)                                         |
 | M10.1     | Token Authentication & Roles                 | [M10.1_Authentication.md](M10.1_Authentication.md)                                             |
+| M10.2     | Frontend Authentication                      | [M10.2_Frontend_Auth.md](M10.2_Frontend_Auth.md)                                               |
 | M11.1     | Demand Domain                                | [M11.1_Demand.md](M11.1_Demand.md)                                                             |
 | M11.2     | Demand-Driven Objective                      | [M11.2_Demand_Driven_Objective.md](M11.2_Demand_Driven_Objective.md)                           |
 | M11.3     | Operation Instances & Planning Context       | [M11.3_Operation_Instances_Planning_Context.md](M11.3_Operation_Instances_Planning_Context.md) |
