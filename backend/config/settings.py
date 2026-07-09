@@ -34,6 +34,7 @@ class AppConfig:
     name: str = "Lab APS"
     version: str = "1.0.0"
     env: str = "development"
+    auth_enabled: bool = True
     database: DatabaseConfig = field(default_factory=DatabaseConfig)
     api: ApiConfig = field(default_factory=ApiConfig)
 
@@ -76,3 +77,6 @@ def _apply_yaml(config: AppConfig, raw: dict) -> None:
 def _apply_env(config: AppConfig) -> None:
     config.env = os.getenv("APP_ENV", config.env)
     config.database.url = os.getenv("DATABASE_URL", config.database.url)
+    auth_env = os.getenv("AUTH_ENABLED")
+    if auth_env is not None:
+        config.auth_enabled = auth_env.strip().lower() not in ("0", "false", "no")

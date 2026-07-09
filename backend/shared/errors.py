@@ -43,3 +43,17 @@ class ConflictError(AppError):
 
     status_code = 409
     error_code = "CONFLICT"
+
+
+class UnauthorizedError(AppError):
+    """Authentication is missing or invalid (HTTP 401)."""
+
+    status_code = 401
+    error_code = "UNAUTHORIZED"
+
+
+class ForbiddenError(AppError):
+    """The authenticated user lacks the required role (HTTP 403)."""
+
+    status_code = 403
+    error_code = "FORBIDDEN"

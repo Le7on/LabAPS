@@ -40,6 +40,12 @@ def create_app(config: AppConfig | None = None, config_file: Path | None = None)
     container.database.create_all()
 
     register_error_handlers(app)
+
+    if app_config.auth_enabled:
+        from backend.shared.auth import register_auth_guard
+
+        register_auth_guard(app, container.auth_service)
+
     register_blueprints(app, container)
 
     return app
@@ -51,6 +57,7 @@ def register_blueprints(app: Flask, container: Container) -> None:
     prefix = container.config.api.prefix
 
     from backend.modules.execution.api.executions_api import executions_bp
+    from backend.modules.identity.api.auth_api import auth_bp
     from backend.modules.laboratory.api.equipment_api import equipment_bp
     from backend.modules.laboratory.api.staff_api import staff_bp
     from backend.modules.laboratory.api.workflow_definition_api import (
@@ -67,3 +74,4 @@ def register_blueprints(app: Flask, container: Container) -> None:
     app.register_blueprint(workflow_definition_bp, url_prefix=prefix)
     app.register_blueprint(dashboard_bp, url_prefix=prefix)
     app.register_blueprint(executions_bp, url_prefix=prefix)
+    app.register_blueprint(auth_bp, url_prefix=prefix)

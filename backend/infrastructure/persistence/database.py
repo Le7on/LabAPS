@@ -16,6 +16,9 @@ from backend.infrastructure.orm.common.base import Base
 from backend.infrastructure.orm.execution import (
     execution_record_orm,  # noqa: F401
 )
+from backend.infrastructure.orm.identity import (
+    user_orm,  # noqa: F401
+)
 from backend.infrastructure.orm.laboratory import (
     equipment_orm,  # noqa: F401
     staff_orm,  # noqa: F401

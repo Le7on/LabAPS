@@ -104,6 +104,7 @@ ARCHITECTURE_LOG.md
 | ADR-010 | Separate Laboratory Definition and Planning | Accepted |
 | ADR-011 | Adopt Vue 3 SPA Frontend                    | Accepted |
 | ADR-012 | Unified API Response Envelope               | Accepted |
+| ADR-013 | Token Authentication and Role Authorization | Accepted |
 
 ---
 

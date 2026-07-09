@@ -14,6 +14,7 @@ from backend.config.settings import AppConfig
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.infrastructure.persistence.database import Database
 from backend.infrastructure.persistence.unit_of_work import UnitOfWork
+from backend.modules.identity.application.auth_service import AuthService
 from backend.solver.adapter.ortools_solver_adapter import ORToolsSolverAdapter
 
 
@@ -29,6 +30,7 @@ class Container:
     config: AppConfig
     database: Database
     scheduling_engine: SchedulingEngine
+    auth_service: AuthService
 
     @property
     def session_factory(self):
@@ -47,8 +49,11 @@ def build_container(config: AppConfig) -> Container:
     # Stateless scheduling engine with the OR-Tools solver adapter injected.
     scheduling_engine = SchedulingEngine(solver_adapter=ORToolsSolverAdapter())
 
+    auth_service = AuthService(database.session_factory)
+
     return Container(
         config=config,
         database=database,
         scheduling_engine=scheduling_engine,
+        auth_service=auth_service,
     )
