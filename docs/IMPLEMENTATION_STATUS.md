@@ -12,15 +12,19 @@ architecture index (design) with the current build state.
 
 # 1. Phase Status
 
-| Phase | Name                                                               | Status                     |
-| ----- | ------------------------------------------------------------------ | -------------------------- |
-| 1     | Bootstrap (CLI, skeleton, framework)                               | Implemented                |
-| 2     | Infrastructure (SQLAlchemy, UoW, Alembic)                          | Implemented                |
-| 3     | Planning Domain (Plan, Plan Version, lifecycle)                    | Implemented                |
-| 4     | Scheduling Engine (OR-Tools, resources, persistence)               | Implemented                |
-| 5     | Execution (assignment lifecycle)                                   | Implemented (first slice)  |
-| 6     | Reporting (dashboard)                                              | Implemented (first slice)  |
-| —     | Frontend SPA (dashboard, plans, laboratory, workflows, scheduling) | Implemented (first slices) |
+| Phase | Name                                                               | Status      |
+| ----- | ------------------------------------------------------------------ | ----------- |
+| 1     | Bootstrap (CLI, skeleton, framework)                               | Implemented |
+| 2     | Infrastructure (SQLAlchemy, UoW, Alembic)                          | Implemented |
+| 3     | Planning Domain (Plan, Plan Version lifecycle, Demand)             | Implemented |
+| 4     | Scheduling Engine (OR-Tools; all constraint categories; objective) | Implemented |
+| 5     | Execution (assignment lifecycle + audit history)                   | Implemented |
+| 6     | Reporting (dashboard + KPI/utilization)                            | Implemented |
+| 7     | Identity (token auth + roles), Desktop packaging, Acceptance       | Implemented |
+| —     | Frontend SPA (all views, Gantt, login)                             | Implemented |
+
+Release readiness: see [RELEASE_READINESS.md](RELEASE_READINESS.md) — internal
+v1.0 go.
 
 ---
 
@@ -84,20 +88,24 @@ Objective: demand-weighted completion when a version has demand, else makespan
 
 # 6. REST API Surface
 
-| Method + path                                             | Module     |
-| --------------------------------------------------------- | ---------- |
-| GET /api/v1/health                                        | shared     |
-| POST/GET /api/v1/plans, GET /plans/{id}                   | planning   |
-| POST /plans/{id}/versions                                 | planning   |
-| POST /plans/{id}/versions/{vid}/schedule                  | planning   |
-| POST /plans/{id}/versions/{vid}/schedule-from-workflow    | planning   |
-| GET /plans/{id}/versions/{vid}/assignments                | planning   |
-| POST /plans/{id}/versions/{vid}/{review,publish,archive}  | planning   |
-| POST/GET /api/v1/equipment                                | laboratory |
-| POST/GET /api/v1/staff                                    | laboratory |
-| POST/GET /api/v1/workflow-definitions                     | laboratory |
-| POST /api/v1/executions/{id}/{start,complete,fail,cancel} | execution  |
-| GET /api/v1/reports/dashboard                             | reporting  |
+| Method + path                                                              | Module     |
+| -------------------------------------------------------------------------- | ---------- |
+| GET /api/v1/health                                                         | shared     |
+| GET /api/v1/auth/whoami; POST /api/v1/users                                | identity   |
+| POST/GET /api/v1/plans; GET /plans/{id}                                    | planning   |
+| POST /plans/{id}/versions                                                  | planning   |
+| POST /plans/{id}/versions/{vid}/schedule (manual ops)                      | planning   |
+| POST /plans/{id}/versions/{vid}/generate-instances                         | planning   |
+| POST /plans/{id}/versions/{vid}/schedule-instances                         | planning   |
+| POST/GET /plans/{id}/versions/{vid}/demands                                | planning   |
+| GET /plans/{id}/versions/{vid}/assignments                                 | planning   |
+| POST /plans/{id}/versions/{vid}/{review,publish,archive}                   | planning   |
+| POST/GET /api/v1/equipment; POST /equipment/{id}/{deactivate,activate}     | laboratory |
+| POST/GET /api/v1/staff; POST /staff/{id}/{deactivate,activate}             | laboratory |
+| POST/GET /api/v1/projects; POST /projects/{id}/{deactivate,activate}       | laboratory |
+| POST/GET /api/v1/workflow-definitions                                      | laboratory |
+| POST /api/v1/executions/{id}/{start,complete,fail,cancel}; GET .../history | execution  |
+| GET /api/v1/reports/dashboard; GET /api/v1/reports/kpi                     | reporting  |
 
 All responses use the `{success, data, meta}` envelope (ADR-012).
 
@@ -105,10 +113,12 @@ All responses use the `{success, data, meta}` envelope (ADR-012).
 
 # 7. Test & Quality Snapshot
 
-- Backend + tools: 66 tests passing; overall coverage ~97%.
-- Frontend: `vite build` succeeds (100 modules); ESLint + Prettier clean.
-- Alembic: full chain creates plan, plan_version, equipment, staff,
-  workflow_definition, operation_definition, assignment.
+- Backend + tools: 101 tests passing, including an end-to-end acceptance test
+  covering the full authenticated pipeline.
+- Frontend: `vite build` succeeds (108 modules); ESLint + Prettier clean.
+- Alembic: full chain builds the complete schema from empty (plan, plan_version,
+  demand, workflow/operation instance, planning_context, assignment, execution
+  record, equipment, staff, project, workflow/operation definition, users/tokens).
 - Lint/format: Ruff (backend/tools), ESLint + Prettier (frontend), Prettier
   (Markdown) all clean.
 
