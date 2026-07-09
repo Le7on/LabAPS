@@ -45,6 +45,7 @@ Completion Record):
 | M6.3      | Frontend Dashboard View                      | [M6.3_Frontend_Dashboard_View.md](M6.3_Frontend_Dashboard_View.md)                             |
 | M6.4      | Frontend Workflow Definitions View           | [M6.4_Frontend_Workflow_Definitions.md](M6.4_Frontend_Workflow_Definitions.md)                 |
 | M6.5      | Frontend Scheduling View                     | [M6.5_Frontend_Scheduling_View.md](M6.5_Frontend_Scheduling_View.md)                           |
+| M6.6      | Frontend Overhaul                            | [M6.6_Frontend_Overhaul.md](M6.6_Frontend_Overhaul.md)                                         |
 | M8.1      | Reporting Dashboard                          | [M8.1_Reporting_Dashboard.md](M8.1_Reporting_Dashboard.md)                                     |
 | M8.2      | Reporting KPI & Equipment Utilization        | [M8.2_Reporting_KPI.md](M8.2_Reporting_KPI.md)                                                 |
 | M9.1      | Execution: Assignment Lifecycle              | [M9.1_Execution_Assignment_Lifecycle.md](M9.1_Execution_Assignment_Lifecycle.md)               |

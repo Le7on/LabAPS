@@ -1,90 +1,92 @@
 <script setup>
 import { onMounted, reactive } from 'vue'
 import { useLaboratoryStore } from '../stores/laboratory'
+import { parseList, parseWindows, formatWindows } from '../utils/parse'
 
 const store = useLaboratoryStore()
+const form = reactive({ equipmentCode: '', name: '', capabilities: '', availability: '' })
 
-const form = reactive({ equipmentCode: '', name: '', capabilities: '' })
-
-onMounted(() => {
-  store.fetchEquipment()
-})
-
-function parseList(value) {
-  return value
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
-}
+onMounted(() => store.fetchEquipment())
 
 async function submit() {
-  const created = await store.addEquipment({
+  const ok = await store.addEquipment({
     equipmentCode: form.equipmentCode,
     name: form.name,
     capabilities: parseList(form.capabilities),
+    availability: parseWindows(form.availability),
   })
-  if (created) {
+  if (ok) {
     form.equipmentCode = ''
     form.name = ''
     form.capabilities = ''
+    form.availability = ''
   }
 }
 </script>
 
 <template>
-  <section>
+  <section class="stack">
     <h2>Equipment</h2>
 
-    <form class="row-form" @submit.prevent="submit">
-      <input v-model="form.equipmentCode" placeholder="Equipment code" required />
-      <input v-model="form.name" placeholder="Name" required />
-      <input v-model="form.capabilities" placeholder="Capabilities (comma separated)" />
-      <button type="submit">Add equipment</button>
-    </form>
+    <div class="card">
+      <div class="card__title">New equipment</div>
+      <form class="form-row" @submit.prevent="submit">
+        <div class="field">
+          <label>Code</label>
+          <input v-model="form.equipmentCode" placeholder="EQ-001" required />
+        </div>
+        <div class="field">
+          <label>Name</label>
+          <input v-model="form.name" placeholder="Thermocycler" required />
+        </div>
+        <div class="field">
+          <label>Capabilities</label>
+          <input v-model="form.capabilities" placeholder="pcr, spin" />
+        </div>
+        <div class="field">
+          <label>Availability (start-end, …)</label>
+          <input v-model="form.availability" placeholder="0-40, 60-100" />
+        </div>
+        <button class="btn btn--primary" type="submit">Add equipment</button>
+      </form>
+      <p v-if="store.error" class="error">{{ store.error }}</p>
+    </div>
 
-    <p v-if="store.error" class="error">{{ store.error }}</p>
-
-    <table v-if="store.equipment.length">
-      <thead>
-        <tr>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Capabilities</th>
-          <th>Active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in store.equipment" :key="item.id">
-          <td>{{ item.equipmentCode }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.capabilities.join(', ') }}</td>
-          <td>{{ item.active ? 'yes' : 'no' }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p v-else>No equipment yet.</p>
+    <div class="card">
+      <table v-if="store.equipment.length" class="table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Capabilities</th>
+            <th>Availability</th>
+            <th>Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in store.equipment" :key="item.id">
+            <td>{{ item.equipmentCode }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <span v-for="c in item.capabilities" :key="c" class="badge badge--info">{{ c }}</span>
+              <span v-if="!item.capabilities.length" class="muted">—</span>
+            </td>
+            <td>{{ formatWindows(item.availability) }}</td>
+            <td>
+              <span class="badge" :class="item.active ? 'badge--success' : ''">
+                {{ item.active ? 'active' : 'inactive' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p v-else class="empty">No equipment yet.</p>
+    </div>
   </section>
 </template>
 
 <style scoped>
-.row-form {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-.error {
-  color: #b00020;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.4rem 0.6rem;
-  text-align: left;
+.badge + .badge {
+  margin-left: 0.25rem;
 }
 </style>

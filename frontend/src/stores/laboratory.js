@@ -2,18 +2,21 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import {
   createEquipment,
+  createProject,
   createStaff,
   createWorkflowDefinition,
   listEquipment,
+  listProjects,
   listStaff,
   listWorkflowDefinitions,
 } from '../api/laboratory'
 
-// Client-side state for Laboratory Definition (equipment, staff, workflows).
+// Client-side state for Laboratory Definition (equipment, staff, workflows, projects).
 export const useLaboratoryStore = defineStore('laboratory', () => {
   const equipment = ref([])
   const staff = ref([])
   const workflows = ref([])
+  const projects = ref([])
   const error = ref(null)
 
   async function fetchEquipment() {
@@ -82,10 +85,33 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     }
   }
 
+  async function fetchProjects() {
+    error.value = null
+    try {
+      const { data } = await listProjects()
+      projects.value = data
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to load projects'
+    }
+  }
+
+  async function addProject(payload) {
+    error.value = null
+    try {
+      await createProject(payload)
+      await fetchProjects()
+      return true
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to create project'
+      return false
+    }
+  }
+
   return {
     equipment,
     staff,
     workflows,
+    projects,
     error,
     fetchEquipment,
     addEquipment,
@@ -93,5 +119,7 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     addStaff,
     fetchWorkflows,
     addWorkflow,
+    fetchProjects,
+    addProject,
   }
 })

@@ -24,3 +24,11 @@ export function listWorkflowDefinitions() {
 export function createWorkflowDefinition(payload) {
   return client.post('/workflow-definitions', payload).then((r) => r.data)
 }
+
+export function listProjects() {
+  return client.get('/projects')
+}
+
+export function createProject(payload) {
+  return client.post('/projects', payload).then((r) => r.data)
+}

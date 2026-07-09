@@ -18,16 +18,30 @@ export function createVersion(planId) {
   return client.post(`/plans/${planId}/versions`).then((r) => r.data)
 }
 
-export function scheduleFromWorkflow(planId, versionId, workflowDefinitionId) {
+export function generateInstances(planId, versionId, workflowDefinitionId) {
   return client
-    .post(`/plans/${planId}/versions/${versionId}/schedule-from-workflow`, {
+    .post(`/plans/${planId}/versions/${versionId}/generate-instances`, {
       workflowDefinitionId,
     })
+    .then((r) => r.data)
+}
+
+export function scheduleInstances(planId, versionId, frozenUntil = 0) {
+  return client
+    .post(`/plans/${planId}/versions/${versionId}/schedule-instances`, { frozenUntil })
     .then((r) => ({ data: r.data, meta: r.meta }))
 }
 
 export function listAssignments(planId, versionId) {
   return client.get(`/plans/${planId}/versions/${versionId}/assignments`)
+}
+
+export function addDemand(planId, versionId, payload) {
+  return client.post(`/plans/${planId}/versions/${versionId}/demands`, payload).then((r) => r.data)
+}
+
+export function listDemands(planId, versionId) {
+  return client.get(`/plans/${planId}/versions/${versionId}/demands`)
 }
 
 export function reviewVersion(planId, versionId) {

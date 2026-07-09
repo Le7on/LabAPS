@@ -132,6 +132,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M6.3_Frontend_Dashboard_View.md](12_Development_Log/M6.3_Frontend_Dashboard_View.md) — M6.3 frontend dashboard view.
 - [12_Development_Log/M6.4_Frontend_Workflow_Definitions.md](12_Development_Log/M6.4_Frontend_Workflow_Definitions.md) — M6.4 frontend workflow definitions view.
 - [12_Development_Log/M6.5_Frontend_Scheduling_View.md](12_Development_Log/M6.5_Frontend_Scheduling_View.md) — M6.5 frontend scheduling view.
+- [12_Development_Log/M6.6_Frontend_Overhaul.md](12_Development_Log/M6.6_Frontend_Overhaul.md) — M6.6 frontend overhaul and new capability coverage.
 - [12_Development_Log/M8.1_Reporting_Dashboard.md](12_Development_Log/M8.1_Reporting_Dashboard.md) — M8.1 reporting dashboard.
 - [12_Development_Log/M8.2_Reporting_KPI.md](12_Development_Log/M8.2_Reporting_KPI.md) — M8.2 reporting KPI and equipment utilization.
 - [12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md](12_Development_Log/M9.1_Execution_Assignment_Lifecycle.md) — M9.1 execution assignment lifecycle.
