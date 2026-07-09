@@ -17,6 +17,7 @@ import {
   failAssignment,
   startAssignment,
 } from '../api/executions'
+import GanttChart from '../components/GanttChart.vue'
 
 const plans = ref([])
 const workflows = ref([])
@@ -202,6 +203,11 @@ function badgeClass(status) {
         </button>
         <span v-if="makespan != null" class="badge">makespan: {{ makespan }}</span>
       </div>
+    </div>
+
+    <div v-if="assignments.length" class="card">
+      <div class="card__title">Timeline</div>
+      <GanttChart :assignments="assignments" />
     </div>
 
     <div v-if="assignments.length" class="card">
