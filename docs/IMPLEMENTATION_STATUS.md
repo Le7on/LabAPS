@@ -45,18 +45,19 @@ v1.0 go.
 
 # 3. ADR Traceability
 
-| ADR     | Decision                           | Where enforced                                                           |
-| ------- | ---------------------------------- | ------------------------------------------------------------------------ |
-| ADR-001 | Plan as Aggregate Root             | `domain/aggregates/plan.py` (owns versions)                              |
-| ADR-002 | Plan + Plan Version                | `domain/entities/plan_version.py`                                        |
-| ADR-003 | Workflow Definition vs Instance    | `laboratory/domain/aggregates/workflow_definition.py`                    |
-| ADR-004 | Operation Definition vs Instance   | `laboratory/domain/entities/operation_definition.py`                     |
-| ADR-005 | Scheduling Model as ACL            | `engines/scheduling/*`, `solver/*` (business objects never enter solver) |
-| ADR-006 | Constraint Model not direct solver | `ortools_solver_adapter` translates a framework-free model               |
-| ADR-007 | Constraint vs Objective split      | constraints in adapter; objective (makespan) isolated; noted interim     |
-| ADR-010 | Separate Laboratory and Planning   | distinct modules; cross-read only at application layer                   |
-| ADR-011 | Vue 3 SPA                          | `frontend/`                                                              |
-| ADR-012 | Unified API response envelope      | `shared/api_response.py`, `shared/error_handlers.py`                     |
+| ADR     | Decision                           | Where enforced                                                            |
+| ------- | ---------------------------------- | ------------------------------------------------------------------------- |
+| ADR-001 | Plan as Aggregate Root             | `domain/aggregates/plan.py` (owns versions)                               |
+| ADR-002 | Plan + Plan Version                | `domain/entities/plan_version.py`                                         |
+| ADR-003 | Workflow Definition vs Instance    | `laboratory/domain/aggregates/workflow_definition.py`                     |
+| ADR-004 | Operation Definition vs Instance   | `laboratory/domain/entities/operation_definition.py`                      |
+| ADR-005 | Scheduling Model as ACL            | `engines/scheduling/*`, `solver/*` (business objects never enter solver)  |
+| ADR-006 | Constraint Model not direct solver | `ortools_solver_adapter` translates a framework-free model                |
+| ADR-007 | Constraint vs Objective split      | constraints in adapter; objective (makespan / demand-weighted) selectable |
+| ADR-010 | Separate Laboratory and Planning   | distinct modules; cross-read only at application layer                    |
+| ADR-011 | Vue 3 SPA                          | `frontend/`                                                               |
+| ADR-012 | Unified API response envelope      | `shared/api_response.py`, `shared/error_handlers.py`                      |
+| ADR-013 | Token authentication + roles       | `shared/auth.py`, `modules/identity/*`                                    |
 
 ---
 
@@ -77,9 +78,9 @@ v1.0 go.
 | Capability (equipment)  | Implemented |
 | Skill (staff)           | Implemented |
 | Resource no-overlap     | Implemented |
-| Qualification (expiry)  | Not yet     |
-| Calendar / availability | Not yet     |
-| Policy                  | Not yet     |
+| Qualification (expiry)  | Implemented |
+| Calendar / availability | Implemented |
+| Policy (frozen window)  | Implemented |
 
 Objective: demand-weighted completion when a version has demand, else makespan
 (ADR-007; see M11.2). Utilization/balance objectives are future.
