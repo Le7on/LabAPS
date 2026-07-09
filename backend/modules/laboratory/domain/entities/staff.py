@@ -19,6 +19,8 @@ class Staff:
     staff_code: str
     name: str
     skills: set[str] = field(default_factory=set)
+    # Availability windows [start, end); empty means always available (Calendar).
+    availability: list[tuple[int, int]] = field(default_factory=list)
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
@@ -27,6 +29,9 @@ class Staff:
             raise ValidationError("staffCode is required")
         if not self.name:
             raise ValidationError("name is required")
+        for start, end in self.availability:
+            if end <= start:
+                raise ValidationError("availability window end must be after start")
 
     def has_skill(self, skill: str) -> bool:
         return skill in self.skills

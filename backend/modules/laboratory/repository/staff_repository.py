@@ -35,6 +35,7 @@ class StaffRepository:
             staff_code=staff.staff_code,
             name=staff.name,
             skills=sorted(staff.skills),
+            availability=[list(w) for w in staff.availability],
             active=staff.active,
         )
 
@@ -45,5 +46,6 @@ class StaffRepository:
             staff_code=orm.staff_code,
             name=orm.name,
             skills=set(orm.skills or []),
+            availability=[tuple(w) for w in (orm.availability or [])],
             active=orm.active,
         )

@@ -18,6 +18,7 @@ class CreateEquipmentUseCase:
             equipment_code=request.equipment_code,
             name=request.name,
             capabilities=request.capabilities,
+            availability=request.availability,
         )
 
         with self._uow_factory() as uow:

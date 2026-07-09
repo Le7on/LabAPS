@@ -31,12 +31,22 @@ class GenerateWorkflowInstanceUseCase:
             # Immutable snapshot of the resources available at generation time.
             context = {
                 "equipment": [
-                    {"id": e.id, "capabilities": sorted(e.capabilities)}
+                    {
+                        "id": e.id,
+                        "capabilities": sorted(e.capabilities),
+                        "availability": [list(w) for w in e.availability],
+                    }
                     for e in uow.equipment.list()
                     if e.active
                 ],
                 "staff": [
-                    {"id": s.id, "skills": sorted(s.skills)} for s in uow.staff.list() if s.active
+                    {
+                        "id": s.id,
+                        "skills": sorted(s.skills),
+                        "availability": [list(w) for w in s.availability],
+                    }
+                    for s in uow.staff.list()
+                    if s.active
                 ],
                 "solverProfile": {"objective": "makespan"},
             }

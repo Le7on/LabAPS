@@ -121,6 +121,7 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M4.3_Skill_Constraint.md](12_Development_Log/M4.3_Skill_Constraint.md) — M4.3 skill constraint (multi-resource assignment).
 - [12_Development_Log/M4.4_Persist_Assignments.md](12_Development_Log/M4.4_Persist_Assignments.md) — M4.4 persist assignments.
 - [12_Development_Log/M4.5_Calendar_Constraint.md](12_Development_Log/M4.5_Calendar_Constraint.md) — M4.5 calendar constraint (availability windows).
+- [12_Development_Log/M4.6_Calendar_Snapshot_Wiring.md](12_Development_Log/M4.6_Calendar_Snapshot_Wiring.md) — M4.6 calendar snapshot wiring.
 - [12_Development_Log/M5.1_Laboratory_Equipment.md](12_Development_Log/M5.1_Laboratory_Equipment.md) — M5.1 laboratory equipment.
 - [12_Development_Log/M5.2_Staff_and_Workflow_Definition.md](12_Development_Log/M5.2_Staff_and_Workflow_Definition.md) — M5.2 staff and workflow definition.
 - [12_Development_Log/M5.3_Project.md](12_Development_Log/M5.3_Project.md) — M5.3 project.

@@ -35,6 +35,7 @@ class EquipmentRepository:
             equipment_code=equipment.equipment_code,
             name=equipment.name,
             capabilities=sorted(equipment.capabilities),
+            availability=[list(w) for w in equipment.availability],
             active=equipment.active,
         )
 
@@ -45,5 +46,6 @@ class EquipmentRepository:
             equipment_code=orm.equipment_code,
             name=orm.name,
             capabilities=set(orm.capabilities or []),
+            availability=[tuple(w) for w in (orm.availability or [])],
             active=orm.active,
         )

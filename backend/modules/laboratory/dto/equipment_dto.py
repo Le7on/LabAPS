@@ -12,6 +12,7 @@ class CreateEquipmentRequest:
     equipment_code: str
     name: str
     capabilities: set[str] = field(default_factory=set)
+    availability: list[tuple[int, int]] = field(default_factory=list)
 
     @classmethod
     def from_json(cls, data: dict) -> CreateEquipmentRequest:
@@ -19,6 +20,7 @@ class CreateEquipmentRequest:
             equipment_code=data.get("equipmentCode", ""),
             name=data.get("name", ""),
             capabilities=set(data.get("capabilities", [])),
+            availability=[tuple(w) for w in data.get("availability", [])],
         )
 
 
@@ -28,5 +30,6 @@ def equipment_to_dict(equipment: Equipment) -> dict:
         "equipmentCode": equipment.equipment_code,
         "name": equipment.name,
         "capabilities": sorted(equipment.capabilities),
+        "availability": [list(w) for w in equipment.availability],
         "active": equipment.active,
     }

@@ -15,6 +15,7 @@ class CreateStaffUseCase:
             staff_code=request.staff_code,
             name=request.name,
             skills=request.skills,
+            availability=request.availability,
         )
 
         with self._uow_factory() as uow:

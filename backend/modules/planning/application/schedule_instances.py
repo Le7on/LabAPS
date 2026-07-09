@@ -96,10 +96,20 @@ class ScheduleInstancesUseCase:
             for op in operations
         )
         resources = tuple(
-            Resource(identifier=e["id"], kind=EQUIPMENT, provides=frozenset(e["capabilities"]))
+            Resource(
+                identifier=e["id"],
+                kind=EQUIPMENT,
+                provides=frozenset(e["capabilities"]),
+                windows=tuple(tuple(w) for w in e.get("availability", [])),
+            )
             for e in context.get("equipment", [])
         ) + tuple(
-            Resource(identifier=s["id"], kind=STAFF, provides=frozenset(s["skills"]))
+            Resource(
+                identifier=s["id"],
+                kind=STAFF,
+                provides=frozenset(s["skills"]),
+                windows=tuple(tuple(w) for w in s.get("availability", [])),
+            )
             for s in context.get("staff", [])
         )
         return PlanningProblem(
