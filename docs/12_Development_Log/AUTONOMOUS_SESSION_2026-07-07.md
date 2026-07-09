@@ -36,6 +36,7 @@ Completion Record):
 | M4.5      | Calendar Constraint                          | [M4.5_Calendar_Constraint.md](M4.5_Calendar_Constraint.md)                                     |
 | M4.6      | Calendar Snapshot Wiring                     | [M4.6_Calendar_Snapshot_Wiring.md](M4.6_Calendar_Snapshot_Wiring.md)                           |
 | M4.7      | Qualification Constraint                     | [M4.7_Qualification_Constraint.md](M4.7_Qualification_Constraint.md)                           |
+| M4.8      | Policy Constraint (Frozen Window)            | [M4.8_Policy_Constraint.md](M4.8_Policy_Constraint.md)                                         |
 | M5.1      | Laboratory Equipment slice                   | [M5.1_Laboratory_Equipment.md](M5.1_Laboratory_Equipment.md)                                   |
 | M5.2      | Staff and Workflow Definition                | [M5.2_Staff_and_Workflow_Definition.md](M5.2_Staff_and_Workflow_Definition.md)                 |
 | M5.3      | Project                                      | [M5.3_Project.md](M5.3_Project.md)                                                             |

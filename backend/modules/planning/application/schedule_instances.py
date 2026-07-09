@@ -38,7 +38,7 @@ class ScheduleInstancesUseCase:
         self._uow_factory = uow_factory
         self._engine = scheduling_engine
 
-    def execute(self, plan_id: str, version_id: str) -> dict:
+    def execute(self, plan_id: str, version_id: str, frozen_until: int = 0) -> dict:
         with self._uow_factory() as uow:
             plan = uow.plans.get(plan_id)
             if plan is None:
@@ -51,7 +51,7 @@ class ScheduleInstancesUseCase:
             context = uow.workflow_instances.get_context(version_id) or {}
             demands = uow.demands.list_for_version(version_id)
 
-            problem = self._build_problem(operations, context, demands)
+            problem = self._build_problem(operations, context, demands, frozen_until)
             result = self._engine.schedule(problem)
 
             assignments = [
@@ -81,7 +81,7 @@ class ScheduleInstancesUseCase:
         }
 
     @staticmethod
-    def _build_problem(operations, context, demands) -> PlanningProblem:
+    def _build_problem(operations, context, demands, frozen_until=0) -> PlanningProblem:
         # Operation identity is the operation instance id; dependencies in the
         # instances reference operation definition ids, so map them.
         def_to_instance = {op["operationDefinitionId"]: op["id"] for op in operations}
@@ -134,5 +134,5 @@ class ScheduleInstancesUseCase:
         return PlanningProblem(
             operations=built_ops,
             resources=resources,
-            policies=PlanningPolicies(objective=objective),
+            policies=PlanningPolicies(objective=objective, frozen_until=frozen_until),
         )

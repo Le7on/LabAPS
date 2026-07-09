@@ -59,9 +59,12 @@ class ORToolsSolverAdapter(SolverAdapter):
         ends: dict[str, cp_model.IntVar] = {}
         intervals: dict[str, cp_model.IntervalVar] = {}
 
+        # Policy Constraint (frozen window): no task starts before frozen_until.
+        earliest = max(0, model.frozen_until)
+
         for task in model.tasks:
-            start = cp.new_int_var(0, horizon, f"start_{task.identifier}")
-            end = cp.new_int_var(0, horizon, f"end_{task.identifier}")
+            start = cp.new_int_var(earliest, horizon, f"start_{task.identifier}")
+            end = cp.new_int_var(earliest, horizon, f"end_{task.identifier}")
             interval = cp.new_interval_var(start, task.duration, end, f"interval_{task.identifier}")
             starts[task.identifier] = start
             ends[task.identifier] = end

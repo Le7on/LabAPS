@@ -52,6 +52,7 @@ class SchedulingModelBuilder:
             resources=resources,
             horizon=problem.policies.planning_horizon,
             objective=objective,
+            frozen_until=problem.policies.frozen_until,
         )
 
     @staticmethod

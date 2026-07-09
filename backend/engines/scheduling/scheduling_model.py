@@ -92,6 +92,9 @@ class SchedulingModel:
     resources: tuple[SchedulingResource, ...] = ()
     horizon: int = 100
     objective: Objective = Objective.MAKESPAN
+    # Policy Constraint: no task may start before this frozen boundary (the
+    # frozen planning window is locked). 0 means no frozen window.
+    frozen_until: int = 0
 
     def task_map(self) -> dict[str, Task]:
         return {task.identifier: task for task in self.tasks}

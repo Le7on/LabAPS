@@ -117,9 +117,11 @@ def generate_workflow_instance(plan_id: str, version_id: str):
 
 @plans_bp.post("/plans/<plan_id>/versions/<version_id>/schedule-instances")
 def schedule_instances(plan_id: str, version_id: str):
+    data = request.get_json(silent=True) or {}
+    frozen_until = int(data.get("frozenUntil", 0)) if isinstance(data, dict) else 0
     container = _container()
     use_case = ScheduleInstancesUseCase(container.unit_of_work, container.scheduling_engine)
-    result = use_case.execute(plan_id, version_id)
+    result = use_case.execute(plan_id, version_id, frozen_until)
     meta = {
         "makespan": result.pop("makespan"),
         "feasible": result.pop("feasible"),

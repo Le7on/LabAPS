@@ -56,6 +56,8 @@ class PlanningPolicies:
 
     planning_horizon: int = 100
     objective: str = OBJECTIVE_MAKESPAN
+    # Policy Constraint: frozen planning window; no operation starts before this.
+    frozen_until: int = 0
 
 
 @dataclass(frozen=True, slots=True)
