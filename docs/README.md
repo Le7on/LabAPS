@@ -10,6 +10,9 @@ This directory contains the architecture, requirements, implementation guidance,
 - [ARCHITECTURE_INDEX.md](ARCHITECTURE_INDEX.md) — high-level index of all architecture documents.
 - [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) — current build state, module map, ADR/state/API traceability.
 - [ARCHITECTURE_LOG.md](ARCHITECTURE_LOG.md) — current milestone and progress snapshot.
+- [RELEASE_READINESS.md](RELEASE_READINESS.md) — release checklist, run instructions, go/no-go.
+- [14_User_Manual/User_Manual_EN.md](14_User_Manual/User_Manual_EN.md) — user manual (English).
+- [14_User_Manual/User_Manual_ZH.md](14_User_Manual/User_Manual_ZH.md) — 用户手册(中文)。
 
 ### 2. Requirements and Vision
 
