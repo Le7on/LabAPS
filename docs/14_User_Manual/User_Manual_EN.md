@@ -134,17 +134,45 @@ Equipment → **+ New equipment** → **Code**, **Name**, and **Methods it can r
 — a multi-select of methods (a many-to-many relationship). Define workflows and
 their methods first so they appear in the list.
 
-## 5.5 Availability
+Each machine also has **FV** parameters (see §5.6):
 
-Use each resource's **Deactivate / Activate** button to mark it available or
-unavailable for the target period. Only active resources are used when
-scheduling.
+- **FV duration** — shifts one validation run occupies (default 1).
+- **FV validity** — shifts a validation stays valid (default 14; set 0 to exempt
+  a machine from FV).
+
+## 5.5 Editing and deleting
+
+Every list row (Projects, Equipment, Staff, Workflows) has **Edit** and
+**Delete** actions. Edit opens the same side panel pre-filled; Delete asks for
+confirmation. A project that still has workflows cannot be deleted — remove its
+workflows first.
+
+## 5.6 FV (equipment validation)
+
+Every machine must be validated periodically ("FV"). An FV occupies the machine
+for its **FV duration**, and the machine is only usable for normal work while its
+FV is **in validity** — within **FV validity** shifts of its last FV. The
+scheduler enforces this automatically: it places FV runs across the horizon and
+schedules normal operations only in the valid windows, so no operation is ever
+placed on an out-of-validity machine. Set a machine's FV validity to 0 if it does
+not require validation.
+
+## 5.7 Availability
+
+Two levels of availability:
+
+- **Global** — each resource's **Deactivate / Activate** button; deactivated
+  resources are excluded from all new scheduling.
+- **Per-plan** — in the Scheduling workspace (see §6), you can mark specific
+  staff or equipment unavailable for one plan without affecting others.
+
+Only active and plan-available resources are used when scheduling.
 
 ---
 
 # 6. Planning & Scheduling
 
-Go to **Scheduling**. The workspace walks you through four steps.
+Go to **Scheduling**. The workspace walks you through the steps below.
 
 ## Step 1 — Plan & workflow
 
@@ -154,6 +182,13 @@ must run in this plan (its work-hours are shown for reference). Then
 **Create version & generate**: this creates a plan version and materializes each
 method the requested number of times, capturing an immutable snapshot of the
 currently active equipment and staff.
+
+## Step 1b — Availability for this plan
+
+After selecting a plan, an **Availability** panel lists the staff and equipment
+with a checkbox each. Toggle any of them off to mark it unavailable **for this
+plan only** (other plans are unaffected). Set availability before generating, so
+the snapshot excludes the resources you turned off.
 
 ## Step 2 — Demand (optional)
 

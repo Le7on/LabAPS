@@ -133,6 +133,11 @@ This directory contains the architecture, requirements, implementation guidance,
 - [12_Development_Log/M12.1_Deactivate_Resources.md](12_Development_Log/M12.1_Deactivate_Resources.md) — M12.1 deactivate/activate resources.
 - [12_Development_Log/M13.1_Desktop_Packaging.md](12_Development_Log/M13.1_Desktop_Packaging.md) — M13.1 PyWebView desktop packaging.
 - [12_Development_Log/M13.2_Acceptance_And_Release.md](12_Development_Log/M13.2_Acceptance_And_Release.md) — M13.2 acceptance test and release readiness.
+- [12_Development_Log/M3.3_Plan_Dates_And_Availability.md](12_Development_Log/M3.3_Plan_Dates_And_Availability.md) — M3.3 plan dates & per-plan availability.
+- [12_Development_Log/M4.9_FV_Validity_Constraint.md](12_Development_Log/M4.9_FV_Validity_Constraint.md) — M4.9 FV validity constraint.
+- [12_Development_Log/M6.8_UI_Instrument_Console.md](12_Development_Log/M6.8_UI_Instrument_Console.md) — M6.8 UI rebuild (instrument console).
+- [12_Development_Log/M11.4_Relational_Domain_Frontend.md](12_Development_Log/M11.4_Relational_Domain_Frontend.md) — M11.4 relational domain in the frontend.
+- [12_Development_Log/M12.2_Resource_CRUD.md](12_Development_Log/M12.2_Resource_CRUD.md) — M12.2 resource CRUD (update/delete).
 - [12_Development_Log/M6.1_Frontend_Plans_View.md](12_Development_Log/M6.1_Frontend_Plans_View.md) — M6.1 frontend plans view.
 - [12_Development_Log/M6.2_Frontend_Laboratory_Views.md](12_Development_Log/M6.2_Frontend_Laboratory_Views.md) — M6.2 frontend laboratory views.
 - [12_Development_Log/M6.3_Frontend_Dashboard_View.md](12_Development_Log/M6.3_Frontend_Dashboard_View.md) — M6.3 frontend dashboard view.

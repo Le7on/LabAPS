@@ -84,15 +84,15 @@ low-risk and self-contained.
 
 ## 4. Defects and inconsistencies
 
-| # | Severity | Area | Defect |
-|---|----------|------|--------|
-| D1 | High | Domain/UI | Staff has two competency fields (`skills` free-text vs `projectIds`); the scheduler uses `skills`, the UI emphasises `projectIds`. Redundant and confusing. |
-| D2 | High | Scheduling | If Skill becomes "qualified Projects", scheduling must match a method's project against staff's qualified projects — but methods currently carry `required_skill` (a string), not a project reference. The matching key must be redefined. |
-| D3 | Medium | Master data | Shift table is dead weight: full CRUD + UI + nav with no consumer. Maintenance and cognitive cost, misleads users into thinking it configures the calendar. |
-| D4 | Medium | Docs | IMPLEMENTATION_STATUS / release-readiness are stale (pre ADR-014/015/016); ADR table stops at 013. |
-| D5 | Medium | SSOT | §13 Skill definition contradicts the "Skill = Project qualification" model; no single source of truth for what Skill means. |
-| D6 | Low | UX | The Workflow method row still exposes `requiredSkill` as a free-text box; after the Skill/Project merge this should reference a Project (or be derived from the workflow's project), not a free string. |
-| D7 | Low | Consistency | `operation_definition.required_capability` is retained but unused after ADR-015 (equipment binding replaced it). Dead field. |
+| #   | Severity | Area        | Defect                                                                                                                                                                                                                                     |
+| --- | -------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| D1  | High     | Domain/UI   | Staff has two competency fields (`skills` free-text vs `projectIds`); the scheduler uses `skills`, the UI emphasises `projectIds`. Redundant and confusing.                                                                                |
+| D2  | High     | Scheduling  | If Skill becomes "qualified Projects", scheduling must match a method's project against staff's qualified projects — but methods currently carry `required_skill` (a string), not a project reference. The matching key must be redefined. |
+| D3  | Medium   | Master data | Shift table is dead weight: full CRUD + UI + nav with no consumer. Maintenance and cognitive cost, misleads users into thinking it configures the calendar.                                                                                |
+| D4  | Medium   | Docs        | IMPLEMENTATION_STATUS / release-readiness are stale (pre ADR-014/015/016); ADR table stops at 013.                                                                                                                                         |
+| D5  | Medium   | SSOT        | §13 Skill definition contradicts the "Skill = Project qualification" model; no single source of truth for what Skill means.                                                                                                                |
+| D6  | Low      | UX          | The Workflow method row still exposes `requiredSkill` as a free-text box; after the Skill/Project merge this should reference a Project (or be derived from the workflow's project), not a free string.                                    |
+| D7  | Low      | Consistency | `operation_definition.required_capability` is retained but unused after ADR-015 (equipment binding replaced it). Dead field.                                                                                                               |
 
 ---
 
@@ -161,6 +161,7 @@ Per the Section 7 decisions:
    master-data table was removed (calendar uses fixed per-mode windows).
 
 ### Phase ordering & risk
+
 - A and B are independent; B is lower risk (isolated). Recommend B first (quick
   cleanup), then A (touches scheduling — needs careful test updates), then C.
 - Each phase must keep the full backend suite green and the frontend building.

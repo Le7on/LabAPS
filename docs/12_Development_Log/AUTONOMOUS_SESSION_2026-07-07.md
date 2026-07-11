@@ -110,3 +110,8 @@ Completion Record):
 - Plan Version approve/publish lifecycle + immutability enforcement.
 - Additional constraint categories (Qualification, Calendar).
 - Frontend Equipment and Scheduling views.
+  | M3.3 | Plan Dates & Per-Plan Availability | [M3.3_Plan_Dates_And_Availability.md](M3.3_Plan_Dates_And_Availability.md) |
+  | M4.9 | FV Validity Constraint | [M4.9_FV_Validity_Constraint.md](M4.9_FV_Validity_Constraint.md) |
+  | M6.8 | UI Instrument Console | [M6.8_UI_Instrument_Console.md](M6.8_UI_Instrument_Console.md) |
+  | M11.4 | Relational Domain Frontend | [M11.4_Relational_Domain_Frontend.md](M11.4_Relational_Domain_Frontend.md) |
+  | M12.2 | Resource CRUD | [M12.2_Resource_CRUD.md](M12.2_Resource_CRUD.md) |

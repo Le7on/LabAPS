@@ -98,7 +98,7 @@ Negative
 # Architectural Impact
 
 - Equipment gains `fv_duration` and `fv_validity` attributes (default 1 and 14).
-- The scheduling model gains a task ``kind`` marker (normal vs FV) and a
+- The scheduling model gains a task `kind` marker (normal vs FV) and a
   per-task validity link; the engine builder generates FV tasks and validity
   constraints. The solver adapter enforces them with existing interval/no-overlap
   plus a "start within window of some FV" disjunction.

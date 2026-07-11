@@ -114,6 +114,21 @@ Operational guidance:
 - validate migrations before release
 - treat published planning data as immutable
 
+### Dev database drift (important)
+
+In development the app calls `create_all()` on startup, which creates **missing
+tables** but never **adds columns to existing tables**, and a `create_all`-built
+`labaps.db` has no `alembic_version` row (so `alembic upgrade` is a no-op on it).
+Consequence: when a migration adds a column to an existing table, an existing dev
+DB will 500 with `no such column` until reconciled. When you add a column:
+
+- recreate the dev DB (delete `labaps.db`, restart — you lose dev data), or
+- apply the column manually
+  (`ALTER TABLE <t> ADD COLUMN <c> <type> NOT NULL DEFAULT <d>`), or
+- start from a migration-managed DB (`alembic upgrade head` on an empty file).
+
+Production is always Alembic-managed, so this only affects long-lived dev DBs.
+
 ---
 
 ## 6. Logging and Monitoring

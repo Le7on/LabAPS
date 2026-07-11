@@ -376,7 +376,7 @@ Assigned Equipment
 
 Assigned Staff
 
-Note: a Method definition pre-binds *candidate* Equipment (ADR-015); the
+Note: a Method definition pre-binds _candidate_ Equipment (ADR-015); the
 concrete Equipment/Staff actually used is still decided by the Scheduler and
 recorded on the Assignment, not the Operation instance.
 
