@@ -38,3 +38,25 @@ export function setResourceActive(kind, id, active) {
   const verb = active ? 'activate' : 'deactivate'
   return client.post(`/${kind}/${id}/${verb}`).then((r) => r.data)
 }
+
+export function updateProject(id, payload) {
+  return client.put(`/projects/${id}`, payload).then((r) => r.data)
+}
+export function deleteProject(id) {
+  return client.delete(`/projects/${id}`).then((r) => r.data)
+}
+export function updateEquipment(id, payload) {
+  return client.put(`/equipment/${id}`, payload).then((r) => r.data)
+}
+export function deleteEquipment(id) {
+  return client.delete(`/equipment/${id}`).then((r) => r.data)
+}
+export function updateStaff(id, payload) {
+  return client.put(`/staff/${id}`, payload).then((r) => r.data)
+}
+export function deleteStaff(id) {
+  return client.delete(`/staff/${id}`).then((r) => r.data)
+}
+export function deleteWorkflowDefinition(id) {
+  return client.delete(`/workflow-definitions/${id}`).then((r) => r.data)
+}

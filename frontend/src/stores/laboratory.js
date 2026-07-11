@@ -5,11 +5,18 @@ import {
   createProject,
   createStaff,
   createWorkflowDefinition,
+  deleteEquipment,
+  deleteProject,
+  deleteStaff,
+  deleteWorkflowDefinition,
   listEquipment,
   listProjects,
   listStaff,
   listWorkflowDefinitions,
   setResourceActive,
+  updateEquipment,
+  updateProject,
+  updateStaff,
 } from '../api/laboratory'
 
 // Client-side state for Laboratory Definition (equipment, staff, workflows, projects).
@@ -126,6 +133,33 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     }
   }
 
+  // Wrap a write op with error capture + refresh; returns true on success.
+  async function _mutate(fn, refresh, msg) {
+    error.value = null
+    try {
+      await fn()
+      await refresh()
+      return true
+    } catch (e) {
+      error.value = e?.message ?? msg
+      return false
+    }
+  }
+
+  const editProject = (id, p) =>
+    _mutate(() => updateProject(id, p), fetchProjects, 'Failed to update project')
+  const removeProject = (id) =>
+    _mutate(() => deleteProject(id), fetchProjects, 'Failed to delete project')
+  const editEquipment = (id, p) =>
+    _mutate(() => updateEquipment(id, p), fetchEquipment, 'Failed to update equipment')
+  const removeEquipment = (id) =>
+    _mutate(() => deleteEquipment(id), fetchEquipment, 'Failed to delete equipment')
+  const editStaff = (id, p) =>
+    _mutate(() => updateStaff(id, p), fetchStaff, 'Failed to update staff')
+  const removeStaff = (id) => _mutate(() => deleteStaff(id), fetchStaff, 'Failed to delete staff')
+  const removeWorkflow = (id) =>
+    _mutate(() => deleteWorkflowDefinition(id), fetchWorkflows, 'Failed to delete workflow')
+
   return {
     equipment,
     staff,
@@ -141,5 +175,12 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     fetchProjects,
     addProject,
     setActive,
+    editProject,
+    removeProject,
+    editEquipment,
+    removeEquipment,
+    editStaff,
+    removeStaff,
+    removeWorkflow,
   }
 })

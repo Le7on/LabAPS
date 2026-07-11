@@ -71,6 +71,10 @@ async function submit() {
     open.value = false
   }
 }
+
+async function remove(wf) {
+  if (window.confirm(`Delete workflow ${wf.workflowCode}?`)) await store.removeWorkflow(wf.id)
+}
 </script>
 
 <template>
@@ -98,6 +102,7 @@ async function submit() {
             <th>Name</th>
             <th>Project</th>
             <th>Methods</th>
+            <th class="right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -106,10 +111,14 @@ async function submit() {
             <td class="cell-strong">{{ wf.name }}</td>
             <td>{{ projectName(wf.projectId) }}</td>
             <td class="mono">{{ wf.operations.length }}</td>
+            <td class="right">
+              <button class="btn btn--sm btn--ghost danger" @click="remove(wf)">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
       <p v-else class="empty">No workflows yet.</p>
+      <p v-if="store.error" class="error err">{{ store.error }}</p>
     </div>
 
     <SlideOver :open="open" title="New workflow" @close="open = false">
@@ -173,6 +182,16 @@ async function submit() {
 </template>
 
 <style scoped>
+.right {
+  text-align: right;
+}
+.danger {
+  color: var(--led-danger);
+}
+.err {
+  padding: var(--s3) var(--s4);
+  margin: 0;
+}
 .methods {
   display: flex;
   flex-direction: column;

@@ -8,6 +8,7 @@ import MultiSelect from '../components/MultiSelect.vue'
 
 const store = useLaboratoryStore()
 const open = ref(false)
+const editingId = ref(null)
 const form = reactive({ equipmentCode: '', name: '', methodIds: [] })
 
 onMounted(() => {
@@ -15,7 +16,6 @@ onMounted(() => {
   store.fetchWorkflows()
 })
 
-// Method options across all workflows: value = method id, label = wf · method.
 const methodOptions = computed(() => {
   const out = []
   for (const wf of store.workflows) {
@@ -27,16 +27,35 @@ const methodOptions = computed(() => {
 })
 const methodLabel = (id) => methodOptions.value.find((m) => m.value === id)?.label ?? id.slice(0, 6)
 
+function openCreate() {
+  editingId.value = null
+  Object.assign(form, { equipmentCode: '', name: '', methodIds: [] })
+  open.value = true
+}
+function openEdit(e) {
+  editingId.value = e.id
+  Object.assign(form, {
+    equipmentCode: e.equipmentCode,
+    name: e.name,
+    methodIds: [...e.methodIds],
+  })
+  open.value = true
+}
+
 async function submit() {
-  const ok = await store.addEquipment({
+  const payload = {
     equipmentCode: form.equipmentCode,
     name: form.name,
     methodIds: [...form.methodIds],
-  })
-  if (ok) {
-    Object.assign(form, { equipmentCode: '', name: '', methodIds: [] })
-    open.value = false
   }
+  const ok = editingId.value
+    ? await store.editEquipment(editingId.value, payload)
+    : await store.addEquipment(payload)
+  if (ok) open.value = false
+}
+
+async function remove(e) {
+  if (window.confirm(`Delete equipment ${e.equipmentCode}?`)) await store.removeEquipment(e.id)
 }
 </script>
 
@@ -44,7 +63,7 @@ async function submit() {
   <section>
     <PageHeader title="Equipment" subtitle="Machines and the methods that can run on them">
       <template #actions>
-        <button class="btn btn--primary" @click="open = true">+ New equipment</button>
+        <button class="btn btn--primary" @click="openCreate">+ New equipment</button>
       </template>
     </PageHeader>
 
@@ -56,7 +75,7 @@ async function submit() {
             <th>Name</th>
             <th>Runs methods</th>
             <th>Status</th>
-            <th></th>
+            <th class="right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -70,21 +89,28 @@ async function submit() {
               <span v-if="!item.methodIds.length" class="muted">—</span>
             </td>
             <td><StatusLed :status="item.active ? 'active' : 'inactive'" /></td>
-            <td class="right">
+            <td class="right actions">
+              <button class="btn btn--sm btn--ghost" @click="openEdit(item)">Edit</button>
               <button
                 class="btn btn--sm btn--ghost"
                 @click="store.setActive('equipment', item.id, !item.active)"
               >
                 {{ item.active ? 'Deactivate' : 'Activate' }}
               </button>
+              <button class="btn btn--sm btn--ghost danger" @click="remove(item)">Delete</button>
             </td>
           </tr>
         </tbody>
       </table>
       <p v-else class="empty">No equipment yet.</p>
+      <p v-if="store.error" class="error err">{{ store.error }}</p>
     </div>
 
-    <SlideOver :open="open" title="New equipment" @close="open = false">
+    <SlideOver
+      :open="open"
+      :title="editingId ? 'Edit equipment' : 'New equipment'"
+      @close="open = false"
+    >
       <form class="stack" @submit.prevent="submit">
         <div class="field">
           <label>Code</label>
@@ -106,7 +132,9 @@ async function submit() {
           Define workflows with methods first, then bind them here.
         </p>
         <p v-if="store.error" class="error">{{ store.error }}</p>
-        <button class="btn btn--primary" type="submit">Add equipment</button>
+        <button class="btn btn--primary" type="submit">
+          {{ editingId ? 'Save' : 'Add equipment' }}
+        </button>
       </form>
     </SlideOver>
   </section>
@@ -116,8 +144,20 @@ async function submit() {
 .right {
   text-align: right;
 }
+.actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+.danger {
+  color: var(--led-danger);
+}
 .hint {
   font-size: 12px;
+  margin: 0;
+}
+.err {
+  padding: var(--s3) var(--s4);
   margin: 0;
 }
 </style>
