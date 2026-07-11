@@ -26,6 +26,9 @@ class Resource:
     provides: frozenset[str] = frozenset()
     # Availability windows [start, end); empty means always available.
     windows: tuple[tuple[int, int], ...] = ()
+    # FV validity (ADR-019): 0 = no periodic validation required.
+    fv_duration: int = 0
+    fv_validity: int = 0
 
 
 @dataclass(frozen=True, slots=True)

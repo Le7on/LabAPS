@@ -30,6 +30,8 @@ class CreateEquipmentUseCase:
             availability=request.availability,
             applicable_project_ids=request.applicable_project_ids,
             method_ids=request.method_ids,
+            fv_duration=request.fv_duration,
+            fv_validity=request.fv_validity,
         )
 
         with self._uow_factory() as uow:
@@ -51,6 +53,8 @@ class UpdateEquipmentUseCase:
             availability=request.availability,
             applicable_project_ids=request.applicable_project_ids,
             method_ids=request.method_ids,
+            fv_duration=request.fv_duration,
+            fv_validity=request.fv_validity,
         )
         with self._uow_factory() as uow:
             _validate_refs(uow, request)

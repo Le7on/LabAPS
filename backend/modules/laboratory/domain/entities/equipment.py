@@ -25,6 +25,10 @@ class Equipment:
     applicable_project_ids: set[str] = field(default_factory=set)
     # Methods (operation definitions) this equipment is bound to (ADR-015/018).
     method_ids: set[str] = field(default_factory=set)
+    # FV validation (ADR-019): every machine must be validated periodically.
+    # fv_duration = shifts an FV occupies; fv_validity = shifts an FV stays valid.
+    fv_duration: int = 1
+    fv_validity: int = 14
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 

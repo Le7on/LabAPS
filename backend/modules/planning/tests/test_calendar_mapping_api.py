@@ -20,7 +20,8 @@ def _setup_workflow(client):
         "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
     ).get_json()["data"]["id"]
     eq_id = client.post(
-        "/api/v1/equipment", json={"equipmentCode": "EQ-1", "name": "M"}
+        "/api/v1/equipment",
+        json={"equipmentCode": "EQ-1", "name": "M", "fvValidity": 0},
     ).get_json()["data"]["id"]
     workflow_id = client.post(
         "/api/v1/workflow-definitions",

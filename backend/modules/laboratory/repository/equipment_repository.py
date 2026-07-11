@@ -46,6 +46,8 @@ class EquipmentRepository:
         orm.equipment_code = equipment.equipment_code
         orm.name = equipment.name
         orm.availability = [list(w) for w in equipment.availability]
+        orm.fv_duration = equipment.fv_duration
+        orm.fv_validity = equipment.fv_validity
         orm.projects = self._resolve_projects(equipment.applicable_project_ids)
         orm.methods = self._resolve_methods(equipment.method_ids)
         return True
@@ -93,6 +95,8 @@ class EquipmentRepository:
             equipment_code=equipment.equipment_code,
             name=equipment.name,
             availability=[list(w) for w in equipment.availability],
+            fv_duration=equipment.fv_duration,
+            fv_validity=equipment.fv_validity,
             projects=projects,
             methods=methods,
             active=equipment.active,
@@ -105,6 +109,8 @@ class EquipmentRepository:
             equipment_code=orm.equipment_code,
             name=orm.name,
             availability=[tuple(w) for w in (orm.availability or [])],
+            fv_duration=orm.fv_duration if orm.fv_duration is not None else 1,
+            fv_validity=orm.fv_validity if orm.fv_validity is not None else 14,
             applicable_project_ids={p.id for p in orm.projects},
             method_ids={m.id for m in orm.methods},
             active=orm.active,

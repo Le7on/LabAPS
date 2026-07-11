@@ -10,7 +10,9 @@ from __future__ import annotations
 from ortools.sat.python import cp_model
 
 from backend.engines.scheduling.scheduling_model import (
+    EQUIPMENT,
     Objective,
+    ResourceAssignment,
     ScheduledTask,
     SchedulingModel,
     SchedulingSolution,
@@ -99,7 +101,7 @@ class ORToolsSolverAdapter(SolverAdapter):
         if not feasible:
             return SchedulingSolution(status=_STATUS_NAMES.get(status, "unknown"), feasible=False)
 
-        scheduled = tuple(
+        scheduled = [
             ScheduledTask(
                 identifier=task.identifier,
                 start=solver.value(starts[task.identifier]),
@@ -107,10 +109,25 @@ class ORToolsSolverAdapter(SolverAdapter):
                 assignments=self._resolve_assignments(solver, assignment, task.identifier),
             )
             for task in model.tasks
-        )
+        ]
+
+        # Surface FV occupancy as tasks so they appear in the timeline (ADR-019).
+        for resource in model.resources:
+            for i, (s, e) in enumerate(resource.fv_intervals(model.horizon)):
+                if e <= s:
+                    continue
+                scheduled.append(
+                    ScheduledTask(
+                        identifier=f"FV-{resource.identifier}-{i + 1}",
+                        start=s,
+                        end=e,
+                        assignments=(ResourceAssignment(EQUIPMENT, resource.identifier),),
+                        is_fv=True,
+                    )
+                )
 
         return SchedulingSolution(
-            scheduled_tasks=scheduled,
+            scheduled_tasks=tuple(scheduled),
             makespan=solver.value(makespan),
             status=_STATUS_NAMES.get(status, "unknown"),
             feasible=True,
@@ -173,6 +190,16 @@ class ORToolsSolverAdapter(SolverAdapter):
                 task_literals[kind] = literals
 
             assignment[task.identifier] = task_literals
+
+        # FV validity (ADR-019): pre-place fixed FV occupancy intervals on each
+        # equipment. They join the machine's no-overlap set, so normal work is
+        # pushed into the tiled gaps — which are exactly the in-validity windows.
+        for resource in model.resources:
+            for i, (s, e) in enumerate(resource.fv_intervals(model.horizon)):
+                if e <= s:
+                    continue
+                fv_interval = cp.new_interval_var(s, e - s, e, f"fv_{resource.identifier}_{i}")
+                per_resource[resource.identifier].append(fv_interval)
 
         # Resource: each resource does one task at a time.
         for optional_intervals in per_resource.values():

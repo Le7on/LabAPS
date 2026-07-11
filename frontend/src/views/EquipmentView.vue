@@ -9,7 +9,7 @@ import MultiSelect from '../components/MultiSelect.vue'
 const store = useLaboratoryStore()
 const open = ref(false)
 const editingId = ref(null)
-const form = reactive({ equipmentCode: '', name: '', methodIds: [] })
+const form = reactive({ equipmentCode: '', name: '', methodIds: [], fvDuration: 1, fvValidity: 14 })
 
 onMounted(() => {
   store.fetchEquipment()
@@ -29,7 +29,7 @@ const methodLabel = (id) => methodOptions.value.find((m) => m.value === id)?.lab
 
 function openCreate() {
   editingId.value = null
-  Object.assign(form, { equipmentCode: '', name: '', methodIds: [] })
+  Object.assign(form, { equipmentCode: '', name: '', methodIds: [], fvDuration: 1, fvValidity: 14 })
   open.value = true
 }
 function openEdit(e) {
@@ -38,6 +38,8 @@ function openEdit(e) {
     equipmentCode: e.equipmentCode,
     name: e.name,
     methodIds: [...e.methodIds],
+    fvDuration: e.fvDuration ?? 1,
+    fvValidity: e.fvValidity ?? 14,
   })
   open.value = true
 }
@@ -47,6 +49,8 @@ async function submit() {
     equipmentCode: form.equipmentCode,
     name: form.name,
     methodIds: [...form.methodIds],
+    fvDuration: Number(form.fvDuration) || 1,
+    fvValidity: Number(form.fvValidity) || 0,
   }
   const ok = editingId.value
     ? await store.editEquipment(editingId.value, payload)
@@ -130,6 +134,20 @@ async function remove(e) {
         </div>
         <p v-if="!methodOptions.length" class="muted hint">
           Define workflows with methods first, then bind them here.
+        </p>
+        <div class="row">
+          <div class="field" style="flex: 1">
+            <label>FV duration (shifts)</label>
+            <input v-model.number="form.fvDuration" type="number" min="1" />
+          </div>
+          <div class="field" style="flex: 1">
+            <label>FV validity (shifts, 0 = none)</label>
+            <input v-model.number="form.fvValidity" type="number" min="0" />
+          </div>
+        </div>
+        <p class="muted hint">
+          Every machine must be validated (FV) periodically; work can only run while its FV is
+          valid.
         </p>
         <p v-if="store.error" class="error">{{ store.error }}</p>
         <button class="btn btn--primary" type="submit">

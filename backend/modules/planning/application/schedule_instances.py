@@ -140,6 +140,8 @@ class ScheduleInstancesUseCase:
                 kind=EQUIPMENT,
                 provides=frozenset(equipment_tokens.get(e["id"], set())),
                 windows=tuple(tuple(w) for w in e.get("availability", [])),
+                fv_duration=int(e.get("fvDuration", 0) or 0),
+                fv_validity=int(e.get("fvValidity", 0) or 0),
             )
             for e in context.get("equipment", [])
         ) + tuple(

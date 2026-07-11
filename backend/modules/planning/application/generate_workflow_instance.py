@@ -45,6 +45,8 @@ class GenerateWorkflowInstanceUseCase:
                     {
                         "id": e.id,
                         "availability": [list(w) for w in e.availability],
+                        "fvDuration": e.fv_duration,
+                        "fvValidity": e.fv_validity,
                     }
                     for e in uow.equipment.list()
                     if e.active and e.id not in unavailable_equipment

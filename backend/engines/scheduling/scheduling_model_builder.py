@@ -39,6 +39,8 @@ class SchedulingModelBuilder:
                 kind=r.kind,
                 provides=frozenset(r.provides),
                 windows=tuple(r.windows),
+                fv_duration=r.fv_duration,
+                fv_validity=r.fv_validity,
             )
             for r in problem.resources
         )

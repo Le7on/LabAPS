@@ -47,12 +47,35 @@ class SchedulingResource:
     # Availability windows [start, end); empty means always available (Calendar
     # Constraint). A task assigned to this resource must fit within one window.
     windows: tuple[tuple[int, int], ...] = ()
+    # FV validity (ADR-019): fv_validity > 0 means this equipment must be
+    # validated periodically. An FV occupies the machine for fv_duration and is
+    # placed every fv_validity units; normal work can only occupy the tiled gaps,
+    # which keeps every operation within a valid FV window. 0 = no FV needed.
+    fv_duration: int = 0
+    fv_validity: int = 0
 
     def satisfies(self, requirement: str | None) -> bool:
         return requirement is None or requirement in self.provides
 
     def satisfies_all(self, requirements: frozenset[str]) -> bool:
         return requirements.issubset(self.provides)
+
+    def fv_intervals(self, horizon: int) -> tuple[tuple[int, int], ...]:
+        """Fixed FV occupancy intervals [start, end) tiling the horizon (ADR-019).
+
+        An FV runs at the start of each validity period. Placing an FV of length
+        ``fv_duration`` at the start of every ``fv_validity`` window means the
+        machine's usable (non-FV) time always sits within a valid window, so a
+        normal task that avoids these intervals is necessarily in validity.
+        """
+        if self.fv_validity <= 0 or self.fv_duration <= 0:
+            return ()
+        intervals = []
+        start = 0
+        while start < horizon:
+            intervals.append((start, min(start + self.fv_duration, horizon)))
+            start += self.fv_validity
+        return tuple(intervals)
 
 
 @dataclass(frozen=True, slots=True)
@@ -133,6 +156,7 @@ class ScheduledTask:
     start: int
     end: int
     assignments: tuple[ResourceAssignment, ...] = ()
+    is_fv: bool = False
 
     def resource_of(self, kind: str) -> str | None:
         for a in self.assignments:

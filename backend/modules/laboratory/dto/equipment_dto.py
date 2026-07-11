@@ -14,6 +14,8 @@ class CreateEquipmentRequest:
     availability: list[tuple[int, int]] = field(default_factory=list)
     applicable_project_ids: set[str] = field(default_factory=set)
     method_ids: set[str] = field(default_factory=set)
+    fv_duration: int = 1
+    fv_validity: int = 14
 
     @classmethod
     def from_json(cls, data: dict) -> CreateEquipmentRequest:
@@ -23,6 +25,8 @@ class CreateEquipmentRequest:
             availability=[tuple(w) for w in data.get("availability", [])],
             applicable_project_ids=set(data.get("applicableProjectIds", [])),
             method_ids=set(data.get("methodIds", [])),
+            fv_duration=int(data.get("fvDuration", 1)),
+            fv_validity=int(data.get("fvValidity", 14)),
         )
 
 
@@ -34,5 +38,7 @@ def equipment_to_dict(equipment: Equipment) -> dict:
         "availability": [list(w) for w in equipment.availability],
         "applicableProjectIds": sorted(equipment.applicable_project_ids),
         "methodIds": sorted(equipment.method_ids),
+        "fvDuration": equipment.fv_duration,
+        "fvValidity": equipment.fv_validity,
         "active": equipment.active,
     }
