@@ -15,9 +15,9 @@ async function submit() {
 
 <template>
   <div class="login">
-    <div class="card login__card">
-      <div class="brand">Lab APS</div>
-      <p class="muted">Sign in with your API token.</p>
+    <div class="panel login__card">
+      <div class="login__brand"><span class="login__mark">◇</span> Lab APS</div>
+      <p class="muted login__hint">Sign in with your API token.</p>
       <form class="stack" @submit.prevent="submit">
         <div class="field">
           <label>API token</label>
@@ -36,14 +36,25 @@ async function submit() {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--canvas);
 }
 .login__card {
-  width: 340px;
+  width: 360px;
+  padding: var(--s6);
 }
-.brand {
-  font-size: 1.4rem;
+.login__brand {
+  font-size: 1.35rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.login__mark {
+  color: var(--accent);
+}
+.login__hint {
+  margin: 6px 0 var(--s4);
+  font-size: 13px;
 }
 </style>

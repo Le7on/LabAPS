@@ -18,6 +18,8 @@ import {
   startAssignment,
 } from '../api/executions'
 import GanttChart from '../components/GanttChart.vue'
+import PageHeader from '../components/PageHeader.vue'
+import StatusLed from '../components/StatusLed.vue'
 
 const plans = ref([])
 const workflows = ref([])
@@ -41,6 +43,7 @@ onMounted(async () => {
 })
 
 const makespan = computed(() => meta.value.makespan)
+const feasible = computed(() => meta.value.feasible)
 
 async function run(fn, message) {
   error.value = null
@@ -64,6 +67,7 @@ async function createAndGenerate() {
   if (!version) return
   versionId.value = version.id
   versionStatus.value = version.status
+  meta.value = {}
   const ok = await run(
     () => generateInstances(selected.plan, version.id, selected.workflow),
     'Instances generated'
@@ -123,146 +127,245 @@ async function act(fn, id, message, needsReason) {
   await refresh()
 }
 
-function badgeClass(status) {
-  return {
-    ready: 'badge--info',
-    running: 'badge--warning',
-    completed: 'badge--success',
-    failed: 'badge--danger',
-    cancelled: 'badge--danger',
-  }[status]
+function formatAt(iso) {
+  const [d, t] = iso.split('T')
+  return `${d.slice(5)} ${t.slice(0, 5)}`
 }
 </script>
-<!-- template below -->
+
 <template>
-  <section class="stack">
-    <h2>Scheduling</h2>
-    <p v-if="info" class="success">{{ info }}</p>
-    <p v-if="error" class="error">{{ error }}</p>
+  <section>
+    <PageHeader title="Scheduling" subtitle="Build a plan version, solve it, and drive execution">
+      <template #actions>
+        <span v-if="versionId" class="ctx">
+          <span class="label">version</span>
+          <StatusLed :status="versionStatus" />
+        </span>
+        <span v-if="makespan != null" class="ctx">
+          <span class="label">makespan</span>
+          <span class="readout ctx__v">{{ makespan }}</span>
+        </span>
+        <span v-if="feasible != null" class="ctx">
+          <StatusLed :status="feasible ? 'feasible' : 'infeasible'" />
+        </span>
+      </template>
+    </PageHeader>
 
-    <div class="card">
-      <div class="card__title">1 · Plan &amp; workflow</div>
-      <div class="form-row">
-        <div class="field">
-          <label>Plan</label>
-          <select v-model="selected.plan">
-            <option value="">Select plan…</option>
-            <option v-for="p in plans" :key="p.id" :value="p.id">{{ p.name }}</option>
-          </select>
+    <p v-if="info" class="ok note">{{ info }}</p>
+    <p v-if="error" class="error note">{{ error }}</p>
+
+    <div class="console">
+      <!-- Left: the build controls, stacked as a sequence. -->
+      <div class="setup stack">
+        <div class="panel">
+          <div class="panel__head"><span class="panel__title">1 · Source</span></div>
+          <div class="panel__body stack">
+            <div class="field">
+              <label>Plan</label>
+              <select v-model="selected.plan">
+                <option value="">Select plan…</option>
+                <option v-for="p in plans" :key="p.id" :value="p.id">{{ p.name }}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Workflow</label>
+              <select v-model="selected.workflow">
+                <option value="">Select workflow…</option>
+                <option v-for="w in workflows" :key="w.id" :value="w.id">{{ w.name }}</option>
+              </select>
+            </div>
+            <button class="btn btn--primary" @click="createAndGenerate">
+              Create version &amp; generate
+            </button>
+          </div>
         </div>
-        <div class="field">
-          <label>Workflow</label>
-          <select v-model="selected.workflow">
-            <option value="">Select workflow…</option>
-            <option v-for="w in workflows" :key="w.id" :value="w.id">{{ w.name }}</option>
-          </select>
+
+        <div class="panel" :class="{ 'is-disabled': !versionId }">
+          <div class="panel__head">
+            <span class="panel__title">2 · Demand</span><span class="muted opt">optional</span>
+          </div>
+          <div class="panel__body stack">
+            <div class="field">
+              <label>Project</label>
+              <select v-model="selected.project" :disabled="!versionId">
+                <option value="">Select project…</option>
+                <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
+              </select>
+            </div>
+            <div class="row">
+              <div class="field" style="flex: 1">
+                <label>Qty</label>
+                <input
+                  v-model.number="demandForm.quantity"
+                  type="number"
+                  min="1"
+                  :disabled="!versionId"
+                />
+              </div>
+              <div class="field" style="flex: 1">
+                <label>Priority</label>
+                <select v-model="demandForm.priority" :disabled="!versionId">
+                  <option value="low">low</option>
+                  <option value="normal">normal</option>
+                  <option value="high">high</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn" :disabled="!versionId" @click="addDemandRow">Add demand</button>
+          </div>
         </div>
-        <button class="btn btn--primary" @click="createAndGenerate">
-          Create version &amp; generate
-        </button>
-        <span v-if="versionId" class="badge badge--info">version: {{ versionStatus }}</span>
+
+        <div class="panel" :class="{ 'is-disabled': !versionId }">
+          <div class="panel__head"><span class="panel__title">3 · Solve</span></div>
+          <div class="panel__body stack">
+            <div class="field">
+              <label>Frozen until</label>
+              <input v-model.number="frozenUntil" type="number" min="0" :disabled="!versionId" />
+            </div>
+            <button class="btn btn--primary" :disabled="!versionId" @click="schedule">
+              Run scheduler
+            </button>
+            <button v-if="versionStatus === 'scheduled'" class="btn" @click="publish">
+              Review &amp; publish
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div v-if="versionId" class="card">
-      <div class="card__title">2 · Demand (optional)</div>
-      <div class="form-row">
-        <div class="field">
-          <label>Project</label>
-          <select v-model="selected.project">
-            <option value="">Select project…</option>
-            <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.name }}</option>
-          </select>
+      <!-- Right: the result — timeline hero, then detail. -->
+      <div class="result stack">
+        <div v-if="assignments.length" class="panel">
+          <div class="panel__head"><span class="panel__title">Resource timeline</span></div>
+          <div class="panel__body">
+            <GanttChart :assignments="assignments" />
+          </div>
         </div>
-        <div class="field">
-          <label>Quantity</label>
-          <input v-model.number="demandForm.quantity" type="number" min="1" />
+
+        <div v-if="assignments.length" class="panel">
+          <div class="panel__head"><span class="panel__title">Assignments</span></div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Equipment</th>
+                <th>Staff</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="a in assignments" :key="a.id">
+                <td class="mono">{{ a.operationId.slice(0, 8) }}</td>
+                <td class="mono">
+                  <template v-if="a.startAt">{{ formatAt(a.startAt) }}</template>
+                  <template v-else>{{ a.start }}</template>
+                  <span v-if="a.shift" class="chip">{{ a.shift }}</span>
+                </td>
+                <td class="mono">{{ a.endAt ? formatAt(a.endAt) : a.end }}</td>
+                <td class="mono">{{ a.equipmentId ? a.equipmentId.slice(0, 8) : '—' }}</td>
+                <td class="mono">{{ a.staffId ? a.staffId.slice(0, 8) : '—' }}</td>
+                <td><StatusLed :status="a.status" /></td>
+                <td class="actions">
+                  <template v-if="a.status === 'ready'">
+                    <button class="btn btn--sm" @click="act(startAssignment, a.id, 'Start')">
+                      Start
+                    </button>
+                    <button
+                      class="btn btn--sm btn--ghost"
+                      @click="act(cancelAssignment, a.id, 'Cancel', true)"
+                    >
+                      Cancel
+                    </button>
+                  </template>
+                  <template v-else-if="a.status === 'running'">
+                    <button class="btn btn--sm" @click="act(completeAssignment, a.id, 'Complete')">
+                      Complete
+                    </button>
+                    <button
+                      class="btn btn--sm btn--ghost"
+                      @click="act(failAssignment, a.id, 'Fail', true)"
+                    >
+                      Fail
+                    </button>
+                  </template>
+                  <span v-else class="muted">—</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="field">
-          <label>Priority</label>
-          <select v-model="demandForm.priority">
-            <option value="low">low</option>
-            <option value="normal">normal</option>
-            <option value="high">high</option>
-          </select>
+
+        <div v-else class="panel placeholder">
+          <div class="placeholder__inner">
+            <div class="placeholder__mark">◷</div>
+            <p class="muted">
+              Create a version and run the scheduler to see the resource timeline.
+            </p>
+          </div>
         </div>
-        <button class="btn" @click="addDemandRow">Add demand</button>
       </div>
-    </div>
-
-    <div v-if="versionId" class="card">
-      <div class="card__title">3 · Schedule</div>
-      <div class="form-row">
-        <div class="field">
-          <label>Frozen until</label>
-          <input v-model.number="frozenUntil" type="number" min="0" />
-        </div>
-        <button class="btn btn--primary" @click="schedule">Run scheduler</button>
-        <button v-if="versionStatus === 'scheduled'" class="btn" @click="publish">
-          Review &amp; publish
-        </button>
-        <span v-if="makespan != null" class="badge">makespan: {{ makespan }}</span>
-      </div>
-    </div>
-
-    <div v-if="assignments.length" class="card">
-      <div class="card__title">Timeline</div>
-      <GanttChart :assignments="assignments" />
-    </div>
-
-    <div v-if="assignments.length" class="card">
-      <div class="card__title">Assignments</div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Operation</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Equipment</th>
-            <th>Staff</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="a in assignments" :key="a.id">
-            <td>{{ a.operationId.slice(0, 8) }}</td>
-            <td>{{ a.start }}</td>
-            <td>{{ a.end }}</td>
-            <td>{{ a.equipmentId ? a.equipmentId.slice(0, 8) : '—' }}</td>
-            <td>{{ a.staffId ? a.staffId.slice(0, 8) : '—' }}</td>
-            <td>
-              <span class="badge" :class="badgeClass(a.status)">{{ a.status }}</span>
-            </td>
-            <td class="actions">
-              <template v-if="a.status === 'ready'">
-                <button class="btn btn--ghost" @click="act(startAssignment, a.id, 'Start')">
-                  Start
-                </button>
-                <button class="btn btn--ghost" @click="act(cancelAssignment, a.id, 'Cancel', true)">
-                  Cancel
-                </button>
-              </template>
-              <template v-else-if="a.status === 'running'">
-                <button class="btn btn--ghost" @click="act(completeAssignment, a.id, 'Complete')">
-                  Complete
-                </button>
-                <button class="btn btn--ghost" @click="act(failAssignment, a.id, 'Fail', true)">
-                  Fail
-                </button>
-              </template>
-              <span v-else class="muted">—</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </section>
 </template>
 
 <style scoped>
+.ctx {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--panel);
+}
+.ctx__v {
+  font-size: 14px;
+}
+.note {
+  margin: 0 0 var(--s4);
+  font-size: 13px;
+}
+.console {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--s4);
+  align-items: start;
+}
+.setup {
+  gap: var(--s3);
+}
+.is-disabled {
+  opacity: 0.6;
+}
+.opt {
+  font-size: 11px;
+  margin-left: auto;
+}
 .actions {
   display: flex;
-  gap: 0.35rem;
+  gap: 5px;
+  justify-content: flex-end;
+}
+.placeholder {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.placeholder__inner {
+  text-align: center;
+  max-width: 260px;
+}
+.placeholder__mark {
+  font-size: 2rem;
+  color: var(--line-strong);
+  margin-bottom: var(--s2);
+}
+@media (max-width: 900px) {
+  .console {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

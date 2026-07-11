@@ -21,17 +21,13 @@ export function formatWindows(windows) {
   return windows.map((w) => `${w[0]}-${w[1]}`).join(', ')
 }
 
-// "gmp:2099-12-31, iso:2027-06-30" -> { gmp: "2099-12-31", iso: "2027-06-30" }
-// A bare "gmp" means no expiry (null).
+// "gmp:2099-12-31, iso" -> { gmp: "2099-12-31", iso: null }
 export function parseQualifications(value) {
   const out = {}
   for (const item of parseList(value)) {
     const idx = item.indexOf(':')
-    if (idx === -1) {
-      out[item] = null
-    } else {
-      out[item.slice(0, idx).trim()] = item.slice(idx + 1).trim() || null
-    }
+    if (idx === -1) out[item] = null
+    else out[item.slice(0, idx).trim()] = item.slice(idx + 1).trim() || null
   }
   return out
 }

@@ -1,224 +1,352 @@
-/* Lab APS design system.
- * A small, dependency-free style layer: tokens + reusable component classes
- * (cards, buttons, tables, forms, badges) for a clean, modern look.
+/* Lab APS — Instrument Console design system.
+ *
+ * Not a generic admin theme: a clinical, precise laboratory instrument console.
+ * Light steel canvas, hairline structure, monospace readouts, status LEDs, and a
+ * single teal action accent. Depth strategy: borders + surface tint (a dense
+ * technical tool), shadows reserved for overlays only.
  */
 
 :root {
-  --color-bg: #f5f7fa;
-  --color-surface: #ffffff;
-  --color-border: #e3e8ef;
-  --color-text: #1f2933;
-  --color-muted: #647084;
-  --color-primary: #2f6feb;
-  --color-primary-hover: #2559c9;
-  --color-success: #0a7d28;
-  --color-danger: #c0392b;
-  --color-warning: #b7791f;
-  --radius: 8px;
-  --shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
-  --space: 1rem;
-  --font:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC',
+  /* Surfaces — clinical white over steel canvas; shift lightness only. */
+  --canvas: #f6f8fa;
+  --panel: #ffffff;
+  --panel-2: #fbfcfd;
+  --inset: #eef1f5; /* controls are inset (darker), they receive input */
+  --rail: #10161f; /* the instrument navigation rail (deep slate) */
+  --rail-ink: #aeb8c7;
+  --rail-ink-strong: #ffffff;
+
+  /* Ink — four tiers via color, not size. */
+  --ink: #0f172a; /* primary readings */
+  --ink-2: #475569; /* labels */
+  --ink-3: #7c8698; /* metadata */
+  --ink-muted: #a6afbd; /* disabled */
+
+  /* Structure — hairlines that disappear until sought. */
+  --line: rgba(15, 23, 42, 0.09);
+  --line-2: rgba(15, 23, 42, 0.14);
+  --line-strong: rgba(15, 23, 42, 0.22);
+
+  /* Accent — one teal action color; color communicates, never decorates. */
+  --accent: #0e7c86;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2f2f3;
+
+  /* Status LEDs — instrument signal colors. */
+  --led-ok: #1a9d54; /* running / active / success */
+  --led-warn: #b4791a; /* warning / expiring */
+  --led-danger: #c73434; /* fail / infeasible / cancelled */
+  --led-idle: #94a3b8; /* pending / inactive */
+  --led-info: #2563a8; /* ready / informational */
+
+  --ok-soft: #e4f4ea;
+  --warn-soft: #f7efdd;
+  --danger-soft: #f7e3e3;
+  --info-soft: #e5eef8;
+
+  /* Radius scale — tight; this is an instrument, not a brochure. */
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 9px;
+
+  /* Spacing base = 4px. */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 28px;
+
+  --overlay-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.06), 0 8px 24px -6px rgba(15, 23, 42, 0.18),
+    0 2px 6px -2px rgba(15, 23, 42, 0.12);
+
+  --font-ui:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC',
     'Microsoft YaHei', sans-serif;
+  --font-mono:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 body {
   margin: 0;
-  font-family: var(--font);
-  color: var(--color-text);
-  background: var(--color-bg);
-  font-size: 14px;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--canvas);
+  font-size: 13.5px;
   line-height: 1.5;
 }
 
 h1,
 h2,
 h3 {
-  margin: 0 0 0.75rem;
+  margin: 0;
   font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--accent);
   text-decoration: none;
 }
 
-/* Cards */
-.card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
-}
-
-.card + .card {
-  margin-top: var(--space);
-}
-
-.card__title {
-  font-size: 1rem;
+/* Signature: the instrument label — tracked uppercase, quiet. */
+.label {
+  font-size: 10.5px;
   font-weight: 600;
-  margin-bottom: 1rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Signature: the readout — monospace figure that leads. */
+.readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Panels — the working surface. Borders + tint, no decorative shadow. */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--line);
+}
+
+.panel__title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.panel__body {
+  padding: var(--s4);
 }
 
 /* Buttons */
 .btn {
   appearance: none;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  padding: 0.45rem 0.9rem;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  color: var(--ink);
+  padding: 7px 13px;
+  border-radius: var(--r-md);
   cursor: pointer;
-  font-size: 0.875rem;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
   transition:
-    background 0.15s,
-    border-color 0.15s;
+    background 0.14s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.14s,
+    transform 0.08s;
 }
-
 .btn:hover {
-  border-color: var(--color-primary);
+  background: var(--inset);
+  border-color: var(--line-strong);
 }
-
-.btn--primary {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #fff;
+.btn:active {
+  transform: scale(0.98);
 }
-
-.btn--primary:hover {
-  background: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-}
-
-.btn--ghost {
-  background: transparent;
-}
-
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.btn--primary:hover {
+  background: #0b656d;
+  border-color: #0b656d;
+}
+.btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  padding: 5px 9px;
+  color: var(--ink-2);
+}
+.btn--ghost:hover {
+  background: var(--inset);
+  color: var(--ink);
+}
+.btn--sm {
+  padding: 4px 9px;
+  font-size: 12px;
+}
 
-/* Forms */
+/* Forms — inset controls. */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--s1);
 }
-
-.field label {
-  font-size: 0.8rem;
-  color: var(--color-muted);
+.field > label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
-
 input,
 select {
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0.45rem 0.6rem;
-  font-size: 0.875rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  padding: 7px 9px;
+  font-size: 13px;
   font-family: inherit;
-  background: #fff;
+  background: var(--inset);
+  color: var(--ink);
+  transition: border-color 0.14s;
 }
-
 input:focus,
 select:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  background: var(--panel);
+}
+input::placeholder {
+  color: var(--ink-muted);
 }
 
-.form-row {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-/* Tables */
+/* Tables — dense instrument grid. */
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 13px;
 }
-
-.table th,
-.table td {
-  text-align: left;
-  padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
 .table th {
-  color: var(--color-muted);
+  text-align: left;
+  padding: 8px 12px;
+  color: var(--ink-3);
   font-weight: 600;
-  font-size: 0.78rem;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.07em;
+  border-bottom: 1px solid var(--line-2);
+  background: var(--panel-2);
 }
-
+.table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
 .table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--panel-2);
+}
+.table .cell-strong {
+  color: var(--ink);
+  font-weight: 500;
 }
 
-/* Badges */
-.badge {
+/* Status LED — the instrument signal dot. */
+.led {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.led::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--led-idle);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--led-idle) 22%, transparent);
+}
+.led--ok::before {
+  background: var(--led-ok);
+  box-shadow: 0 0 0 3px var(--ok-soft);
+}
+.led--warn::before {
+  background: var(--led-warn);
+  box-shadow: 0 0 0 3px var(--warn-soft);
+}
+.led--danger::before {
+  background: var(--led-danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+.led--info::before {
+  background: var(--led-info);
+  box-shadow: 0 0 0 3px var(--info-soft);
+}
+
+/* Chips — small factual tags (capabilities, skills). */
+.chip {
   display: inline-block;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: #eef2f7;
-  color: var(--color-muted);
+  padding: 2px 7px;
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  background: var(--inset);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
 }
-
-.badge--success {
-  background: #e6f4ea;
-  color: var(--color-success);
-}
-.badge--danger {
-  background: #fbeae7;
-  color: var(--color-danger);
-}
-.badge--warning {
-  background: #fdf3e2;
-  color: var(--color-warning);
-}
-.badge--info {
-  background: #e8f0fe;
-  color: var(--color-primary);
+.chip + .chip {
+  margin-left: 4px;
 }
 
 /* Utilities */
 .muted {
-  color: var(--color-muted);
+  color: var(--ink-3);
 }
 .error {
-  color: var(--color-danger);
+  color: var(--led-danger);
 }
-.success {
-  color: var(--color-success);
+.ok {
+  color: var(--led-ok);
 }
 .stack {
   display: flex;
   flex-direction: column;
-  gap: var(--space);
+  gap: var(--s4);
 }
 .row {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--s3);
   flex-wrap: wrap;
+  align-items: flex-end;
 }
 .spacer {
   flex: 1;
 }
 .empty {
-  color: var(--color-muted);
-  padding: 1.5rem 0;
+  color: var(--ink-3);
+  padding: var(--s6);
   text-align: center;
+  font-size: 13px;
 }
