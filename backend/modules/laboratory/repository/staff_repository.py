@@ -36,6 +36,28 @@ class StaffRepository:
         orm.active = active
         return True
 
+    def update(self, staff: Staff) -> bool:
+        orm = self.session.get(StaffORM, staff.id)
+        if orm is None:
+            return False
+        orm.staff_code = staff.staff_code
+        orm.name = staff.name
+        orm.availability = [list(w) for w in staff.availability]
+        orm.projects = self._resolve_projects(staff.qualified_project_ids)
+        return True
+
+    def delete(self, staff_id: str) -> bool:
+        orm = self.session.get(StaffORM, staff_id)
+        if orm is None:
+            return False
+        self.session.delete(orm)
+        return True
+
+    def _resolve_projects(self, ids):
+        if not ids:
+            return []
+        return list(self.session.scalars(select(ProjectORM).where(ProjectORM.id.in_(ids))).all())
+
     def _to_orm(self, staff: Staff) -> StaffORM:
         projects = []
         if staff.qualified_project_ids:

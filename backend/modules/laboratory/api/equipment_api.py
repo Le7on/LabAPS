@@ -9,6 +9,8 @@ from flask import Blueprint, current_app, request
 
 from backend.modules.laboratory.application.create_equipment import (
     CreateEquipmentUseCase,
+    DeleteEquipmentUseCase,
+    UpdateEquipmentUseCase,
 )
 from backend.modules.laboratory.application.list_equipment import ListEquipmentUseCase
 from backend.modules.laboratory.application.set_resource_active import (
@@ -41,6 +43,23 @@ def list_equipment():
     use_case = ListEquipmentUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@equipment_bp.put("/equipment/<equipment_id>")
+def update_equipment(equipment_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = UpdateEquipmentUseCase(_uow())
+    return api_response.success(
+        use_case.execute(equipment_id, CreateEquipmentRequest.from_json(data))
+    )
+
+
+@equipment_bp.delete("/equipment/<equipment_id>")
+def delete_equipment(equipment_id: str):
+    use_case = DeleteEquipmentUseCase(_uow())
+    return api_response.success(use_case.execute(equipment_id))
 
 
 @equipment_bp.post("/equipment/<equipment_id>/deactivate")

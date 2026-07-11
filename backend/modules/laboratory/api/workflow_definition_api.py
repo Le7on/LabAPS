@@ -12,6 +12,7 @@ from backend.modules.laboratory.application.create_workflow_definition import (
     CreateWorkflowDefinitionUseCase,
 )
 from backend.modules.laboratory.application.list_workflow_definitions import (
+    DeleteWorkflowDefinitionUseCase,
     ListWorkflowDefinitionsUseCase,
 )
 from backend.modules.laboratory.dto.workflow_definition_dto import (
@@ -43,3 +44,9 @@ def list_workflow_definitions():
     use_case = ListWorkflowDefinitionsUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@workflow_definition_bp.delete("/workflow-definitions/<workflow_id>")
+def delete_workflow_definition(workflow_id: str):
+    use_case = DeleteWorkflowDefinitionUseCase(_uow())
+    return api_response.success(use_case.execute(workflow_id))

@@ -10,7 +10,9 @@ from flask import Blueprint, current_app, request
 
 from backend.modules.laboratory.application.manage_projects import (
     CreateProjectUseCase,
+    DeleteProjectUseCase,
     ListProjectsUseCase,
+    UpdateProjectUseCase,
 )
 from backend.modules.laboratory.application.set_resource_active import (
     SetResourceActiveUseCase,
@@ -39,6 +41,21 @@ def create_project():
 def list_projects():
     use_case = ListProjectsUseCase(_uow())
     return api_response.collection(use_case.execute()["items"])
+
+
+@project_bp.put("/projects/<project_id>")
+def update_project(project_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = UpdateProjectUseCase(_uow())
+    return api_response.success(use_case.execute(project_id, CreateProjectRequest.from_json(data)))
+
+
+@project_bp.delete("/projects/<project_id>")
+def delete_project(project_id: str):
+    use_case = DeleteProjectUseCase(_uow())
+    return api_response.success(use_case.execute(project_id))
 
 
 @project_bp.post("/projects/<project_id>/deactivate")

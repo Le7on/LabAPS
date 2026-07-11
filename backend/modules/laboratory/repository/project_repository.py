@@ -31,6 +31,21 @@ class ProjectRepository:
         orm.active = active
         return True
 
+    def update(self, project_id: str, *, project_code: str, name: str) -> bool:
+        orm = self.session.get(ProjectORM, project_id)
+        if orm is None:
+            return False
+        orm.project_code = project_code
+        orm.name = name
+        return True
+
+    def delete(self, project_id: str) -> bool:
+        orm = self.session.get(ProjectORM, project_id)
+        if orm is None:
+            return False
+        self.session.delete(orm)
+        return True
+
     @staticmethod
     def _to_orm(project: Project) -> ProjectORM:
         return ProjectORM(

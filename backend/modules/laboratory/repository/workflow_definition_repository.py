@@ -41,6 +41,17 @@ class WorkflowDefinitionRepository:
         stmt = select(WorkflowDefinitionORM).order_by(WorkflowDefinitionORM.created_at)
         return [self._to_domain(o) for o in self.session.scalars(stmt).all()]
 
+    def count_for_project(self, project_id: str) -> int:
+        stmt = select(WorkflowDefinitionORM).where(WorkflowDefinitionORM.project_id == project_id)
+        return len(self.session.scalars(stmt).all())
+
+    def delete(self, workflow_id: str) -> bool:
+        orm = self.session.get(WorkflowDefinitionORM, workflow_id)
+        if orm is None:
+            return False
+        self.session.delete(orm)
+        return True
+
     def _to_orm(self, workflow: WorkflowDefinition) -> WorkflowDefinitionORM:
         # Resolve all bound equipment ids referenced by any method in one query.
         wanted = {eid for op in workflow.operations for eid in op.equipment_ids}

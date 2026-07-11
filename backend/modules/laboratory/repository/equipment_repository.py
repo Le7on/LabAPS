@@ -39,6 +39,38 @@ class EquipmentRepository:
         orm.active = active
         return True
 
+    def update(self, equipment: Equipment) -> bool:
+        orm = self.session.get(EquipmentORM, equipment.id)
+        if orm is None:
+            return False
+        orm.equipment_code = equipment.equipment_code
+        orm.name = equipment.name
+        orm.availability = [list(w) for w in equipment.availability]
+        orm.projects = self._resolve_projects(equipment.applicable_project_ids)
+        orm.methods = self._resolve_methods(equipment.method_ids)
+        return True
+
+    def delete(self, equipment_id: str) -> bool:
+        orm = self.session.get(EquipmentORM, equipment_id)
+        if orm is None:
+            return False
+        self.session.delete(orm)
+        return True
+
+    def _resolve_projects(self, ids):
+        if not ids:
+            return []
+        return list(self.session.scalars(select(ProjectORM).where(ProjectORM.id.in_(ids))).all())
+
+    def _resolve_methods(self, ids):
+        if not ids:
+            return []
+        return list(
+            self.session.scalars(
+                select(OperationDefinitionORM).where(OperationDefinitionORM.id.in_(ids))
+            ).all()
+        )
+
     def _to_orm(self, equipment: Equipment) -> EquipmentORM:
         projects = []
         if equipment.applicable_project_ids:
