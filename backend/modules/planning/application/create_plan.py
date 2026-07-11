@@ -19,6 +19,10 @@ class CreatePlanUseCase:
             planning_horizon=request.planning_horizon,
             name=request.name,
             description=request.description,
+            start_date=request.start_date,
+            end_date=request.end_date,
+            shift_mode=request.shift_mode,
+            skipped_dates=request.skipped_dates,
         )
 
         with self._uow_factory() as uow:

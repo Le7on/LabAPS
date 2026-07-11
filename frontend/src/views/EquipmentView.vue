@@ -1,26 +1,40 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useLaboratoryStore } from '../stores/laboratory'
-import { parseList, parseWindows, formatWindows } from '../utils/parse'
 import PageHeader from '../components/PageHeader.vue'
 import SlideOver from '../components/SlideOver.vue'
 import StatusLed from '../components/StatusLed.vue'
+import MultiSelect from '../components/MultiSelect.vue'
 
 const store = useLaboratoryStore()
 const open = ref(false)
-const form = reactive({ equipmentCode: '', name: '', capabilities: '', availability: '' })
+const form = reactive({ equipmentCode: '', name: '', methodIds: [] })
 
-onMounted(() => store.fetchEquipment())
+onMounted(() => {
+  store.fetchEquipment()
+  store.fetchWorkflows()
+})
+
+// Method options across all workflows: value = method id, label = wf · method.
+const methodOptions = computed(() => {
+  const out = []
+  for (const wf of store.workflows) {
+    for (const op of wf.operations) {
+      out.push({ value: op.id, label: `${wf.name} · ${op.operationType}` })
+    }
+  }
+  return out
+})
+const methodLabel = (id) => methodOptions.value.find((m) => m.value === id)?.label ?? id.slice(0, 6)
 
 async function submit() {
   const ok = await store.addEquipment({
     equipmentCode: form.equipmentCode,
     name: form.name,
-    capabilities: parseList(form.capabilities),
-    availability: parseWindows(form.availability),
+    methodIds: [...form.methodIds],
   })
   if (ok) {
-    Object.assign(form, { equipmentCode: '', name: '', capabilities: '', availability: '' })
+    Object.assign(form, { equipmentCode: '', name: '', methodIds: [] })
     open.value = false
   }
 }
@@ -28,7 +42,7 @@ async function submit() {
 
 <template>
   <section>
-    <PageHeader title="Equipment" subtitle="Machines, their capabilities and availability">
+    <PageHeader title="Equipment" subtitle="Machines and the methods that can run on them">
       <template #actions>
         <button class="btn btn--primary" @click="open = true">+ New equipment</button>
       </template>
@@ -40,8 +54,7 @@ async function submit() {
           <tr>
             <th>Code</th>
             <th>Name</th>
-            <th>Capabilities</th>
-            <th>Availability</th>
+            <th>Runs methods</th>
             <th>Status</th>
             <th></th>
           </tr>
@@ -51,10 +64,11 @@ async function submit() {
             <td class="mono cell-strong">{{ item.equipmentCode }}</td>
             <td class="cell-strong">{{ item.name }}</td>
             <td>
-              <span v-for="c in item.capabilities" :key="c" class="chip">{{ c }}</span>
-              <span v-if="!item.capabilities.length" class="muted">—</span>
+              <span v-for="mid in item.methodIds" :key="mid" class="chip">{{
+                methodLabel(mid)
+              }}</span>
+              <span v-if="!item.methodIds.length" class="muted">—</span>
             </td>
-            <td class="mono">{{ formatWindows(item.availability) }}</td>
             <td><StatusLed :status="item.active ? 'active' : 'inactive'" /></td>
             <td class="right">
               <button
@@ -81,13 +95,16 @@ async function submit() {
           <input v-model="form.name" placeholder="Thermocycler" required />
         </div>
         <div class="field">
-          <label>Capabilities (comma separated)</label>
-          <input v-model="form.capabilities" placeholder="pcr, spin" />
+          <label>Methods it can run</label>
+          <MultiSelect
+            v-model="form.methodIds"
+            :options="methodOptions"
+            placeholder="Select methods this machine supports…"
+          />
         </div>
-        <div class="field">
-          <label>Availability (start-end, …)</label>
-          <input v-model="form.availability" placeholder="0-40, 60-100" />
-        </div>
+        <p v-if="!methodOptions.length" class="muted hint">
+          Define workflows with methods first, then bind them here.
+        </p>
         <p v-if="store.error" class="error">{{ store.error }}</p>
         <button class="btn btn--primary" type="submit">Add equipment</button>
       </form>
@@ -98,5 +115,9 @@ async function submit() {
 <style scoped>
 .right {
   text-align: right;
+}
+.hint {
+  font-size: 12px;
+  margin: 0;
 }
 </style>

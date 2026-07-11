@@ -1,9 +1,13 @@
 """Staff entity.
 
-A laboratory operator with a skill set. Pure Python domain object in the
-Laboratory Definition domain (separate from Planning, ADR-010). Staff owns Skills
-(Business Object Model section 13); skills are the input the scheduler matches
-against for Qualification/Skill constraints.
+A laboratory operator qualified for a set of Projects. Pure Python domain object
+in the Laboratory Definition domain (separate from Planning, ADR-010).
+
+A staff member's competency is expressed solely as the set of Projects it is
+qualified for (ADR-017). The scheduler matches staff to a method by the Project
+of the method's workflow: a staff member is eligible when that Project is among
+its qualified projects. There is no separate free-text skill or expiring
+qualification concept anymore.
 """
 
 from __future__ import annotations
@@ -18,11 +22,9 @@ from backend.shared.errors import ValidationError
 class Staff:
     staff_code: str
     name: str
-    skills: set[str] = field(default_factory=set)
-    # Qualifications map a qualification name to its expiry date (ISO date string,
-    # or None for no expiry). A qualification is valid on/after its record until
-    # (and including) the expiry date. Unlike a skill, a qualification can lapse.
-    qualifications: dict[str, str | None] = field(default_factory=dict)
+    # Projects this staff member is qualified for (ADR-017). This is the "Skill"
+    # surfaced in the UI: which projects' work the staff may perform.
+    qualified_project_ids: set[str] = field(default_factory=set)
     # Availability windows [start, end); empty means always available (Calendar).
     availability: list[tuple[int, int]] = field(default_factory=list)
     active: bool = True
@@ -37,20 +39,8 @@ class Staff:
             if end <= start:
                 raise ValidationError("availability window end must be after start")
 
-    def has_skill(self, skill: str) -> bool:
-        return skill in self.skills
-
-    def valid_qualifications(self, reference_date: str) -> set[str]:
-        """Qualifications not expired as of ``reference_date`` (ISO date string).
-
-        A qualification with no expiry is always valid; otherwise it is valid
-        while ``reference_date <= expiry`` (lexicographic ISO date compare).
-        """
-        valid = set()
-        for name, expiry in self.qualifications.items():
-            if expiry is None or reference_date <= expiry:
-                valid.add(name)
-        return valid
+    def is_qualified_for(self, project_id: str) -> bool:
+        return project_id in self.qualified_project_ids
 
     def deactivate(self) -> None:
         self.active = False

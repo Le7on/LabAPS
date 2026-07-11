@@ -48,6 +48,36 @@ class AuthService:
 
         return {"id": user_id, "username": username, "role": role.value, "token": token}
 
+    def issue_token(self, username: str, role: Role, label: str = "seed") -> dict:
+        """Issue a new API token for a user, creating the user if absent.
+
+        Idempotent bootstrap entry point: if the user already exists its role is
+        left unchanged and a fresh token is appended; otherwise the user is
+        created with ``role``. Returns the plaintext token once (only its hash is
+        persisted) plus a ``created`` flag indicating whether the user was new.
+        """
+        token = secrets.token_urlsafe(32)
+        session = self._session_factory()
+        try:
+            user = session.scalar(select(UserORM).where(UserORM.username == username))
+            created = user is None
+            if user is None:
+                user = UserORM(username=username, role=role.value)
+                session.add(user)
+            user.tokens.append(ApiTokenORM(token_hash=hash_token(token), label=label))
+            session.commit()
+            result = {
+                "id": user.id,
+                "username": user.username,
+                "role": user.role,
+                "token": token,
+                "created": created,
+            }
+        finally:
+            session.close()
+
+        return result
+
     def resolve(self, token: str) -> CurrentUser | None:
         """Resolve a plaintext bearer token to the current user, or None."""
         if not token:

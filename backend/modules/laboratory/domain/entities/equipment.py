@@ -1,7 +1,9 @@
 """Equipment entity.
 
-Laboratory resource with a capability set. Pure Python domain object; belongs to
-the Laboratory Definition domain, which is separate from Planning (ADR-010).
+Laboratory resource in the Laboratory Definition domain (ADR-010). Equipment is
+declared applicable to a set of Projects, and bound to specific Methods of those
+projects' workflows (ADR-018). The scheduler restricts a method to the equipment
+bound to it.
 """
 
 from __future__ import annotations
@@ -16,9 +18,13 @@ from backend.shared.errors import ValidationError
 class Equipment:
     equipment_code: str
     name: str
-    capabilities: set[str] = field(default_factory=set)
     # Availability windows [start, end); empty means always available (Calendar).
     availability: list[tuple[int, int]] = field(default_factory=list)
+    # Projects this equipment is applicable to; used to scope which methods can
+    # be bound to it (ADR-018).
+    applicable_project_ids: set[str] = field(default_factory=set)
+    # Methods (operation definitions) this equipment is bound to (ADR-015/018).
+    method_ids: set[str] = field(default_factory=set)
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
@@ -30,6 +36,3 @@ class Equipment:
         for start, end in self.availability:
             if end <= start:
                 raise ValidationError("availability window end must be after start")
-
-    def has_capability(self, capability: str) -> bool:
-        return capability in self.capabilities

@@ -97,46 +97,48 @@ The left sidebar navigates the app:
 
 # 5. Setting Up Laboratory Data
 
-Do this once (and update as things change).
+Everything is relational — you pick from dropdowns, not free text. Set it up in
+this order: **Projects → Workflows (with Methods) → Staff → Equipment**.
 
 ## 5.1 Projects
 
-Projects → enter a **project code** and **name** → **Add project**. Deactivate a
-project with the button on its row; deactivated projects are hidden from new
-scheduling but past schedules are unchanged.
+Projects → **+ New project** → enter a **project code** and **name**. Deactivate
+with the row button; deactivated projects are hidden from new scheduling but past
+schedules are unchanged.
 
-## 5.2 Equipment
+## 5.2 Workflows and Methods
 
-Equipment → fill in:
+A workflow belongs to one project and is made of **Methods** (the steps).
+Workflows → **+ New workflow**:
 
-- **Code** and **Name**.
-- **Capabilities** — comma separated, e.g. `pcr, spin`. An operation that
-  requires a capability can only run on equipment that has it.
-- **Availability** — optional time windows as `start-end` pairs, e.g.
-  `0-40, 60-100`. Leave blank for always available. (Times are in the planning
-  horizon's units.)
+- Choose the **Project** (dropdown).
+- Enter a **workflow code** and **name**.
+- Add **Methods**; for each Method set:
+  - **Method name**.
+  - **Work-hours** — the minimum number of shifts one run of this method needs.
+  - **Runs on equipment** — multi-select the equipment that can run it (you can
+    also bind equipment later on the Equipment page).
+  - **Depends on** — multi-select earlier methods that must finish first
+    (leave empty for no dependency).
 
 ## 5.3 Staff
 
-Staff → fill in:
+Staff → **+ New staff** → **Code**, **Name**, and **Qualified projects** — a
+multi-select of the projects this person can run (this is their "skill", a
+many-to-many relationship). A staff member can perform any method of a project
+they are qualified for.
 
-- **Code** and **Name**.
-- **Skills** — comma separated, e.g. `pcr, elisa`.
-- **Qualifications** — `name:expiry` pairs, e.g. `gmp:2099-12-31, iso`. A bare
-  name (`iso`) never expires. An operation requiring a qualification is only
-  assigned to staff whose qualification is still valid.
-- **Availability** — like equipment.
+## 5.4 Equipment
 
-## 5.4 Workflows
+Equipment → **+ New equipment** → **Code**, **Name**, and **Methods it can run**
+— a multi-select of methods (a many-to-many relationship). Define workflows and
+their methods first so they appear in the list.
 
-Workflows → set a **workflow code** and **name**, then add operation rows. For
-each operation:
+## 5.5 Availability
 
-- **Operation type** and **Duration**.
-- Optional **Capability** (equipment), **Skill** and **Qualification** (staff).
-
-Use **+ Operation** to add rows and **✕** to remove them, then **Create
-workflow**.
+Use each resource's **Deactivate / Activate** button to mark it available or
+unavailable for the target period. Only active resources are used when
+scheduling.
 
 ---
 
@@ -146,16 +148,18 @@ Go to **Scheduling**. The workspace walks you through four steps.
 
 ## Step 1 — Plan & workflow
 
-Pick a **Plan** (create one under Plans first) and a **Workflow**, then
-**Create version & generate**. This creates a new plan version and generates its
-operation instances, capturing an immutable snapshot of the currently active
-equipment and staff.
+Pick a **Plan** (create one under Plans first) and a **Workflow**. The workflow's
+methods appear with a **Runs per method** count — set how many times each method
+must run in this plan (its work-hours are shown for reference). Then
+**Create version & generate**: this creates a plan version and materializes each
+method the requested number of times, capturing an immutable snapshot of the
+currently active equipment and staff.
 
 ## Step 2 — Demand (optional)
 
 Choose a **Project**, a **Quantity** and a **Priority**, then **Add demand**.
-Demand makes the scheduler favor finishing higher-priority work sooner. With no
-demand, it simply minimizes the overall finish time (makespan).
+Demand makes the scheduler favor finishing higher-priority projects sooner. With
+no demand, it simply minimizes the overall finish time (makespan).
 
 ## Step 3 — Schedule
 
@@ -163,9 +167,9 @@ Optionally set **Frozen until** (a time before which nothing may start — usefu
 to lock in near-term work). Click **Run scheduler**. The result shows the
 **makespan** and whether the problem was **feasible**.
 
-If it is infeasible, a required capability, skill, qualification or availability
-cannot be satisfied by the active resources — adjust resources or the workflow
-and re-run.
+If it is infeasible, an active machine bound to a required method, or a staff
+member qualified for the project, is missing (or all are deactivated) — adjust
+resources / availability and re-run.
 
 ## Step 4 — Review, publish, execute
 

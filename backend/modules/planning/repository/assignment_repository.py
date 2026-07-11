@@ -31,6 +31,9 @@ class AssignmentRepository:
                     staff_id=a.get("staffId"),
                     planned_start=a["start"],
                     planned_end=a["end"],
+                    planned_start_at=a.get("startAt"),
+                    planned_end_at=a.get("endAt"),
+                    planned_shift=a.get("shift"),
                     status="pending",
                 )
             )
@@ -67,6 +70,9 @@ class AssignmentRepository:
             "staffId": a.staff_id,
             "start": a.planned_start,
             "end": a.planned_end,
+            "startAt": a.planned_start_at,
+            "endAt": a.planned_end_at,
+            "shift": a.planned_shift,
             "status": a.status,
             "reason": a.reason,
         }

@@ -15,7 +15,13 @@ class GenerateWorkflowInstanceUseCase:
     def __init__(self, uow_factory):
         self._uow_factory = uow_factory
 
-    def execute(self, plan_id: str, version_id: str, workflow_definition_id: str) -> dict:
+    def execute(
+        self,
+        plan_id: str,
+        version_id: str,
+        workflow_definition_id: str,
+        run_counts: dict | None = None,
+    ) -> dict:
         with self._uow_factory() as uow:
             plan = uow.plans.get(plan_id)
             if plan is None:
@@ -33,7 +39,6 @@ class GenerateWorkflowInstanceUseCase:
                 "equipment": [
                     {
                         "id": e.id,
-                        "capabilities": sorted(e.capabilities),
                         "availability": [list(w) for w in e.availability],
                     }
                     for e in uow.equipment.list()
@@ -42,8 +47,7 @@ class GenerateWorkflowInstanceUseCase:
                 "staff": [
                     {
                         "id": s.id,
-                        "skills": sorted(s.skills),
-                        "qualifications": dict(s.qualifications),
+                        "qualifiedProjectIds": sorted(s.qualified_project_ids),
                         "availability": [list(w) for w in s.availability],
                     }
                     for s in uow.staff.list()
@@ -52,7 +56,9 @@ class GenerateWorkflowInstanceUseCase:
                 "solverProfile": {"objective": "makespan"},
             }
 
-            instance = uow.workflow_instances.replace_for_version(version_id, workflow, context)
+            instance = uow.workflow_instances.replace_for_version(
+                version_id, workflow, context, run_counts or {}
+            )
             result = {
                 "id": instance.id,
                 "planVersionId": version_id,

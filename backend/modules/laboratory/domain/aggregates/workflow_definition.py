@@ -21,6 +21,8 @@ from backend.shared.errors import ValidationError
 class WorkflowDefinition:
     workflow_code: str
     name: str
+    # A workflow is defined for exactly one project (ADR-015, SSOT section 6).
+    project_id: str = ""
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     operations: list[OperationDefinition] = field(default_factory=list)
@@ -30,24 +32,24 @@ class WorkflowDefinition:
             raise ValidationError("workflowCode is required")
         if not self.name:
             raise ValidationError("name is required")
+        if not self.project_id:
+            raise ValidationError("projectId is required")
 
     def add_operation(
         self,
         operation_type: str,
         duration: int,
-        required_capability: str | None = None,
-        required_skill: str | None = None,
-        required_qualification: str | None = None,
+        gelatin_type: str | None = None,
+        equipment_ids: tuple[str, ...] = (),
         depends_on: tuple[str, ...] = (),
     ) -> OperationDefinition:
-        """Add an operation definition to this workflow (aggregate-owned)."""
+        """Add a method (operation definition) to this workflow (aggregate-owned)."""
 
         operation = OperationDefinition(
             operation_type=operation_type,
             duration=duration,
-            required_capability=required_capability,
-            required_skill=required_skill,
-            required_qualification=required_qualification,
+            gelatin_type=gelatin_type,
+            equipment_ids=equipment_ids,
             depends_on=depends_on,
         )
         self.operations.append(operation)

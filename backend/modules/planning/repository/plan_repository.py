@@ -81,6 +81,10 @@ class PlanRepository:
             description=plan.description,
             planning_horizon=plan.planning_horizon,
             status=plan.status.value,
+            start_date=plan.start_date,
+            end_date=plan.end_date,
+            shift_mode=plan.shift_mode,
+            skipped_dates=list(plan.skipped_dates),
             versions=[
                 PlanVersionORM(
                     id=v.id,
@@ -102,6 +106,10 @@ class PlanRepository:
             planning_horizon=orm.planning_horizon,
             status=PlanStatus(orm.status),
             created_at=orm.created_at,
+            start_date=orm.start_date,
+            end_date=orm.end_date,
+            shift_mode=orm.shift_mode or "single",
+            skipped_dates=list(orm.skipped_dates or []),
             versions=[
                 PlanVersion(
                     id=v.id,

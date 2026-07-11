@@ -110,8 +110,9 @@ def generate_workflow_instance(plan_id: str, version_id: str):
     workflow_definition_id = data.get("workflowDefinitionId")
     if not workflow_definition_id:
         raise ValidationError("workflowDefinitionId is required")
+    run_counts = data.get("runCounts") or {}
     use_case = GenerateWorkflowInstanceUseCase(_container().unit_of_work)
-    result = use_case.execute(plan_id, version_id, workflow_definition_id)
+    result = use_case.execute(plan_id, version_id, workflow_definition_id, run_counts)
     return api_response.success(result, status=201)
 
 

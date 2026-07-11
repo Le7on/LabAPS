@@ -162,6 +162,18 @@ Planning Strategy
 
 ---
 
+## Calendar (ADR-016)
+
+A Plan carries a calendar configuration: start date, end date, shift mode
+(single = one 09:00-17:00 slot per day; double = 06:00-14:00 and 14:00-22:00),
+and skipped dates. The scheduler works in integer time units where one unit is
+one shift slot; slots are laid out day by day from start to end, skipping
+skipped dates. After solving, each Assignment's integer interval is mapped to
+real start/end datetimes and a shift label. Plans without a calendar keep the
+plain integer-unit behaviour.
+
+---
+
 ## Example
 
 ```text
@@ -221,6 +233,10 @@ Demand does not specify resources.
 ## Description
 
 Workflow Template defines the standard execution process for a Project.
+
+A Workflow Template belongs to exactly one Project; a Project may have many
+Workflow Templates (ADR-015). A Workflow Template is composed of ordered Methods
+(= Stages).
 
 Workflow Templates belong to Master Data.
 
@@ -334,8 +350,6 @@ Operation Type
 
 Duration
 
-Required Capability
-
 Required Skill
 
 Dependencies
@@ -344,11 +358,27 @@ Material BOM Reference
 
 ---
 
+A Method (= Stage) is the definition-level counterpart of an Operation within a
+Workflow Template (ADR-015). A Method carries:
+
+- Duration expressed as a number of Shifts occupied (1 Shift = 1 scheduler time
+  unit).
+- Gelatin Type (attribute used when choosing instruments).
+- Bound Equipment: the equipment candidates for the method (many-to-many). This
+  replaces capability-string matching for the equipment dimension.
+- Required Skill / Required Qualification (staff dimension, unchanged).
+
+---
+
 Operation never stores
 
-Equipment
+Assigned Equipment
 
-Staff
+Assigned Staff
+
+Note: a Method definition pre-binds *candidate* Equipment (ADR-015); the
+concrete Equipment/Staff actually used is still decided by the Scheduler and
+recorded on the Assignment, not the Operation instance.
 
 Shift
 
@@ -464,15 +494,40 @@ Working Calendar
 
 Leave
 
+Qualified Projects (ADR-014)
+
+---
+
+A Staff member is qualified for one or more Projects (ADR-014). A Skill is the
+qualification to work on a Project (see section 13); being qualified for a
+Project means the Staff member may perform that Project's work. This is a
+Master Data competency link, not Plan membership.
+
 ---
 
 Staff never stores
 
 Workflow
 
-Project
-
 Assignment History
+
+---
+
+# 11a. Shift (ADR-015)
+
+Shift belongs to Master Data.
+
+A Shift is a work-shift window. A Method's workload is expressed as a number of
+Shifts it occupies; each Shift counts as one scheduler time unit.
+
+Shift windows are fixed by the Plan's shift mode (ADR-016), not a master-data
+table:
+
+- single: one shift 09:00-17:00 per day
+- double: 06:00-14:00 and 14:00-22:00 per day
+
+(The earlier standalone Shift master-data table was removed in ADR-017; it had
+no scheduling consumer.)
 
 ---
 
@@ -492,19 +547,22 @@ Examples
 
 iSWAP
 
-Operations require Capabilities.
+Capabilities describe equipment hardware features (reference information).
 
-Equipment provides Capabilities.
-
-Scheduling matches the two.
+Note (ADR-015/ADR-017): equipment is no longer matched to a Method by capability
+strings. A Method binds specific Equipment directly, and the scheduler uses that
+binding. Capability remains a descriptive attribute of Equipment, not a
+scheduling match key.
 
 ---
 
 # 13. Skill
 
-Skill represents laboratory operator qualifications.
+Skill is a laboratory operator's qualification to work on a Project (ADR-017).
+A staff member's Skill is exactly the set of Projects it is qualified for; there
+is no separate free-text skill or expiring-qualification concept.
 
-Examples
+Examples (each is a Project)
 
 FV
 
@@ -516,11 +574,10 @@ AZ RSV
 
 DiLA
 
-Operations require Skills.
-
-Staff owns Skills.
-
-Scheduling matches the two.
+Scheduling matches staff to a Method by the Method's workflow Project: a staff
+member is eligible when that Project is among its qualified Projects (its Skill).
+There is no per-Method skill string; eligibility comes from the workflow's
+Project.
 
 ---
 

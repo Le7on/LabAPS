@@ -18,12 +18,12 @@ def client():
 def test_create_and_list_staff(client):
     response = client.post(
         "/api/v1/staff",
-        json={"staffCode": "ST-001", "name": "Alice", "skills": ["pcr", "elisa"]},
+        json={"staffCode": "ST-001", "name": "Alice"},
     )
     assert response.status_code == 201
     payload = response.get_json()["data"]
     assert payload["staffCode"] == "ST-001"
-    assert payload["skills"] == ["elisa", "pcr"]
+    assert payload["qualifiedProjectIds"] == []
     assert payload["active"] is True
 
     listing = client.get("/api/v1/staff")

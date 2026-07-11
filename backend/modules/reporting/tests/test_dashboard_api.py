@@ -31,7 +31,13 @@ def test_dashboard_reflects_created_entities(client):
         json={"equipmentCode": "EQ-1", "name": "Machine", "capabilities": ["pcr"]},
     )
     client.post("/api/v1/staff", json={"staffCode": "ST-1", "name": "Alice"})
-    client.post("/api/v1/workflow-definitions", json={"workflowCode": "WF-1", "name": "Prep"})
+    project_id = client.post(
+        "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
+    ).get_json()["data"]["id"]
+    client.post(
+        "/api/v1/workflow-definitions",
+        json={"workflowCode": "WF-1", "name": "Prep", "projectId": project_id},
+    )
 
     data = client.get("/api/v1/reports/dashboard").get_json()["data"]
     assert data["plans"] == 1

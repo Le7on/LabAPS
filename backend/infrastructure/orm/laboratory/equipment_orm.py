@@ -1,19 +1,21 @@
 """Equipment ORM model.
 
 Persistence mapping for laboratory equipment. Conversion to/from the domain
-object happens in the repository.
-
-Scope note: capabilities are stored as a JSON list for this slice. The fuller
-design uses an equipment_capability mapping table once the Capability aggregate
-exists (SQLAlchemy Mapping Guide, section 6).
+object happens in the repository. Equipment is applicable to a set of Projects
+(equipment_project) and bound to Methods (method_equipment) (ADR-018).
 """
 
 from __future__ import annotations
 
 from sqlalchemy import JSON, Boolean, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.infrastructure.orm.common.base import BaseEntity
+from backend.infrastructure.orm.laboratory.associations import (
+    equipment_project,
+    method_equipment,
+)
+from backend.infrastructure.orm.laboratory.project_orm import ProjectORM  # noqa: F401
 
 
 class EquipmentORM(BaseEntity):
@@ -21,6 +23,19 @@ class EquipmentORM(BaseEntity):
 
     equipment_code: Mapped[str] = mapped_column(String(50), index=True)
     name: Mapped[str] = mapped_column(String(200))
-    capabilities: Mapped[list] = mapped_column(JSON, default=list)
     availability: Mapped[list] = mapped_column(JSON, default=list)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+    # Projects this equipment is applicable to (ADR-018).
+    projects: Mapped[list[ProjectORM]] = relationship(
+        "ProjectORM",
+        secondary=equipment_project,
+        lazy="selectin",
+    )
+    # Methods this equipment is bound to (reverse of method_equipment).
+    methods: Mapped[list[OperationDefinitionORM]] = relationship(  # noqa: F821
+        "OperationDefinitionORM",
+        secondary=method_equipment,
+        back_populates="equipment",
+        lazy="selectin",
+    )

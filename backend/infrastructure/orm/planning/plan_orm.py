@@ -6,7 +6,7 @@ repository (SQLAlchemy Mapping Guide, section 12).
 
 from __future__ import annotations
 
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import JSON, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.infrastructure.orm.common.base import BaseEntity
@@ -20,6 +20,14 @@ class PlanORM(BaseEntity):
     description: Mapped[str] = mapped_column(String(500), default="")
     planning_horizon: Mapped[str] = mapped_column(String(50))
     status: Mapped[str] = mapped_column(String(20), default="draft")
+    # Calendar configuration (ADR-016). When start/end are set, scheduling maps
+    # integer time units to real dates + shift windows. shift_mode is
+    # "single" or "double"; skipped_dates are "YYYY-MM-DD" strings excluded
+    # from the calendar.
+    start_date: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    end_date: Mapped[str | None] = mapped_column(String(10), nullable=True)
+    shift_mode: Mapped[str] = mapped_column(String(10), default="single")
+    skipped_dates: Mapped[list] = mapped_column(JSON, default=list)
 
     versions: Mapped[list[PlanVersionORM]] = relationship(
         back_populates="plan",

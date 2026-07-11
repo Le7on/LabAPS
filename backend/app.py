@@ -44,7 +44,7 @@ def create_app(config: AppConfig | None = None, config_file: Path | None = None)
     if app_config.auth_enabled:
         from backend.shared.auth import register_auth_guard
 
-        register_auth_guard(app, container.auth_service)
+        register_auth_guard(app, container.auth_service, app_config.api.prefix)
 
     register_blueprints(app, container)
     register_frontend(app)

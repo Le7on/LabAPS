@@ -1,8 +1,8 @@
-"""End-to-end test: qualification constraint in instance scheduling.
+"""End-to-end test: staff eligibility by project qualification (ADR-017).
 
-An operation requiring a qualification is only assignable to staff holding a
-currently-valid qualification (in addition to any required skill). An expired
-qualification makes the operation infeasible.
+A method is performed only by staff qualified for the method's workflow project.
+Staff not qualified for that project cannot be assigned, making an
+otherwise-schedulable method infeasible.
 """
 
 from __future__ import annotations
@@ -20,20 +20,21 @@ def client():
         yield client
 
 
-def _workflow_with_qualification(client):
+def _project(client, code="PRJ-1"):
+    return client.post("/api/v1/projects", json={"projectCode": code, "name": code}).get_json()[
+        "data"
+    ]["id"]
+
+
+def _staff_only_workflow(client, project_id):
+    # A method with no bound equipment: only staff eligibility gates it.
     return client.post(
         "/api/v1/workflow-definitions",
         json={
             "workflowCode": "WF-1",
-            "name": "GMP run",
-            "operations": [
-                {
-                    "operationType": "run",
-                    "duration": 2,
-                    "requiredSkill": "pcr",
-                    "requiredQualification": "gmp",
-                }
-            ],
+            "name": "Run",
+            "projectId": project_id,
+            "operations": [{"operationType": "run", "duration": 2}],
         },
     ).get_json()["data"]["id"]
 
@@ -49,36 +50,29 @@ def _schedule(client, workflow_id):
 
 
 def test_qualified_staff_is_assigned(client):
+    project_id = _project(client)
     client.post(
         "/api/v1/staff",
-        json={
-            "staffCode": "ST-1",
-            "name": "Alice",
-            "skills": ["pcr"],
-            "qualifications": {"gmp": "2099-12-31"},
-        },
+        json={"staffCode": "ST-1", "name": "Alice", "qualifiedProjectIds": [project_id]},
     )
     staff_id = client.get("/api/v1/staff").get_json()["data"][0]["id"]
 
-    response = _schedule(client, _workflow_with_qualification(client))
+    response = _schedule(client, _staff_only_workflow(client, project_id))
     assert response.status_code == 200
     body = response.get_json()
     assert body["meta"]["feasible"] is True
     assert body["data"]["assignments"][0]["staffId"] == staff_id
 
 
-def test_expired_qualification_makes_it_infeasible(client):
-    # Has the skill, but the qualification expired in the past.
+def test_staff_not_qualified_for_project_is_infeasible(client):
+    project_id = _project(client, "PRJ-1")
+    other_project = _project(client, "PRJ-2")
+    # Staff qualified only for a different project.
     client.post(
         "/api/v1/staff",
-        json={
-            "staffCode": "ST-1",
-            "name": "Bob",
-            "skills": ["pcr"],
-            "qualifications": {"gmp": "2000-01-01"},
-        },
+        json={"staffCode": "ST-1", "name": "Bob", "qualifiedProjectIds": [other_project]},
     )
 
-    response = _schedule(client, _workflow_with_qualification(client))
+    response = _schedule(client, _staff_only_workflow(client, project_id))
     assert response.status_code == 200
     assert response.get_json()["meta"]["feasible"] is False

@@ -18,16 +18,13 @@ def client():
 def test_create_and_list_equipment(client):
     response = client.post(
         "/api/v1/equipment",
-        json={
-            "equipmentCode": "EQ-001",
-            "name": "Centrifuge",
-            "capabilities": ["spin", "cool"],
-        },
+        json={"equipmentCode": "EQ-001", "name": "Centrifuge"},
     )
     assert response.status_code == 201
     payload = response.get_json()["data"]
     assert payload["equipmentCode"] == "EQ-001"
-    assert payload["capabilities"] == ["cool", "spin"]
+    assert payload["applicableProjectIds"] == []
+    assert payload["methodIds"] == []
     assert payload["active"] is True
 
     listing = client.get("/api/v1/equipment")

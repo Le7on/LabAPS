@@ -26,5 +26,10 @@ class AssignmentORM(BaseEntity):
     staff_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
     planned_start: Mapped[int] = mapped_column(Integer)
     planned_end: Mapped[int] = mapped_column(Integer)
+    # Real calendar times (ADR-016): set when the plan has a calendar; the
+    # integer units above map to these via the shift calendar. Null otherwise.
+    planned_start_at: Mapped[str | None] = mapped_column(String(25), nullable=True)
+    planned_end_at: Mapped[str | None] = mapped_column(String(25), nullable=True)
+    planned_shift: Mapped[str | None] = mapped_column(String(20), nullable=True)
     status: Mapped[str] = mapped_column(String(20), default="pending")
     reason: Mapped[str | None] = mapped_column(String(500), nullable=True)

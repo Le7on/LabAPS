@@ -13,9 +13,8 @@ from backend.modules.laboratory.domain.aggregates.workflow_definition import (
 class OperationDefinitionInput:
     operation_type: str
     duration: int
-    required_capability: str | None = None
-    required_skill: str | None = None
-    required_qualification: str | None = None
+    gelatin_type: str | None = None
+    equipment_ids: tuple[str, ...] = ()
     depends_on: tuple[str, ...] = ()
 
     @classmethod
@@ -23,9 +22,8 @@ class OperationDefinitionInput:
         return cls(
             operation_type=data.get("operationType", ""),
             duration=int(data.get("duration", 0)),
-            required_capability=data.get("requiredCapability"),
-            required_skill=data.get("requiredSkill"),
-            required_qualification=data.get("requiredQualification"),
+            gelatin_type=data.get("gelatinType"),
+            equipment_ids=tuple(data.get("equipmentIds", ())),
             depends_on=tuple(data.get("dependsOn", ())),
         )
 
@@ -34,6 +32,7 @@ class OperationDefinitionInput:
 class CreateWorkflowDefinitionRequest:
     workflow_code: str
     name: str
+    project_id: str = ""
     operations: list[OperationDefinitionInput] = field(default_factory=list)
 
     @classmethod
@@ -41,6 +40,7 @@ class CreateWorkflowDefinitionRequest:
         return cls(
             workflow_code=data.get("workflowCode", ""),
             name=data.get("name", ""),
+            project_id=data.get("projectId", ""),
             operations=[
                 OperationDefinitionInput.from_json(op) for op in data.get("operations", [])
             ],
@@ -52,15 +52,15 @@ def workflow_definition_to_dict(workflow: WorkflowDefinition) -> dict:
         "id": workflow.id,
         "workflowCode": workflow.workflow_code,
         "name": workflow.name,
+        "projectId": workflow.project_id,
         "active": workflow.active,
         "operations": [
             {
                 "id": op.id,
                 "operationType": op.operation_type,
                 "duration": op.duration,
-                "requiredCapability": op.required_capability,
-                "requiredSkill": op.required_skill,
-                "requiredQualification": op.required_qualification,
+                "gelatinType": op.gelatin_type,
+                "equipmentIds": list(op.equipment_ids),
                 "dependsOn": list(op.depends_on),
             }
             for op in workflow.operations

@@ -24,18 +24,20 @@ def test_empty_kpi(client):
 
 
 def test_kpi_reflects_scheduling(client):
-    client.post(
+    project_id = client.post(
+        "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
+    ).get_json()["data"]["id"]
+    eq_id = client.post(
         "/api/v1/equipment",
         json={"equipmentCode": "EQ-1", "name": "M", "capabilities": ["pcr"]},
-    )
+    ).get_json()["data"]["id"]
     workflow_id = client.post(
         "/api/v1/workflow-definitions",
         json={
             "workflowCode": "WF-1",
             "name": "PCR",
-            "operations": [
-                {"operationType": "amplify", "duration": 3, "requiredCapability": "pcr"}
-            ],
+            "projectId": project_id,
+            "operations": [{"operationType": "amplify", "duration": 3, "equipmentIds": [eq_id]}],
         },
     ).get_json()["data"]["id"]
     plan_id = client.post(

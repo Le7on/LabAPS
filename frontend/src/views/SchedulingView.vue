@@ -35,6 +35,17 @@ const frozenUntil = ref(0)
 const error = ref(null)
 const info = ref('')
 
+// Per-method run counts for the selected workflow: { methodId: count }.
+const runCounts = reactive({})
+
+const selectedWorkflow = computed(() => workflows.value.find((w) => w.id === selected.workflow))
+
+function onWorkflowChange() {
+  for (const k of Object.keys(runCounts)) delete runCounts[k]
+  const wf = selectedWorkflow.value
+  if (wf) for (const op of wf.operations) runCounts[op.id] = 1
+}
+
 onMounted(async () => {
   const [p, w, pr] = await Promise.all([listPlans(), listWorkflowDefinitions(), listProjects()])
   plans.value = p.data
@@ -69,7 +80,7 @@ async function createAndGenerate() {
   versionStatus.value = version.status
   meta.value = {}
   const ok = await run(
-    () => generateInstances(selected.plan, version.id, selected.workflow),
+    () => generateInstances(selected.plan, version.id, selected.workflow, { ...runCounts }),
     'Instances generated'
   )
   if (ok) assignments.value = []
@@ -169,10 +180,20 @@ function formatAt(iso) {
             </div>
             <div class="field">
               <label>Workflow</label>
-              <select v-model="selected.workflow">
+              <select v-model="selected.workflow" @change="onWorkflowChange">
                 <option value="">Select workflow…</option>
                 <option v-for="w in workflows" :key="w.id" :value="w.id">{{ w.name }}</option>
               </select>
+            </div>
+            <div v-if="selectedWorkflow" class="field">
+              <label>Runs per method</label>
+              <div class="runs">
+                <div v-for="op in selectedWorkflow.operations" :key="op.id" class="runs__row">
+                  <span class="runs__name">{{ op.operationType }}</span>
+                  <span class="muted runs__hrs mono">{{ op.duration }}h</span>
+                  <input v-model.number="runCounts[op.id]" type="number" min="1" class="runs__n" />
+                </div>
+              </div>
             </div>
             <button class="btn btn--primary" @click="createAndGenerate">
               Create version &amp; generate
@@ -311,6 +332,26 @@ function formatAt(iso) {
 </template>
 
 <style scoped>
+.runs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.runs__row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.runs__name {
+  flex: 1;
+  font-size: 13px;
+}
+.runs__hrs {
+  font-size: 11px;
+}
+.runs__n {
+  width: 56px;
+}
 .ctx {
   display: inline-flex;
   align-items: center;

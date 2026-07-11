@@ -9,6 +9,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from backend.infrastructure.orm.laboratory.project_orm import ProjectORM
 from backend.infrastructure.orm.laboratory.staff_orm import StaffORM
 from backend.modules.laboratory.domain.entities.staff import Staff
 
@@ -35,15 +36,20 @@ class StaffRepository:
         orm.active = active
         return True
 
-    @staticmethod
-    def _to_orm(staff: Staff) -> StaffORM:
+    def _to_orm(self, staff: Staff) -> StaffORM:
+        projects = []
+        if staff.qualified_project_ids:
+            projects = list(
+                self.session.scalars(
+                    select(ProjectORM).where(ProjectORM.id.in_(staff.qualified_project_ids))
+                ).all()
+            )
         return StaffORM(
             id=staff.id,
             staff_code=staff.staff_code,
             name=staff.name,
-            skills=sorted(staff.skills),
-            qualifications=dict(staff.qualifications),
             availability=[list(w) for w in staff.availability],
+            projects=projects,
             active=staff.active,
         )
 
@@ -53,8 +59,7 @@ class StaffRepository:
             id=orm.id,
             staff_code=orm.staff_code,
             name=orm.name,
-            skills=set(orm.skills or []),
-            qualifications=dict(orm.qualifications or {}),
             availability=[tuple(w) for w in (orm.availability or [])],
+            qualified_project_ids={p.id for p in orm.projects},
             active=orm.active,
         )

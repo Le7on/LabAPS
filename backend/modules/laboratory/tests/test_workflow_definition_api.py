@@ -15,18 +15,24 @@ def client():
         yield client
 
 
+def _project_id(client):
+    return client.post(
+        "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
+    ).get_json()["data"]["id"]
+
+
 def test_create_workflow_with_operations(client):
     response = client.post(
         "/api/v1/workflow-definitions",
         json={
             "workflowCode": "WF-001",
             "name": "Sample Prep",
+            "projectId": _project_id(client),
             "operations": [
-                {"operationType": "extract", "duration": 3, "requiredCapability": "spin"},
+                {"operationType": "extract", "duration": 3, "gelatinType": "A"},
                 {
                     "operationType": "amplify",
                     "duration": 2,
-                    "requiredSkill": "pcr",
                     "dependsOn": ["extract"],
                 },
             ],
@@ -38,14 +44,14 @@ def test_create_workflow_with_operations(client):
     assert data["workflowCode"] == "WF-001"
     assert len(data["operations"]) == 2
     assert data["operations"][0]["operationType"] == "extract"
-    assert data["operations"][1]["requiredSkill"] == "pcr"
+    assert data["operations"][0]["gelatinType"] == "A"
     assert data["operations"][1]["dependsOn"] == ["extract"]
 
 
 def test_list_workflow_definitions(client):
     client.post(
         "/api/v1/workflow-definitions",
-        json={"workflowCode": "WF-002", "name": "Assay"},
+        json={"workflowCode": "WF-002", "name": "Assay", "projectId": _project_id(client)},
     )
 
     listing = client.get("/api/v1/workflow-definitions")

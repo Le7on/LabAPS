@@ -51,38 +51,37 @@ def test_full_pipeline_end_to_end():
     def get(url):
         return client.get(url, headers=auth)
 
-    # 1. Laboratory setup: project, capable equipment, skilled+qualified staff.
+    # 1. Laboratory setup: project, equipment, skilled+qualified staff.
     project_id = post("/api/v1/projects", {"projectCode": "PRJ-1", "name": "Assay"}).get_json()[
         "data"
     ]["id"]
-    post(
+    eq_id = post(
         "/api/v1/equipment",
         {"equipmentCode": "EQ-1", "name": "Cycler", "capabilities": ["pcr"]},
-    )
+    ).get_json()["data"]["id"]
     post(
         "/api/v1/staff",
         {
             "staffCode": "ST-1",
             "name": "Alice",
-            "skills": ["pcr"],
-            "qualifications": {"gmp": "2099-12-31"},
+            "qualifiedProjectIds": [project_id],
         },
     )
 
-    # 2. Workflow definition requiring capability + skill + qualification.
+    # 2. Workflow (for the project) with methods bound to equipment. Staff
+    #    eligibility comes from the workflow's project (ADR-017).
     workflow_id = post(
         "/api/v1/workflow-definitions",
         {
             "workflowCode": "WF-1",
             "name": "PCR run",
+            "projectId": project_id,
             "operations": [
-                {"operationType": "prep", "duration": 2, "requiredCapability": "pcr"},
+                {"operationType": "prep", "duration": 2, "equipmentIds": [eq_id]},
                 {
                     "operationType": "amplify",
                     "duration": 3,
-                    "requiredCapability": "pcr",
-                    "requiredSkill": "pcr",
-                    "requiredQualification": "gmp",
+                    "equipmentIds": [eq_id],
                     "dependsOn": [],
                 },
             ],

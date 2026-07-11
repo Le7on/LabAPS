@@ -20,8 +20,11 @@ def client():
 
 
 def test_scheduling_honors_equipment_availability_window(client):
+    project_id = client.post(
+        "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
+    ).get_json()["data"]["id"]
     # Equipment available only in [10, 20).
-    client.post(
+    eq_id = client.post(
         "/api/v1/equipment",
         json={
             "equipmentCode": "EQ-1",
@@ -29,15 +32,14 @@ def test_scheduling_honors_equipment_availability_window(client):
             "capabilities": ["pcr"],
             "availability": [[10, 20]],
         },
-    )
+    ).get_json()["data"]["id"]
     workflow_id = client.post(
         "/api/v1/workflow-definitions",
         json={
             "workflowCode": "WF-1",
             "name": "PCR",
-            "operations": [
-                {"operationType": "amplify", "duration": 3, "requiredCapability": "pcr"}
-            ],
+            "projectId": project_id,
+            "operations": [{"operationType": "amplify", "duration": 3, "equipmentIds": [eq_id]}],
         },
     ).get_json()["data"]["id"]
     plan_id = client.post(

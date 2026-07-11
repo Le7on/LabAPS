@@ -37,6 +37,12 @@ class Plan:
     plan_code: str = ""
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     versions: list[PlanVersion] = field(default_factory=list)
+    # Calendar configuration (ADR-016). Optional; when start/end are set the
+    # scheduler maps integer units to real dates + shift windows.
+    start_date: str | None = None
+    end_date: str | None = None
+    shift_mode: str = "single"
+    skipped_dates: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if not self.planning_horizon:
@@ -45,6 +51,11 @@ class Plan:
             raise ValidationError("name is required")
         if not self.plan_code:
             self.plan_code = self.derive_plan_code(self.planning_horizon)
+        if self.shift_mode not in ("single", "double"):
+            raise ValidationError("shiftMode must be 'single' or 'double'")
+
+    def has_calendar(self) -> bool:
+        return bool(self.start_date and self.end_date)
 
     @staticmethod
     def derive_plan_code(planning_horizon: str) -> str:

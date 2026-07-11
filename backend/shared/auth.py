@@ -19,12 +19,24 @@ from backend.shared.errors import ForbiddenError, UnauthorizedError
 _PUBLIC_SUFFIXES = ("/health",)
 
 
-def register_auth_guard(app: Flask, auth_service) -> None:
+def register_auth_guard(app: Flask, auth_service, api_prefix: str = "/api") -> None:
+    """Install a before_request guard protecting the API surface.
+
+    Only paths under ``api_prefix`` require a bearer token. Non-API requests
+    (the built SPA and its static assets, served by the same Flask app in the
+    desktop build) are left open so the login page can load — otherwise the
+    guard would block the very page used to enter a token. Public API suffixes
+    (health) are exempt.
+    """
+
     @app.before_request
     def _authenticate():
         if request.method == "OPTIONS":
             return
         path = request.path
+        # Only guard API paths; let the SPA and static assets through.
+        if not path.startswith(api_prefix):
+            return
         if any(path.endswith(suffix) for suffix in _PUBLIC_SUFFIXES):
             return
 

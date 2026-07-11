@@ -39,9 +39,12 @@ class OperationInstanceORM(BaseEntity):
     operation_code: Mapped[str] = mapped_column(String(100))
     sequence_no: Mapped[int] = mapped_column(Integer)
     duration_shift: Mapped[int] = mapped_column(Integer)
-    required_capability: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    required_skill: Mapped[str | None] = mapped_column(String(100), nullable=True)
-    required_qualification: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    # Staff eligibility (ADR-017): the project of the method's workflow. A staff
+    # member is eligible when this project is among its qualified projects.
+    required_project_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
+    # Equipment bound to this method (ADR-015); the scheduler restricts the
+    # method's equipment candidates to exactly these ids.
+    equipment_ids: Mapped[list] = mapped_column(JSON, default=list)
     depends_on: Mapped[list] = mapped_column(JSON, default=list)
     status: Mapped[str] = mapped_column(String(20), default="pending")
 

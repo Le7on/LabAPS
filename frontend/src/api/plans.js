@@ -18,10 +18,11 @@ export function createVersion(planId) {
   return client.post(`/plans/${planId}/versions`).then((r) => r.data)
 }
 
-export function generateInstances(planId, versionId, workflowDefinitionId) {
+export function generateInstances(planId, versionId, workflowDefinitionId, runCounts = {}) {
   return client
     .post(`/plans/${planId}/versions/${versionId}/generate-instances`, {
       workflowDefinitionId,
+      runCounts,
     })
     .then((r) => r.data)
 }

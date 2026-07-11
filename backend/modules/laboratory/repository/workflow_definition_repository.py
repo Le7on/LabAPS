@@ -9,6 +9,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from backend.infrastructure.orm.laboratory.equipment_orm import EquipmentORM
 from backend.infrastructure.orm.laboratory.workflow_definition_orm import (
     OperationDefinitionORM,
     WorkflowDefinitionORM,
@@ -32,26 +33,39 @@ class WorkflowDefinitionRepository:
         orm = self.session.get(WorkflowDefinitionORM, workflow_id)
         return self._to_domain(orm) if orm else None
 
+    def get_operation(self, operation_id: str) -> OperationDefinitionORM | None:
+        """Fetch a single Method (operation definition) by id, or None."""
+        return self.session.get(OperationDefinitionORM, operation_id)
+
     def list(self) -> list[WorkflowDefinition]:
         stmt = select(WorkflowDefinitionORM).order_by(WorkflowDefinitionORM.created_at)
         return [self._to_domain(o) for o in self.session.scalars(stmt).all()]
 
-    @staticmethod
-    def _to_orm(workflow: WorkflowDefinition) -> WorkflowDefinitionORM:
+    def _to_orm(self, workflow: WorkflowDefinition) -> WorkflowDefinitionORM:
+        # Resolve all bound equipment ids referenced by any method in one query.
+        wanted = {eid for op in workflow.operations for eid in op.equipment_ids}
+        by_id = {}
+        if wanted:
+            by_id = {
+                e.id: e
+                for e in self.session.scalars(
+                    select(EquipmentORM).where(EquipmentORM.id.in_(wanted))
+                ).all()
+            }
         return WorkflowDefinitionORM(
             id=workflow.id,
             workflow_code=workflow.workflow_code,
             name=workflow.name,
+            project_id=workflow.project_id,
             active=workflow.active,
             operations=[
                 OperationDefinitionORM(
                     id=op.id,
                     operation_type=op.operation_type,
                     duration=op.duration,
-                    required_capability=op.required_capability,
-                    required_skill=op.required_skill,
-                    required_qualification=op.required_qualification,
+                    gelatin_type=op.gelatin_type,
                     depends_on=list(op.depends_on),
+                    equipment=[by_id[eid] for eid in op.equipment_ids if eid in by_id],
                 )
                 for op in workflow.operations
             ],
@@ -63,15 +77,15 @@ class WorkflowDefinitionRepository:
             id=orm.id,
             workflow_code=orm.workflow_code,
             name=orm.name,
+            project_id=orm.project_id,
             active=orm.active,
             operations=[
                 OperationDefinition(
                     id=op.id,
                     operation_type=op.operation_type,
                     duration=op.duration,
-                    required_capability=op.required_capability,
-                    required_skill=op.required_skill,
-                    required_qualification=op.required_qualification,
+                    gelatin_type=op.gelatin_type,
+                    equipment_ids=tuple(e.id for e in op.equipment),
                     depends_on=tuple(op.depends_on or ()),
                 )
                 for op in orm.operations

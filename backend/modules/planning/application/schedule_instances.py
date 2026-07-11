@@ -8,8 +8,7 @@ resulting assignments and marks the version Scheduled.
 
 from __future__ import annotations
 
-from datetime import date
-
+from backend.engines.planning.calendar import build_calendar, map_interval
 from backend.engines.planning.planning_problem import (
     EQUIPMENT,
     OBJECTIVE_MAKESPAN,
@@ -22,15 +21,6 @@ from backend.engines.planning.planning_problem import (
 )
 from backend.engines.scheduling.scheduling_engine import SchedulingEngine
 from backend.shared.errors import NotFoundError, ValidationError
-
-
-def _valid_quals(staff_snapshot: dict, reference_date: str) -> frozenset[str]:
-    """Qualifications in a staff snapshot that are unexpired at reference_date."""
-    valid = set()
-    for name, expiry in (staff_snapshot.get("qualifications") or {}).items():
-        if expiry is None or reference_date <= expiry:
-            valid.add(name)
-    return frozenset(valid)
 
 
 class ScheduleInstancesUseCase:
@@ -51,11 +41,21 @@ class ScheduleInstancesUseCase:
             context = uow.workflow_instances.get_context(version_id) or {}
             demands = uow.demands.list_for_version(version_id)
 
-            problem = self._build_problem(operations, context, demands, frozen_until)
+            # Calendar (ADR-016): when the plan defines one, the horizon is the
+            # number of shift slots and each assignment maps to real datetimes.
+            slots = []
+            if plan.has_calendar():
+                slots = build_calendar(
+                    plan.start_date, plan.end_date, plan.shift_mode, plan.skipped_dates
+                )
+            horizon = len(slots) if slots else None
+
+            problem = self._build_problem(operations, context, demands, frozen_until, horizon)
             result = self._engine.schedule(problem)
 
-            assignments = [
-                {
+            assignments = []
+            for a in result.assignments:
+                assignment = {
                     "operationId": a.operation_id,
                     "start": a.start,
                     "end": a.end,
@@ -63,8 +63,11 @@ class ScheduleInstancesUseCase:
                     "equipmentId": a.equipment_id,
                     "staffId": a.staff_id,
                 }
-                for a in result.assignments
-            ]
+                if slots:
+                    mapped = map_interval(slots, a.start, a.end)
+                    if mapped:
+                        assignment.update(mapped)
+                assignments.append(assignment)
 
             if result.feasible:
                 plan.mark_version_scheduled(version_id)
@@ -81,10 +84,13 @@ class ScheduleInstancesUseCase:
         }
 
     @staticmethod
-    def _build_problem(operations, context, demands, frozen_until=0) -> PlanningProblem:
+    def _build_problem(
+        operations, context, demands, frozen_until=0, horizon=None
+    ) -> PlanningProblem:
         # Operation identity is the operation instance id; dependencies in the
-        # instances reference operation definition ids, so map them.
-        def_to_instance = {op["operationDefinitionId"]: op["id"] for op in operations}
+        # instances already reference instance ids (run r -> run r of each
+        # prerequisite), so they are used directly. Guard against dangling refs.
+        instance_ids = {op["id"] for op in operations}
 
         if demands:
             weight = sum(d.priority.weight * d.quantity for d in demands)
@@ -93,32 +99,46 @@ class ScheduleInstancesUseCase:
             weight = 1
             objective = OBJECTIVE_MAKESPAN
 
+        # Equipment binding (ADR-015): a method's equipment candidates are
+        # exactly the equipment bound to it, not capability matches. We express
+        # this with a synthetic per-method token: the method requires token
+        # ``m:<instanceId>`` and each bound equipment provides that token. This
+        # restricts the method to its bound equipment using the existing
+        # attribute-matching solver, with no solver change.
+        equipment_tokens: dict[str, set[str]] = {}
+        method_token: dict[str, str | None] = {}
+        for op in operations:
+            bound = op.get("equipmentIds") or []
+            token = f"m:{op['id']}" if bound else None
+            method_token[op["id"]] = token
+            if token:
+                for eid in bound:
+                    equipment_tokens.setdefault(eid, set()).add(token)
+
+        # Staff eligibility (ADR-017): a method is performed by staff qualified
+        # for the method's workflow project. Expressed as a project token: the
+        # method requires ``p:<projectId>`` and each staff member provides a
+        # token for every project it is qualified for.
+        def project_token(project_id):
+            return f"p:{project_id}" if project_id else None
+
         built_ops = tuple(
             Operation(
                 identifier=op["id"],
                 duration=op["duration"],
-                required_capability=op["requiredCapability"],
-                required_skill=op["requiredSkill"],
-                required_qualification=op.get("requiredQualification"),
-                depends_on=tuple(
-                    def_to_instance[d] for d in op["dependsOn"] if d in def_to_instance
-                ),
+                required_capability=method_token[op["id"]],
+                required_skill=project_token(op.get("requiredProjectId")),
+                depends_on=tuple(d for d in op["dependsOn"] if d in instance_ids),
                 weight=weight,
             )
             for op in operations
         )
 
-        # Qualification validity is evaluated at today's date (the scheduling
-        # reference). A staff member provides its skills plus its currently-valid
-        # qualifications; expired qualifications are simply not provided, so the
-        # solver treats a required-but-expired qualification as ineligible.
-        reference_date = date.today().isoformat()
-
         resources = tuple(
             Resource(
                 identifier=e["id"],
                 kind=EQUIPMENT,
-                provides=frozenset(e["capabilities"]),
+                provides=frozenset(equipment_tokens.get(e["id"], set())),
                 windows=tuple(tuple(w) for w in e.get("availability", [])),
             )
             for e in context.get("equipment", [])
@@ -126,13 +146,20 @@ class ScheduleInstancesUseCase:
             Resource(
                 identifier=s["id"],
                 kind=STAFF,
-                provides=frozenset(s["skills"]) | _valid_quals(s, reference_date),
+                provides=frozenset(f"p:{pid}" for pid in s.get("qualifiedProjectIds", [])),
                 windows=tuple(tuple(w) for w in s.get("availability", [])),
             )
             for s in context.get("staff", [])
         )
+        policies = (
+            PlanningPolicies(
+                objective=objective, frozen_until=frozen_until, planning_horizon=horizon
+            )
+            if horizon is not None
+            else PlanningPolicies(objective=objective, frozen_until=frozen_until)
+        )
         return PlanningProblem(
             operations=built_ops,
             resources=resources,
-            policies=PlanningPolicies(objective=objective, frozen_until=frozen_until),
+            policies=policies,
         )

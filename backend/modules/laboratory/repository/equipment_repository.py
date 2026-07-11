@@ -10,6 +10,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.infrastructure.orm.laboratory.equipment_orm import EquipmentORM
+from backend.infrastructure.orm.laboratory.project_orm import ProjectORM
+from backend.infrastructure.orm.laboratory.workflow_definition_orm import (
+    OperationDefinitionORM,
+)
 from backend.modules.laboratory.domain.entities.equipment import Equipment
 
 
@@ -35,14 +39,30 @@ class EquipmentRepository:
         orm.active = active
         return True
 
-    @staticmethod
-    def _to_orm(equipment: Equipment) -> EquipmentORM:
+    def _to_orm(self, equipment: Equipment) -> EquipmentORM:
+        projects = []
+        if equipment.applicable_project_ids:
+            projects = list(
+                self.session.scalars(
+                    select(ProjectORM).where(ProjectORM.id.in_(equipment.applicable_project_ids))
+                ).all()
+            )
+        methods = []
+        if equipment.method_ids:
+            methods = list(
+                self.session.scalars(
+                    select(OperationDefinitionORM).where(
+                        OperationDefinitionORM.id.in_(equipment.method_ids)
+                    )
+                ).all()
+            )
         return EquipmentORM(
             id=equipment.id,
             equipment_code=equipment.equipment_code,
             name=equipment.name,
-            capabilities=sorted(equipment.capabilities),
             availability=[list(w) for w in equipment.availability],
+            projects=projects,
+            methods=methods,
             active=equipment.active,
         )
 
@@ -52,7 +72,8 @@ class EquipmentRepository:
             id=orm.id,
             equipment_code=orm.equipment_code,
             name=orm.name,
-            capabilities=set(orm.capabilities or []),
             availability=[tuple(w) for w in (orm.availability or [])],
+            applicable_project_ids={p.id for p in orm.projects},
+            method_ids={m.id for m in orm.methods},
             active=orm.active,
         )

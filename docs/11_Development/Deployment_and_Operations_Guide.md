@@ -47,6 +47,36 @@ npm install
 npm run dev
 ```
 
+### First-Time Authentication Setup
+
+Authentication is enabled by default (ADR-013). A global guard requires a valid
+bearer token on every API path except `/health`, so a fresh database — which
+starts empty — will reject all requests with `401 Unauthorized`, including the
+frontend on startup.
+
+Because tokens can only be issued by an existing administrator, the first
+administrator must be seeded out of band. From the project root, with the
+virtual environment active, run once:
+
+```bash
+python -m backend.seed_admin
+```
+
+This creates an `admin` user and prints a one-time API token. Only the token's
+SHA-256 hash is stored, so the plaintext is shown once — copy it and paste it
+into the frontend login page. Re-running the command appends a fresh token to
+the existing user instead of creating a duplicate.
+
+Options:
+
+- `--username <name>` — seed a different username (default: `admin`).
+- `--role <role>` — role for a newly created user: `administrator` or
+  `production_lm` (default: `administrator`).
+
+For local development you can bypass authentication entirely by setting
+`AUTH_ENABLED=0` (see Environment Configuration), which removes the need for a
+token.
+
 ---
 
 ## 4. Environment Configuration
@@ -59,6 +89,14 @@ The project should use environment-based configuration for:
 - feature flags
 
 The bootstrap templates already reference environment support through a dotenv-style configuration approach.
+
+Commonly used environment variables:
+
+| Variable       | Purpose                                                             | Default               |
+| -------------- | ------------------------------------------------------------------- | --------------------- |
+| `APP_ENV`      | Runtime environment (`development`, `production`).                  | `development`         |
+| `DATABASE_URL` | SQLAlchemy database URL.                                            | `sqlite:///labaps.db` |
+| `AUTH_ENABLED` | Auth guard toggle; set to `0`/`false`/`no` to disable auth locally. | enabled               |
 
 ---
 

@@ -1,39 +1,33 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useLaboratoryStore } from '../stores/laboratory'
-import {
-  parseList,
-  parseWindows,
-  parseQualifications,
-  formatWindows,
-  formatQualifications,
-} from '../utils/parse'
 import PageHeader from '../components/PageHeader.vue'
 import SlideOver from '../components/SlideOver.vue'
 import StatusLed from '../components/StatusLed.vue'
+import MultiSelect from '../components/MultiSelect.vue'
 
 const store = useLaboratoryStore()
 const open = ref(false)
-const form = reactive({ staffCode: '', name: '', skills: '', qualifications: '', availability: '' })
+const form = reactive({ staffCode: '', name: '', qualifiedProjectIds: [] })
 
-onMounted(() => store.fetchStaff())
+onMounted(() => {
+  store.fetchStaff()
+  store.fetchProjects()
+})
+
+const projectOptions = computed(() =>
+  store.projects.map((p) => ({ value: p.id, label: `${p.projectCode} · ${p.name}` }))
+)
+const projectName = (id) => store.projects.find((p) => p.id === id)?.name ?? id.slice(0, 6)
 
 async function submit() {
   const ok = await store.addStaff({
     staffCode: form.staffCode,
     name: form.name,
-    skills: parseList(form.skills),
-    qualifications: parseQualifications(form.qualifications),
-    availability: parseWindows(form.availability),
+    qualifiedProjectIds: [...form.qualifiedProjectIds],
   })
   if (ok) {
-    Object.assign(form, {
-      staffCode: '',
-      name: '',
-      skills: '',
-      qualifications: '',
-      availability: '',
-    })
+    Object.assign(form, { staffCode: '', name: '', qualifiedProjectIds: [] })
     open.value = false
   }
 }
@@ -41,7 +35,7 @@ async function submit() {
 
 <template>
   <section>
-    <PageHeader title="Staff" subtitle="Operators, their skills, qualifications and availability">
+    <PageHeader title="Staff" subtitle="Operators and the projects they are qualified to run">
       <template #actions>
         <button class="btn btn--primary" @click="open = true">+ New staff</button>
       </template>
@@ -53,9 +47,7 @@ async function submit() {
           <tr>
             <th>Code</th>
             <th>Name</th>
-            <th>Skills</th>
-            <th>Qualifications</th>
-            <th>Availability</th>
+            <th>Qualified projects (skills)</th>
             <th>Status</th>
             <th></th>
           </tr>
@@ -65,11 +57,11 @@ async function submit() {
             <td class="mono cell-strong">{{ s.staffCode }}</td>
             <td class="cell-strong">{{ s.name }}</td>
             <td>
-              <span v-for="sk in s.skills" :key="sk" class="chip">{{ sk }}</span>
-              <span v-if="!s.skills.length" class="muted">—</span>
+              <span v-for="pid in s.qualifiedProjectIds" :key="pid" class="chip">{{
+                projectName(pid)
+              }}</span>
+              <span v-if="!s.qualifiedProjectIds.length" class="muted">—</span>
             </td>
-            <td class="mono">{{ formatQualifications(s.qualifications) }}</td>
-            <td class="mono">{{ formatWindows(s.availability) }}</td>
             <td><StatusLed :status="s.active ? 'active' : 'inactive'" /></td>
             <td class="right">
               <button
@@ -96,17 +88,16 @@ async function submit() {
           <input v-model="form.name" placeholder="Alice" required />
         </div>
         <div class="field">
-          <label>Skills (comma separated)</label>
-          <input v-model="form.skills" placeholder="pcr, elisa" />
+          <label>Qualified projects (skills)</label>
+          <MultiSelect
+            v-model="form.qualifiedProjectIds"
+            :options="projectOptions"
+            placeholder="Select projects this person can run…"
+          />
         </div>
-        <div class="field">
-          <label>Qualifications (name:expiry, …)</label>
-          <input v-model="form.qualifications" placeholder="gmp:2099-12-31, iso" />
-        </div>
-        <div class="field">
-          <label>Availability (start-end, …)</label>
-          <input v-model="form.availability" placeholder="0-40" />
-        </div>
+        <p class="muted hint">
+          A staff member can perform any method of a project they are qualified for.
+        </p>
         <p v-if="store.error" class="error">{{ store.error }}</p>
         <button class="btn btn--primary" type="submit">Add staff</button>
       </form>
@@ -117,5 +108,9 @@ async function submit() {
 <style scoped>
 .right {
   text-align: right;
+}
+.hint {
+  font-size: 12px;
+  margin: 0;
 }
 </style>
