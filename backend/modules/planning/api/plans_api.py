@@ -25,6 +25,10 @@ from backend.modules.planning.application.manage_demand import (
     AddDemandUseCase,
     ListDemandUseCase,
 )
+from backend.modules.planning.application.plan_availability import (
+    GetPlanAvailabilityUseCase,
+    SetPlanAvailabilityUseCase,
+)
 from backend.modules.planning.application.plan_version_lifecycle import (
     ArchivePlanVersionUseCase,
     PublishPlanVersionUseCase,
@@ -66,6 +70,27 @@ def list_plans():
 def get_plan(plan_id: str):
     use_case = GetPlanUseCase(_container().unit_of_work)
     return api_response.success(use_case.execute(plan_id))
+
+
+@plans_bp.get("/plans/<plan_id>/availability")
+def get_plan_availability(plan_id: str):
+    use_case = GetPlanAvailabilityUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id))
+
+
+@plans_bp.post("/plans/<plan_id>/availability")
+def set_plan_availability(plan_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = SetPlanAvailabilityUseCase(_container().unit_of_work)
+    result = use_case.execute(
+        plan_id,
+        data.get("kind", ""),
+        data.get("resourceId", ""),
+        bool(data.get("available", True)),
+    )
+    return api_response.success(result)
 
 
 @plans_bp.post("/plans/<plan_id>/versions")

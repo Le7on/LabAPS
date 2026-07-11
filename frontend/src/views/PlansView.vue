@@ -7,14 +7,47 @@ import StatusLed from '../components/StatusLed.vue'
 
 const store = usePlansStore()
 const open = ref(false)
-const form = reactive({ planningHorizon: '', name: '', description: '' })
+const form = reactive({
+  name: '',
+  description: '',
+  startDate: '',
+  endDate: '',
+  shiftMode: 'single',
+})
 
 onMounted(() => store.fetchPlans())
 
+// ISO week label (e.g. "2026-W32") derived from a YYYY-MM-DD date.
+function isoWeek(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00')
+  const day = (d.getUTCDay() + 6) % 7 // Mon=0
+  d.setUTCDate(d.getUTCDate() - day + 3) // nearest Thursday
+  const firstThu = new Date(Date.UTC(d.getUTCFullYear(), 0, 4))
+  const week = 1 + Math.round((d - firstThu) / 604800000)
+  return `${d.getUTCFullYear()}-W${String(week).padStart(2, '0')}`
+}
+
 async function submit() {
-  const ok = await store.addPlan({ ...form })
+  if (form.endDate < form.startDate) {
+    store.error = 'End date must be on or after start date'
+    return
+  }
+  const ok = await store.addPlan({
+    name: form.name,
+    description: form.description,
+    startDate: form.startDate,
+    endDate: form.endDate,
+    shiftMode: form.shiftMode,
+    planningHorizon: isoWeek(form.startDate),
+  })
   if (ok) {
-    Object.assign(form, { planningHorizon: '', name: '', description: '' })
+    Object.assign(form, {
+      name: '',
+      description: '',
+      startDate: '',
+      endDate: '',
+      shiftMode: 'single',
+    })
     open.value = false
   }
 }
@@ -34,7 +67,8 @@ async function submit() {
           <tr>
             <th>Plan code</th>
             <th>Name</th>
-            <th>Horizon</th>
+            <th>Period</th>
+            <th>Shifts</th>
             <th>Status</th>
             <th>Versions</th>
           </tr>
@@ -43,7 +77,11 @@ async function submit() {
           <tr v-for="plan in store.plans" :key="plan.id">
             <td class="mono cell-strong">{{ plan.planCode }}</td>
             <td class="cell-strong">{{ plan.name }}</td>
-            <td class="mono">{{ plan.planningHorizon }}</td>
+            <td class="mono">
+              <template v-if="plan.startDate">{{ plan.startDate }} → {{ plan.endDate }}</template>
+              <template v-else>{{ plan.planningHorizon }}</template>
+            </td>
+            <td class="mono">{{ plan.shiftMode }}</td>
             <td><StatusLed :status="plan.status" /></td>
             <td class="mono">{{ plan.versionCount }}</td>
           </tr>
@@ -55,12 +93,25 @@ async function submit() {
     <SlideOver :open="open" title="New plan" @close="open = false">
       <form class="stack" @submit.prevent="submit">
         <div class="field">
-          <label>Planning horizon</label>
-          <input v-model="form.planningHorizon" placeholder="2026-W32" required />
+          <label>Name</label>
+          <input v-model="form.name" placeholder="Week 32 production" required />
+        </div>
+        <div class="row">
+          <div class="field" style="flex: 1">
+            <label>Start date</label>
+            <input v-model="form.startDate" type="date" required />
+          </div>
+          <div class="field" style="flex: 1">
+            <label>End date</label>
+            <input v-model="form.endDate" type="date" required />
+          </div>
         </div>
         <div class="field">
-          <label>Name</label>
-          <input v-model="form.name" placeholder="Week 32 plan" required />
+          <label>Shift mode</label>
+          <select v-model="form.shiftMode">
+            <option value="single">Single (1 shift/day)</option>
+            <option value="double">Double (2 shifts/day)</option>
+          </select>
         </div>
         <div class="field">
           <label>Description</label>

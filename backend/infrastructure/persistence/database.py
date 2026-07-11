@@ -30,6 +30,7 @@ from backend.infrastructure.orm.planning import (
     assignment_orm,  # noqa: F401
     demand_orm,  # noqa: F401
     plan_orm,  # noqa: F401
+    plan_resource_availability_orm,  # noqa: F401
     planning_context_orm,  # noqa: F401
     workflow_instance_orm,  # noqa: F401
 )

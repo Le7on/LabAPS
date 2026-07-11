@@ -131,7 +131,10 @@ class ORToolsSolverAdapter(SolverAdapter):
         """
 
         if not model.resources:
-            return {}
+            # No resources at all: fine only if no task requires one; otherwise a
+            # required resource cannot be satisfied -> infeasible.
+            any_requirement = any(task.requirements for task in model.tasks)
+            return None if any_requirement else {}
 
         assignment: dict[str, dict[str, dict[str, cp_model.IntVar]]] = {}
         per_resource: dict[str, list] = {r.identifier: [] for r in model.resources}

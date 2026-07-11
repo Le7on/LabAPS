@@ -6,10 +6,12 @@ import {
   addDemand,
   createVersion,
   generateInstances,
+  getPlanAvailability,
   listAssignments,
   publishVersion,
   reviewVersion,
   scheduleInstances,
+  setPlanAvailability,
 } from '../api/plans'
 import {
   cancelAssignment,
@@ -44,6 +46,26 @@ function onWorkflowChange() {
   for (const k of Object.keys(runCounts)) delete runCounts[k]
   const wf = selectedWorkflow.value
   if (wf) for (const op of wf.operations) runCounts[op.id] = 1
+}
+
+// Per-plan availability, loaded when a plan is chosen.
+const availability = reactive({ staff: [], equipment: [] })
+
+async function onPlanChange() {
+  availability.staff = []
+  availability.equipment = []
+  if (!selected.plan) return
+  const data = await run(() => getPlanAvailability(selected.plan))
+  if (data) {
+    availability.staff = data.staff
+    availability.equipment = data.equipment
+  }
+}
+
+async function toggleAvailability(kind, row) {
+  const next = !row.available
+  const ok = await run(() => setPlanAvailability(selected.plan, kind, row.id, next))
+  if (ok) row.available = next
 }
 
 onMounted(async () => {
@@ -173,7 +195,7 @@ function formatAt(iso) {
           <div class="panel__body stack">
             <div class="field">
               <label>Plan</label>
-              <select v-model="selected.plan">
+              <select v-model="selected.plan" @change="onPlanChange">
                 <option value="">Select plan…</option>
                 <option v-for="p in plans" :key="p.id" :value="p.id">{{ p.name }}</option>
               </select>
@@ -198,6 +220,41 @@ function formatAt(iso) {
             <button class="btn btn--primary" @click="createAndGenerate">
               Create version &amp; generate
             </button>
+          </div>
+        </div>
+
+        <div v-if="selected.plan" class="panel">
+          <div class="panel__head">
+            <span class="panel__title">Availability</span>
+            <span class="muted opt">for this plan</span>
+          </div>
+          <div class="panel__body stack">
+            <p class="muted avail__hint">
+              Set who and what is available this period. Toggle off to exclude. Set before
+              generating.
+            </p>
+            <div v-if="availability.staff.length" class="avail">
+              <div class="label">Staff</div>
+              <label v-for="s in availability.staff" :key="s.id" class="avail__row">
+                <input
+                  type="checkbox"
+                  :checked="s.available"
+                  @change="toggleAvailability('staff', s)"
+                />
+                <span class="avail__name">{{ s.code }} · {{ s.name }}</span>
+              </label>
+            </div>
+            <div v-if="availability.equipment.length" class="avail">
+              <div class="label">Equipment</div>
+              <label v-for="e in availability.equipment" :key="e.id" class="avail__row">
+                <input
+                  type="checkbox"
+                  :checked="e.available"
+                  @change="toggleAvailability('equipment', e)"
+                />
+                <span class="avail__name">{{ e.code }} · {{ e.name }}</span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -332,6 +389,31 @@ function formatAt(iso) {
 </template>
 
 <style scoped>
+.avail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.avail + .avail {
+  margin-top: var(--s2);
+}
+.avail__hint {
+  font-size: 12px;
+  margin: 0;
+}
+.avail__row {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: 13px;
+  cursor: pointer;
+}
+.avail__row input {
+  width: auto;
+}
+.avail__name {
+  font-family: var(--font-mono);
+}
 .runs {
   display: flex;
   flex-direction: column;

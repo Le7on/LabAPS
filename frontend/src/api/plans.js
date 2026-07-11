@@ -18,6 +18,16 @@ export function createVersion(planId) {
   return client.post(`/plans/${planId}/versions`).then((r) => r.data)
 }
 
+export function getPlanAvailability(planId) {
+  return client.get(`/plans/${planId}/availability`).then((r) => r.data)
+}
+
+export function setPlanAvailability(planId, kind, resourceId, available) {
+  return client
+    .post(`/plans/${planId}/availability`, { kind, resourceId, available })
+    .then((r) => r.data)
+}
+
 export function generateInstances(planId, versionId, workflowDefinitionId, runCounts = {}) {
   return client
     .post(`/plans/${planId}/versions/${versionId}/generate-instances`, {
