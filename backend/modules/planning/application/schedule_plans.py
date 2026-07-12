@@ -12,12 +12,12 @@ from __future__ import annotations
 from backend.engines.planning.calendar import (
     available_windows,
     build_calendar,
-    day_window,
+    earliest_index_on_or_after,
     map_interval,
 )
 from backend.engines.planning.planning_problem import (
     EQUIPMENT,
-    OBJECTIVE_MAKESPAN,
+    OBJECTIVE_WEIGHTED_COMPLETION,
     STAFF,
     Operation,
     PlanningPolicies,
@@ -76,8 +76,10 @@ class SchedulePlansUseCase:
             problem = PlanningProblem(
                 operations=tuple(operations),
                 resources=tuple(resources),
+                # Weighted-completion pulls each round to its earliest feasible
+                # slot -> as close to its (soft) target date as possible.
                 policies=PlanningPolicies(
-                    objective=OBJECTIVE_MAKESPAN, planning_horizon=len(slots)
+                    objective=OBJECTIVE_WEIGHTED_COMPLETION, planning_horizon=len(slots)
                 ),
             )
             result = self._engine.schedule(problem)
@@ -156,9 +158,16 @@ class SchedulePlansUseCase:
                     raise ValidationError(
                         f"Method {line.operation_definition_id} not in workflow {wf.id}"
                     )
-                window = day_window(slots, line.target_date)
-                if window is None:
-                    raise ValidationError(f"Target date {line.target_date} is not a working day")
+                # Soft target date (ADR-024): the request may start no earlier
+                # than its target day but can drift later (e.g. when the target
+                # day is taken by FV). The objective pulls it as close to the
+                # target as possible; only truly unplaceable rounds conflict.
+                lo = earliest_index_on_or_after(slots, line.target_date)
+                if lo is None:
+                    raise ValidationError(
+                        f"No working day on or after target {line.target_date}"
+                    )
+                window = (lo, len(slots))
                 for r in range(1, line.rounds + 1):
                     ops.append(
                         Operation(

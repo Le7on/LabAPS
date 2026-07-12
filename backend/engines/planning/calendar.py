@@ -163,6 +163,18 @@ def day_window(slots: list[Slot], day: str) -> tuple[int, int] | None:
     return (min(indices), max(indices) + 1)
 
 
+def earliest_index_on_or_after(slots: list[Slot], day: str) -> int | None:
+    """First slot index whose day is on or after ``day`` (its target-or-later
+    lower bound). None if no working slot falls on/after that date.
+
+    Used for soft target dates: a PI request may drift to a later working day
+    (e.g. when its target day is taken by FV), but never earlier (ADR-024).
+    """
+    target = _parse_date(day)
+    candidates = [s.index for s in slots if s.day >= target]
+    return min(candidates) if candidates else None
+
+
 def map_interval(slots: list[Slot], start_unit: int, end_unit: int) -> dict | None:
     """Map an integer [start_unit, end_unit) interval to real datetimes.
 
