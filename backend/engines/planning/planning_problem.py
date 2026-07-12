@@ -45,6 +45,8 @@ class Operation:
     required_qualification: str | None = None
     depends_on: tuple[str, ...] = ()
     weight: int = 1
+    # Optional hard [start, end) slot window (pin to a target day, ADR-020).
+    window: tuple[int, int] | None = None
 
 
 # Objective selectors mirrored from the scheduling model (kept as plain strings

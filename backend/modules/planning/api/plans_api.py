@@ -37,6 +37,7 @@ from backend.modules.planning.application.plan_version_lifecycle import (
 from backend.modules.planning.application.schedule_instances import (
     ScheduleInstancesUseCase,
 )
+from backend.modules.planning.application.schedule_plans import SchedulePlansUseCase
 from backend.modules.planning.dto.plan_dto import CreatePlanRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -64,6 +65,20 @@ def list_plans():
     use_case = ListPlansUseCase(_container().unit_of_work)
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@plans_bp.post("/schedule")
+def schedule_plans():
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    container = _container()
+    use_case = SchedulePlansUseCase(container.unit_of_work, container.scheduling_engine)
+    result = use_case.execute(
+        list(data.get("planIds", [])), data.get("shiftMode", "single") or "single"
+    )
+    meta = {"feasible": result.pop("feasible"), "runtimeStatus": result["status"]}
+    return api_response.success(result, meta=meta)
 
 
 @plans_bp.get("/plans/<plan_id>")

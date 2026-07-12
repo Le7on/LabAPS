@@ -92,6 +92,9 @@ class Task:
     predecessors: tuple[str, ...] = ()
     requirements: frozenset[tuple[str, str]] = frozenset()
     weight: int = 1
+    # Optional hard time window [start, end) the task must fit within (in slot
+    # units). Used to pin a PI demand line's rounds to their target day (ADR-020).
+    window: tuple[int, int] | None = None
 
     def requirement_for(self, kind: str) -> str | None:
         for req_kind, value in self.requirements:

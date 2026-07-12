@@ -30,6 +30,7 @@ class SchedulingModelBuilder:
                 predecessors=op.depends_on,
                 requirements=self._requirements(op),
                 weight=op.weight,
+                window=op.window,
             )
             for op in problem.operations
         )

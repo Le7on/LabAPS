@@ -65,8 +65,12 @@ class ORToolsSolverAdapter(SolverAdapter):
         earliest = max(0, model.frozen_until)
 
         for task in model.tasks:
-            start = cp.new_int_var(earliest, horizon, f"start_{task.identifier}")
-            end = cp.new_int_var(earliest, horizon, f"end_{task.identifier}")
+            # A task pinned to a day is bounded by its window; otherwise it may
+            # run anywhere from the frozen boundary to the horizon.
+            lo = max(earliest, task.window[0]) if task.window else earliest
+            hi = min(horizon, task.window[1]) if task.window else horizon
+            start = cp.new_int_var(lo, hi, f"start_{task.identifier}")
+            end = cp.new_int_var(lo, hi, f"end_{task.identifier}")
             interval = cp.new_interval_var(start, task.duration, end, f"interval_{task.identifier}")
             starts[task.identifier] = start
             ends[task.identifier] = end

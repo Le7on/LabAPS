@@ -143,6 +143,18 @@ def available_windows(
     return tuple(windows)
 
 
+def day_window(slots: list[Slot], day: str) -> tuple[int, int] | None:
+    """The [start, end) slot-index window covering a single calendar day.
+
+    Returns None if the day has no slots (outside the calendar or skipped).
+    """
+    target = _parse_date(day)
+    indices = [s.index for s in slots if s.day == target]
+    if not indices:
+        return None
+    return (min(indices), max(indices) + 1)
+
+
 def map_interval(slots: list[Slot], start_unit: int, end_unit: int) -> dict | None:
     """Map an integer [start_unit, end_unit) interval to real datetimes.
 
