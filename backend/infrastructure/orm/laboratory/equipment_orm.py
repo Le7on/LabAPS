@@ -23,7 +23,7 @@ class EquipmentORM(BaseEntity):
 
     equipment_code: Mapped[str] = mapped_column(String(50), index=True)
     name: Mapped[str] = mapped_column(String(200))
-    availability: Mapped[list] = mapped_column(JSON, default=list)
+    unavailable_dates: Mapped[list] = mapped_column(JSON, default=list)
     fv_duration: Mapped[int] = mapped_column(Integer, default=1)
     fv_validity: Mapped[int] = mapped_column(Integer, default=14)
     active: Mapped[bool] = mapped_column(Boolean, default=True)

@@ -48,13 +48,8 @@ def test_scheduling_honors_equipment_date_availability(client):
     ).get_json()["data"]["id"]
     # Machine down for the first three days; only 08-13/08-14 remain.
     client.post(
-        f"/api/v1/plans/{plan_id}/availability",
-        json={
-            "kind": "equipment",
-            "resourceId": eq_id,
-            "available": True,
-            "unavailableDates": [["2026-08-10", "2026-08-12"]],
-        },
+        f"/api/v1/equipment/{eq_id}/unavailable-dates",
+        json={"unavailableDates": ["2026-08-10", "2026-08-11", "2026-08-12"]},
     )
     version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
     base = f"/api/v1/plans/{plan_id}/versions/{version_id}"

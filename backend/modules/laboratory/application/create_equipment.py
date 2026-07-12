@@ -27,7 +27,7 @@ class CreateEquipmentUseCase:
         equipment = Equipment(
             equipment_code=request.equipment_code,
             name=request.name,
-            availability=request.availability,
+            unavailable_dates=request.unavailable_dates,
             applicable_project_ids=request.applicable_project_ids,
             method_ids=request.method_ids,
             fv_duration=request.fv_duration,
@@ -50,7 +50,7 @@ class UpdateEquipmentUseCase:
             id=equipment_id,
             equipment_code=request.equipment_code,
             name=request.name,
-            availability=request.availability,
+            unavailable_dates=request.unavailable_dates,
             applicable_project_ids=request.applicable_project_ids,
             method_ids=request.method_ids,
             fv_duration=request.fv_duration,

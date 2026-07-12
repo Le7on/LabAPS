@@ -34,36 +34,28 @@ class GenerateWorkflowInstanceUseCase:
             if not workflow.operations:
                 raise ValidationError("Workflow definition has no operations")
 
-            # Per-plan availability: a resource is excluded entirely if globally
-            # inactive or turned off for the whole plan; otherwise its unavailable
-            # date ranges (leave / breakdown) are captured for later slot masking.
-            unavailable_equipment = uow.plan_availability.unavailable_ids(plan_id, "equipment")
-            unavailable_staff = uow.plan_availability.unavailable_ids(plan_id, "staff")
-            eq_dates = uow.plan_availability.unavailable_dates(plan_id, "equipment")
-            staff_dates = uow.plan_availability.unavailable_dates(plan_id, "staff")
-
-            # Immutable snapshot of the resources available at generation time.
+            # Immutable snapshot of the active resources and their global
+            # unavailable dates (leave / maintenance), captured at generation time
+            # (ADR-021). Availability is a global per-resource concern now.
             context = {
                 "equipment": [
                     {
                         "id": e.id,
-                        "availability": [list(w) for w in e.availability],
-                        "unavailableDates": eq_dates.get(e.id, []),
+                        "unavailableDates": list(e.unavailable_dates),
                         "fvDuration": e.fv_duration,
                         "fvValidity": e.fv_validity,
                     }
                     for e in uow.equipment.list()
-                    if e.active and e.id not in unavailable_equipment
+                    if e.active
                 ],
                 "staff": [
                     {
                         "id": s.id,
                         "qualifiedProjectIds": sorted(s.qualified_project_ids),
-                        "availability": [list(w) for w in s.availability],
-                        "unavailableDates": staff_dates.get(s.id, []),
+                        "unavailableDates": list(s.unavailable_dates),
                     }
                     for s in uow.staff.list()
-                    if s.active and s.id not in unavailable_staff
+                    if s.active
                 ],
                 "solverProfile": {"objective": "makespan"},
             }

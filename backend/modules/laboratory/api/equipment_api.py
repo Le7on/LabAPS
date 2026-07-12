@@ -16,6 +16,9 @@ from backend.modules.laboratory.application.list_equipment import ListEquipmentU
 from backend.modules.laboratory.application.set_resource_active import (
     SetResourceActiveUseCase,
 )
+from backend.modules.laboratory.application.set_resource_availability import (
+    SetResourceAvailabilityUseCase,
+)
 from backend.modules.laboratory.dto.equipment_dto import CreateEquipmentRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -60,6 +63,17 @@ def update_equipment(equipment_id: str):
 def delete_equipment(equipment_id: str):
     use_case = DeleteEquipmentUseCase(_uow())
     return api_response.success(use_case.execute(equipment_id))
+
+
+@equipment_bp.post("/equipment/<equipment_id>/unavailable-dates")
+def set_equipment_unavailable_dates(equipment_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = SetResourceAvailabilityUseCase(_uow())
+    return api_response.success(
+        use_case.execute("equipment", equipment_id, data.get("unavailableDates", []))
+    )
 
 
 @equipment_bp.post("/equipment/<equipment_id>/deactivate")

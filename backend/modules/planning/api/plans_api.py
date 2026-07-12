@@ -29,10 +29,6 @@ from backend.modules.planning.application.manage_plan_demand_lines import (
     AddPlanDemandLineUseCase,
     RemovePlanDemandLineUseCase,
 )
-from backend.modules.planning.application.plan_availability import (
-    GetPlanAvailabilityUseCase,
-    SetPlanAvailabilityUseCase,
-)
 from backend.modules.planning.application.plan_version_lifecycle import (
     ArchivePlanVersionUseCase,
     PublishPlanVersionUseCase,
@@ -89,28 +85,6 @@ def add_plan_demand_line(plan_id: str):
 def remove_plan_demand_line(plan_id: str, line_id: str):
     use_case = RemovePlanDemandLineUseCase(_container().unit_of_work)
     return api_response.success(use_case.execute(plan_id, line_id))
-
-
-@plans_bp.get("/plans/<plan_id>/availability")
-def get_plan_availability(plan_id: str):
-    use_case = GetPlanAvailabilityUseCase(_container().unit_of_work)
-    return api_response.success(use_case.execute(plan_id))
-
-
-@plans_bp.post("/plans/<plan_id>/availability")
-def set_plan_availability(plan_id: str):
-    data = request.get_json(silent=True)
-    if not isinstance(data, dict):
-        raise ValidationError("Request body must be a JSON object")
-    use_case = SetPlanAvailabilityUseCase(_container().unit_of_work)
-    result = use_case.execute(
-        plan_id,
-        data.get("kind", ""),
-        data.get("resourceId", ""),
-        bool(data.get("available", True)),
-        data.get("unavailableDates", []),
-    )
-    return api_response.success(result)
 
 
 @plans_bp.post("/plans/<plan_id>/versions")

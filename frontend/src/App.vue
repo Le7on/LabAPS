@@ -14,6 +14,7 @@ const groups = [
       { to: '/dashboard', label: 'Overview', icon: '◧' },
       { to: '/scheduling', label: 'Scheduling', icon: '◷' },
       { to: '/plans', label: 'Plans', icon: '▤' },
+      { to: '/availability', label: 'Availability', icon: '▦' },
     ],
   },
   {

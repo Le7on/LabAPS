@@ -17,6 +17,9 @@ from backend.modules.laboratory.application.list_staff import ListStaffUseCase
 from backend.modules.laboratory.application.set_resource_active import (
     SetResourceActiveUseCase,
 )
+from backend.modules.laboratory.application.set_resource_availability import (
+    SetResourceAvailabilityUseCase,
+)
 from backend.modules.laboratory.dto.staff_dto import CreateStaffRequest
 from backend.shared import api_response
 from backend.shared.errors import ValidationError
@@ -59,6 +62,17 @@ def update_staff(staff_id: str):
 def delete_staff(staff_id: str):
     use_case = DeleteStaffUseCase(_uow())
     return api_response.success(use_case.execute(staff_id))
+
+
+@staff_bp.post("/staff/<staff_id>/unavailable-dates")
+def set_staff_unavailable_dates(staff_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = SetResourceAvailabilityUseCase(_uow())
+    return api_response.success(
+        use_case.execute("staff", staff_id, data.get("unavailableDates", []))
+    )
 
 
 @staff_bp.post("/staff/<staff_id>/deactivate")

@@ -42,7 +42,7 @@ class StaffRepository:
             return False
         orm.staff_code = staff.staff_code
         orm.name = staff.name
-        orm.availability = [list(w) for w in staff.availability]
+        orm.unavailable_dates = list(staff.unavailable_dates)
         orm.projects = self._resolve_projects(staff.qualified_project_ids)
         return True
 
@@ -51,6 +51,13 @@ class StaffRepository:
         if orm is None:
             return False
         self.session.delete(orm)
+        return True
+
+    def set_unavailable_dates(self, staff_id: str, dates: list) -> bool:
+        orm = self.session.get(StaffORM, staff_id)
+        if orm is None:
+            return False
+        orm.unavailable_dates = list(dates)
         return True
 
     def _resolve_projects(self, ids):
@@ -70,7 +77,7 @@ class StaffRepository:
             id=staff.id,
             staff_code=staff.staff_code,
             name=staff.name,
-            availability=[list(w) for w in staff.availability],
+            unavailable_dates=list(staff.unavailable_dates),
             projects=projects,
             active=staff.active,
         )
@@ -81,7 +88,7 @@ class StaffRepository:
             id=orm.id,
             staff_code=orm.staff_code,
             name=orm.name,
-            availability=[tuple(w) for w in (orm.availability or [])],
+            unavailable_dates=list(orm.unavailable_dates or []),
             qualified_project_ids={p.id for p in orm.projects},
             active=orm.active,
         )

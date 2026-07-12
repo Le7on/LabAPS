@@ -25,8 +25,9 @@ class Staff:
     # Projects this staff member is qualified for (ADR-017). This is the "Skill"
     # surfaced in the UI: which projects' work the staff may perform.
     qualified_project_ids: set[str] = field(default_factory=set)
-    # Availability windows [start, end); empty means always available (Calendar).
-    availability: list[tuple[int, int]] = field(default_factory=list)
+    # Global days off (leave), "YYYY-MM-DD"; the staff can't be scheduled on
+    # these days in any plan (ADR-021).
+    unavailable_dates: list[str] = field(default_factory=list)
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
@@ -35,9 +36,6 @@ class Staff:
             raise ValidationError("staffCode is required")
         if not self.name:
             raise ValidationError("name is required")
-        for start, end in self.availability:
-            if end <= start:
-                raise ValidationError("availability window end must be after start")
 
     def is_qualified_for(self, project_id: str) -> bool:
         return project_id in self.qualified_project_ids

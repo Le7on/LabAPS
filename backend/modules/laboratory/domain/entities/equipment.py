@@ -18,8 +18,9 @@ from backend.shared.errors import ValidationError
 class Equipment:
     equipment_code: str
     name: str
-    # Availability windows [start, end); empty means always available (Calendar).
-    availability: list[tuple[int, int]] = field(default_factory=list)
+    # Global downtime days (maintenance / repair), "YYYY-MM-DD"; the machine can't
+    # be scheduled on these days in any plan (ADR-021).
+    unavailable_dates: list[str] = field(default_factory=list)
     # Projects this equipment is applicable to; used to scope which methods can
     # be bound to it (ADR-018).
     applicable_project_ids: set[str] = field(default_factory=set)
@@ -37,6 +38,3 @@ class Equipment:
             raise ValidationError("equipmentCode is required")
         if not self.name:
             raise ValidationError("name is required")
-        for start, end in self.availability:
-            if end <= start:
-                raise ValidationError("availability window end must be after start")

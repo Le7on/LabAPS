@@ -11,7 +11,7 @@ from backend.modules.laboratory.domain.entities.staff import Staff
 class CreateStaffRequest:
     staff_code: str
     name: str
-    availability: list[tuple[int, int]] = field(default_factory=list)
+    unavailable_dates: list[str] = field(default_factory=list)
     qualified_project_ids: set[str] = field(default_factory=set)
 
     @classmethod
@@ -19,7 +19,7 @@ class CreateStaffRequest:
         return cls(
             staff_code=data.get("staffCode", ""),
             name=data.get("name", ""),
-            availability=[tuple(w) for w in data.get("availability", [])],
+            unavailable_dates=list(data.get("unavailableDates", [])),
             qualified_project_ids=set(data.get("qualifiedProjectIds", [])),
         )
 
@@ -29,7 +29,7 @@ def staff_to_dict(staff: Staff) -> dict:
         "id": staff.id,
         "staffCode": staff.staff_code,
         "name": staff.name,
-        "availability": [list(w) for w in staff.availability],
+        "unavailableDates": list(staff.unavailable_dates),
         "qualifiedProjectIds": sorted(staff.qualified_project_ids),
         "active": staff.active,
     }

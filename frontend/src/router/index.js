@@ -6,6 +6,7 @@ import StaffView from '../views/StaffView.vue'
 import WorkflowDefinitionsView from '../views/WorkflowDefinitionsView.vue'
 import SchedulingView from '../views/SchedulingView.vue'
 import ProjectsView from '../views/ProjectsView.vue'
+import AvailabilityView from '../views/AvailabilityView.vue'
 import LoginView from '../views/LoginView.vue'
 
 // Application routes. The Dashboard is the default landing view.
@@ -23,6 +24,7 @@ const routes = [
     component: WorkflowDefinitionsView,
   },
   { path: '/scheduling', name: 'scheduling', component: SchedulingView },
+  { path: '/availability', name: 'availability', component: AvailabilityView },
 ]
 
 const router = createRouter({

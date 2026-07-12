@@ -140,10 +140,11 @@ class ScheduleInstancesUseCase:
         )
 
         def windows_for(res):
-            # A resource's unavailable date ranges (leave / breakdown) become the
-            # complementary available shift-slot windows; the solver then keeps
-            # work off those days.
-            return available_windows(slots, res.get("unavailableDates", []))
+            # A resource's global unavailable days (leave / maintenance) become
+            # the complementary available shift-slot windows; the solver then
+            # keeps work off those days. Single dates are treated as 1-day ranges.
+            ranges = [[d, d] for d in res.get("unavailableDates", [])]
+            return available_windows(slots, ranges)
 
         def usable(res):
             # A resource with no available window (unavailable every day) cannot

@@ -30,9 +30,6 @@ from backend.modules.planning.repository.assignment_repository import (
     AssignmentRepository,
 )
 from backend.modules.planning.repository.demand_repository import DemandRepository
-from backend.modules.planning.repository.plan_availability_repository import (
-    PlanAvailabilityRepository,
-)
 from backend.modules.planning.repository.plan_repository import PlanRepository
 from backend.modules.planning.repository.workflow_instance_repository import (
     WorkflowInstanceRepository,
@@ -49,7 +46,6 @@ class UnitOfWork:
         self.plans = PlanRepository(self.session)
         self.assignments = AssignmentRepository(self.session)
         self.demands = DemandRepository(self.session)
-        self.plan_availability = PlanAvailabilityRepository(self.session)
         self.workflow_instances = WorkflowInstanceRepository(self.session)
         self.execution_records = ExecutionRecordRepository(self.session)
         self.equipment = EquipmentRepository(self.session)

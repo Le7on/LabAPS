@@ -21,7 +21,7 @@ class CreateStaffUseCase:
         staff = Staff(
             staff_code=request.staff_code,
             name=request.name,
-            availability=request.availability,
+            unavailable_dates=request.unavailable_dates,
             qualified_project_ids=request.qualified_project_ids,
         )
 
@@ -41,7 +41,7 @@ class UpdateStaffUseCase:
             id=staff_id,
             staff_code=request.staff_code,
             name=request.name,
-            availability=request.availability,
+            unavailable_dates=request.unavailable_dates,
             qualified_project_ids=request.qualified_project_ids,
         )
         with self._uow_factory() as uow:

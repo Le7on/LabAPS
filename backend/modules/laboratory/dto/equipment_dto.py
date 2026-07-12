@@ -11,7 +11,7 @@ from backend.modules.laboratory.domain.entities.equipment import Equipment
 class CreateEquipmentRequest:
     equipment_code: str
     name: str
-    availability: list[tuple[int, int]] = field(default_factory=list)
+    unavailable_dates: list[str] = field(default_factory=list)
     applicable_project_ids: set[str] = field(default_factory=set)
     method_ids: set[str] = field(default_factory=set)
     fv_duration: int = 1
@@ -22,7 +22,7 @@ class CreateEquipmentRequest:
         return cls(
             equipment_code=data.get("equipmentCode", ""),
             name=data.get("name", ""),
-            availability=[tuple(w) for w in data.get("availability", [])],
+            unavailable_dates=list(data.get("unavailableDates", [])),
             applicable_project_ids=set(data.get("applicableProjectIds", [])),
             method_ids=set(data.get("methodIds", [])),
             fv_duration=int(data.get("fvDuration", 1)),
@@ -35,7 +35,7 @@ def equipment_to_dict(equipment: Equipment) -> dict:
         "id": equipment.id,
         "equipmentCode": equipment.equipment_code,
         "name": equipment.name,
-        "availability": [list(w) for w in equipment.availability],
+        "unavailableDates": list(equipment.unavailable_dates),
         "applicableProjectIds": sorted(equipment.applicable_project_ids),
         "methodIds": sorted(equipment.method_ids),
         "fvDuration": equipment.fv_duration,
