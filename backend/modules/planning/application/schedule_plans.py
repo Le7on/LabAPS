@@ -50,16 +50,29 @@ class SchedulePlansUseCase:
             start = min(p.start_date for p in plans)
             end = max(p.end_date for p in plans)
             skipped = sorted({d for p in plans for d in p.skipped_dates})
-            slots = build_calendar(start, end, shift_mode, skipped)
+            # Overtime days (weekend/holiday any resource signed up for) become
+            # extra working days in the calendar (ADR-022).
+            staff_list = uow.staff.list()
+            equipment_list = uow.equipment.list()
+            all_overtime = sorted(
+                {d for r in [*staff_list, *equipment_list] for d in r.overtime_dates}
+            )
+            slots = build_calendar(start, end, shift_mode, skipped, extra_workdays=all_overtime)
             if not slots:
                 raise ValidationError("The combined calendar has no working days")
+
+            # Which calendar days are "overtime-only" (weekend/holiday). A resource
+            # may work such a day only if it is in that resource's overtime set.
+            overtime_only_days = self._overtime_only_days(slots, skipped)
 
             workflows = {w.id: w for w in uow.workflow_definitions.list()}
             operations = self._build_operations(plans, slots, workflows)
             if not operations:
                 raise ValidationError("Selected plans have no demand lines")
 
-            resources = self._build_resources(uow, slots)
+            resources = self._build_resources(
+                staff_list, equipment_list, slots, overtime_only_days
+            )
             problem = PlanningProblem(
                 operations=tuple(operations),
                 resources=tuple(resources),
@@ -128,34 +141,54 @@ class SchedulePlansUseCase:
         return ops
 
     @staticmethod
-    def _build_resources(uow, slots):
+    def _overtime_only_days(slots, skipped) -> set[str]:
+        """Calendar day strings that are only present because of overtime — i.e.
+        weekends or holidays. A resource works them only if it signed up (ADR-022).
+        """
+        skip = set(skipped)
+        out = set()
+        for slot in slots:
+            iso = slot.day.isoformat()
+            if slot.day.weekday() >= 5 or iso in skip:
+                out.add(iso)
+        return out
+
+    @staticmethod
+    def _blocked_for(resource, overtime_only_days) -> list:
+        """Dates the resource cannot work: its own unavailable days, plus every
+        overtime-only day it did NOT sign up for."""
+        overtime = set(resource.overtime_dates)
+        blocked = set(resource.unavailable_dates)
+        blocked |= {d for d in overtime_only_days if d not in overtime}
+        return [[d, d] for d in sorted(blocked)]
+
+    @classmethod
+    def _build_resources(cls, staff_list, equipment_list, slots, overtime_only_days):
         """Active equipment (bound-method tokens) and staff (project tokens),
-        masked by each resource's global unavailable dates."""
+        masked by each resource's unavailable days and un-signed overtime days."""
         resources = []
 
-        # Which methods each equipment can run -> synthetic per-method token.
-        for e in uow.equipment.list():
+        for e in equipment_list:
             if not e.active:
                 continue
-            windows = available_windows(slots, [[d, d] for d in e.unavailable_dates])
+            windows = available_windows(slots, cls._blocked_for(e, overtime_only_days))
             if not windows:
                 continue
-            provides = {f"m:{mid}" for mid in e.method_ids}
             resources.append(
                 Resource(
                     identifier=e.id,
                     kind=EQUIPMENT,
-                    provides=frozenset(provides),
+                    provides=frozenset(f"m:{mid}" for mid in e.method_ids),
                     windows=windows,
                     fv_duration=e.fv_duration,
                     fv_validity=e.fv_validity,
                 )
             )
 
-        for s in uow.staff.list():
+        for s in staff_list:
             if not s.active:
                 continue
-            windows = available_windows(slots, [[d, d] for d in s.unavailable_dates])
+            windows = available_windows(slots, cls._blocked_for(s, overtime_only_days))
             if not windows:
                 continue
             resources.append(

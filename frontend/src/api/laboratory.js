@@ -61,7 +61,9 @@ export function deleteWorkflowDefinition(id) {
   return client.delete(`/workflow-definitions/${id}`).then((r) => r.data)
 }
 
-// kind is 'equipment' | 'staff'; dates is an array of "YYYY-MM-DD".
-export function setUnavailableDates(kind, id, unavailableDates) {
-  return client.post(`/${kind}/${id}/unavailable-dates`, { unavailableDates }).then((r) => r.data)
+// kind is 'equipment' | 'staff'; date arrays of "YYYY-MM-DD".
+export function setUnavailableDates(kind, id, unavailableDates, overtimeDates = []) {
+  return client
+    .post(`/${kind}/${id}/unavailable-dates`, { unavailableDates, overtimeDates })
+    .then((r) => r.data)
 }

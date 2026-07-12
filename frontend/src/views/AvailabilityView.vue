@@ -10,8 +10,9 @@ const kind = ref('staff') // 'staff' | 'equipment'
 const selectedId = ref(null)
 const error = ref(null)
 
-// Local working set of unavailable dates for the selected resource.
+// Local working sets for the selected resource.
 const unavailable = ref(new Set())
+const overtime = ref(new Set())
 
 onMounted(async () => {
   await Promise.all([store.fetchStaff(), store.fetchEquipment()])
@@ -32,6 +33,7 @@ function selectFirst() {
 
 function loadDates() {
   unavailable.value = new Set(selected.value?.unavailableDates ?? [])
+  overtime.value = new Set(selected.value?.overtimeDates ?? [])
 }
 
 function switchKind(k) {
@@ -44,20 +46,33 @@ function pick(id) {
   loadDates()
 }
 
-async function toggle(date) {
-  const next = new Set(unavailable.value)
-  if (next.has(date)) next.delete(date)
-  else next.add(date)
-  unavailable.value = next
+async function save() {
   error.value = null
   try {
-    const dates = [...next].sort()
-    await setUnavailableDates(kind.value, selectedId.value, dates)
-    // reflect into the store copy so re-selecting keeps state
-    if (selected.value) selected.value.unavailableDates = dates
+    const un = [...unavailable.value].sort()
+    const ot = [...overtime.value].sort()
+    await setUnavailableDates(kind.value, selectedId.value, un, ot)
+    if (selected.value) {
+      selected.value.unavailableDates = un
+      selected.value.overtimeDates = ot
+    }
   } catch (e) {
     error.value = e?.message ?? 'Failed to save'
   }
+}
+
+function toggleUnavailable(date) {
+  const next = new Set(unavailable.value)
+  next.has(date) ? next.delete(date) : next.add(date)
+  unavailable.value = next
+  save()
+}
+
+function toggleOvertime(date) {
+  const next = new Set(overtime.value)
+  next.has(date) ? next.delete(date) : next.add(date)
+  overtime.value = next
+  save()
 }
 </script>
 
@@ -114,11 +129,18 @@ async function toggle(date) {
           <span class="panel__title">{{ selected ? labelOf(selected) : 'Select a resource' }}</span>
         </div>
         <div class="panel__body">
-          <MonthCalendar v-if="selected" :unavailable="unavailable" @toggle="toggle" />
+          <MonthCalendar
+            v-if="selected"
+            :unavailable="unavailable"
+            :overtime="overtime"
+            @toggle-unavailable="toggleUnavailable"
+            @toggle-overtime="toggleOvertime"
+          />
           <p v-else class="muted">Pick someone or something on the left.</p>
           <p v-if="error" class="error">{{ error }}</p>
           <p class="muted hint">
-            Click a day to toggle it available / unavailable. Green = available, red = off.
+            Weekdays: green = available, click for red = off (leave/maintenance). Weekends/holidays
+            are purple (non-working); click to sign up overtime (solid purple = working that day).
           </p>
         </div>
       </div>

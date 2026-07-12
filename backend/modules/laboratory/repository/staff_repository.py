@@ -43,6 +43,7 @@ class StaffRepository:
         orm.staff_code = staff.staff_code
         orm.name = staff.name
         orm.unavailable_dates = list(staff.unavailable_dates)
+        orm.overtime_dates = list(staff.overtime_dates)
         orm.projects = self._resolve_projects(staff.qualified_project_ids)
         return True
 
@@ -53,11 +54,12 @@ class StaffRepository:
         self.session.delete(orm)
         return True
 
-    def set_unavailable_dates(self, staff_id: str, dates: list) -> bool:
+    def set_availability(self, staff_id: str, unavailable: list, overtime: list) -> bool:
         orm = self.session.get(StaffORM, staff_id)
         if orm is None:
             return False
-        orm.unavailable_dates = list(dates)
+        orm.unavailable_dates = list(unavailable)
+        orm.overtime_dates = list(overtime)
         return True
 
     def _resolve_projects(self, ids):
@@ -78,6 +80,7 @@ class StaffRepository:
             staff_code=staff.staff_code,
             name=staff.name,
             unavailable_dates=list(staff.unavailable_dates),
+            overtime_dates=list(staff.overtime_dates),
             projects=projects,
             active=staff.active,
         )
@@ -89,6 +92,7 @@ class StaffRepository:
             staff_code=orm.staff_code,
             name=orm.name,
             unavailable_dates=list(orm.unavailable_dates or []),
+            overtime_dates=list(orm.overtime_dates or []),
             qualified_project_ids={p.id for p in orm.projects},
             active=orm.active,
         )

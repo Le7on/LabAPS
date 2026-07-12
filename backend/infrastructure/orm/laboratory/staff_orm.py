@@ -21,6 +21,7 @@ class StaffORM(BaseEntity):
     staff_code: Mapped[str] = mapped_column(String(50), index=True)
     name: Mapped[str] = mapped_column(String(200))
     unavailable_dates: Mapped[list] = mapped_column(JSON, default=list)
+    overtime_dates: Mapped[list] = mapped_column(JSON, default=list)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     # Projects this staff member is qualified for (ADR-017) — its "Skill".

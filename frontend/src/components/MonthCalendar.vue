@@ -1,31 +1,32 @@
 <script setup>
 import { computed, ref } from 'vue'
 
-// A month calendar. Days are available (green) by default; days in
-// `unavailable` (Set of "YYYY-MM-DD") render red. Clicking a day emits toggle.
-defineProps({
-  unavailable: { type: Object, required: true }, // Set<string>
+// A month calendar for resource availability.
+//  - Weekdays: available (green) by default; click to toggle Unavailable (red).
+//  - Weekends: non-working (purple) by default; click to toggle Overtime, i.e.
+//    available that day (purple, checked). ADR-021 / ADR-022.
+const props = defineProps({
+  unavailable: { type: Object, required: true }, // Set<"YYYY-MM-DD"> (weekday leave)
+  overtime: { type: Object, required: true }, // Set<"YYYY-MM-DD"> (weekend worked)
 })
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['toggle-unavailable', 'toggle-overtime'])
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const cursor = ref(new Date())
-
-// Saturday (6) and Sunday (0) are non-working by default.
-function isWeekend(d) {
-  const wd = d.getDay()
-  return wd === 0 || wd === 6
-}
 
 const monthLabel = computed(() =>
   cursor.value.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
 )
 
+function isWeekend(d) {
+  const wd = d.getDay()
+  return wd === 0 || wd === 6
+}
+
 function iso(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-// Grid cells: leading blanks (Sunday-based) + each day of the month.
 const cells = computed(() => {
   const year = cursor.value.getFullYear()
   const month = cursor.value.getMonth()
@@ -37,6 +38,21 @@ const cells = computed(() => {
   for (let d = 1; d <= daysInMonth; d++) out.push(new Date(year, month, d))
   return out
 })
+
+// Class for a day cell based on kind + current state.
+function dayClass(d) {
+  const key = iso(d)
+  if (isWeekend(d)) {
+    return props.overtime.has(key) ? 'cal__day--ot-on' : 'cal__day--ot'
+  }
+  return props.unavailable.has(key) ? 'cal__day--off' : 'cal__day--on'
+}
+
+function click(d) {
+  const key = iso(d)
+  if (isWeekend(d)) emit('toggle-overtime', key)
+  else emit('toggle-unavailable', key)
+}
 
 function shift(delta) {
   cursor.value = new Date(cursor.value.getFullYear(), cursor.value.getMonth() + delta, 1)
@@ -56,25 +72,14 @@ function shift(delta) {
     <div class="cal__grid">
       <template v-for="(d, i) in cells" :key="i">
         <span v-if="!d" class="cal__blank" />
-        <span
-          v-else-if="isWeekend(d)"
-          class="cal__day cal__day--weekend"
-          title="Weekend — non-working"
-        >
-          {{ d.getDate() }}
-        </span>
-        <button
-          v-else
-          class="cal__day"
-          :class="unavailable.has(iso(d)) ? 'cal__day--off' : 'cal__day--on'"
-          @click="emit('toggle', iso(d))"
-        >
+        <button v-else class="cal__day" :class="dayClass(d)" @click="click(d)">
           {{ d.getDate() }}
         </button>
       </template>
     </div>
     <div class="cal__legend">
       <span class="dot dot--on"></span> Available <span class="dot dot--off"></span> Unavailable
+      <span class="dot dot--ot"></span> Weekend (click = overtime)
     </div>
   </div>
 </template>
@@ -138,14 +143,19 @@ function shift(delta) {
 .cal__day--off:hover {
   border-color: var(--led-danger);
 }
-.cal__day--weekend {
-  background: var(--inset);
-  color: var(--ink-muted);
-  border-color: var(--line);
-  cursor: default;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Weekend: purple. Muted when off, solid when overtime is on. */
+.cal__day--ot {
+  background: #f2ecfb;
+  color: #7c4dcc;
+  border-color: color-mix(in srgb, #7c4dcc 25%, transparent);
+}
+.cal__day--ot:hover {
+  border-color: #7c4dcc;
+}
+.cal__day--ot-on {
+  background: #7c4dcc;
+  color: #fff;
+  border-color: #7c4dcc;
 }
 .cal__legend {
   display: flex;
@@ -154,6 +164,7 @@ function shift(delta) {
   margin-top: var(--s3);
   font-size: 11px;
   color: var(--ink-3);
+  flex-wrap: wrap;
 }
 .dot {
   width: 10px;
@@ -168,6 +179,11 @@ function shift(delta) {
 .dot--off {
   background: var(--danger-soft);
   border: 1px solid var(--led-danger);
+  margin-left: 8px;
+}
+.dot--ot {
+  background: #f2ecfb;
+  border: 1px solid #7c4dcc;
   margin-left: 8px;
 }
 </style>

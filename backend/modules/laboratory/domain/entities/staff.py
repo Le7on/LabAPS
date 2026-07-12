@@ -28,6 +28,9 @@ class Staff:
     # Global days off (leave), "YYYY-MM-DD"; the staff can't be scheduled on
     # these days in any plan (ADR-021).
     unavailable_dates: list[str] = field(default_factory=list)
+    # Overtime: weekend/holiday dates this staff is explicitly available on
+    # (a non-working day turned into a working day for this resource, ADR-022).
+    overtime_dates: list[str] = field(default_factory=list)
     active: bool = True
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 

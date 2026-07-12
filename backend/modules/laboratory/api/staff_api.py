@@ -71,7 +71,12 @@ def set_staff_unavailable_dates(staff_id: str):
         raise ValidationError("Request body must be a JSON object")
     use_case = SetResourceAvailabilityUseCase(_uow())
     return api_response.success(
-        use_case.execute("staff", staff_id, data.get("unavailableDates", []))
+        use_case.execute(
+            "staff",
+            staff_id,
+            data.get("unavailableDates", []),
+            data.get("overtimeDates", []),
+        )
     )
 
 

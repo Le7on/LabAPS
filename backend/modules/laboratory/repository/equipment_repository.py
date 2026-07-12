@@ -46,6 +46,7 @@ class EquipmentRepository:
         orm.equipment_code = equipment.equipment_code
         orm.name = equipment.name
         orm.unavailable_dates = list(equipment.unavailable_dates)
+        orm.overtime_dates = list(equipment.overtime_dates)
         orm.fv_duration = equipment.fv_duration
         orm.fv_validity = equipment.fv_validity
         orm.projects = self._resolve_projects(equipment.applicable_project_ids)
@@ -59,11 +60,12 @@ class EquipmentRepository:
         self.session.delete(orm)
         return True
 
-    def set_unavailable_dates(self, equipment_id: str, dates: list) -> bool:
+    def set_availability(self, equipment_id: str, unavailable: list, overtime: list) -> bool:
         orm = self.session.get(EquipmentORM, equipment_id)
         if orm is None:
             return False
-        orm.unavailable_dates = list(dates)
+        orm.unavailable_dates = list(unavailable)
+        orm.overtime_dates = list(overtime)
         return True
 
     def _resolve_projects(self, ids):
@@ -102,6 +104,7 @@ class EquipmentRepository:
             equipment_code=equipment.equipment_code,
             name=equipment.name,
             unavailable_dates=list(equipment.unavailable_dates),
+            overtime_dates=list(equipment.overtime_dates),
             fv_duration=equipment.fv_duration,
             fv_validity=equipment.fv_validity,
             projects=projects,
@@ -116,6 +119,7 @@ class EquipmentRepository:
             equipment_code=orm.equipment_code,
             name=orm.name,
             unavailable_dates=list(orm.unavailable_dates or []),
+            overtime_dates=list(orm.overtime_dates or []),
             fv_duration=orm.fv_duration if orm.fv_duration is not None else 1,
             fv_validity=orm.fv_validity if orm.fv_validity is not None else 14,
             applicable_project_ids={p.id for p in orm.projects},

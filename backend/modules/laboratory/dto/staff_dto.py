@@ -12,6 +12,7 @@ class CreateStaffRequest:
     staff_code: str
     name: str
     unavailable_dates: list[str] = field(default_factory=list)
+    overtime_dates: list[str] = field(default_factory=list)
     qualified_project_ids: set[str] = field(default_factory=set)
 
     @classmethod
@@ -20,6 +21,7 @@ class CreateStaffRequest:
             staff_code=data.get("staffCode", ""),
             name=data.get("name", ""),
             unavailable_dates=list(data.get("unavailableDates", [])),
+            overtime_dates=list(data.get("overtimeDates", [])),
             qualified_project_ids=set(data.get("qualifiedProjectIds", [])),
         )
 
@@ -30,6 +32,7 @@ def staff_to_dict(staff: Staff) -> dict:
         "staffCode": staff.staff_code,
         "name": staff.name,
         "unavailableDates": list(staff.unavailable_dates),
+        "overtimeDates": list(staff.overtime_dates),
         "qualifiedProjectIds": sorted(staff.qualified_project_ids),
         "active": staff.active,
     }

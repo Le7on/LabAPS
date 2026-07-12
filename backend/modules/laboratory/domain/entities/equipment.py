@@ -21,6 +21,9 @@ class Equipment:
     # Global downtime days (maintenance / repair), "YYYY-MM-DD"; the machine can't
     # be scheduled on these days in any plan (ADR-021).
     unavailable_dates: list[str] = field(default_factory=list)
+    # Overtime: weekend/holiday dates this machine is explicitly available on
+    # (a non-working day turned into a working day for this resource, ADR-022).
+    overtime_dates: list[str] = field(default_factory=list)
     # Projects this equipment is applicable to; used to scope which methods can
     # be bound to it (ADR-018).
     applicable_project_ids: set[str] = field(default_factory=set)
