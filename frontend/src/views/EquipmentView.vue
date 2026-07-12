@@ -9,7 +9,7 @@ import MultiSelect from '../components/MultiSelect.vue'
 const store = useLaboratoryStore()
 const open = ref(false)
 const editingId = ref(null)
-const form = reactive({ equipmentCode: '', name: '', methodIds: [], fvDuration: 1, fvValidity: 14 })
+const form = reactive({ equipmentCode: '', name: '', methodIds: [], fvDuration: 8, fvValidity: 112 })
 
 onMounted(() => {
   store.fetchEquipment()
@@ -29,7 +29,7 @@ const methodLabel = (id) => methodOptions.value.find((m) => m.value === id)?.lab
 
 function openCreate() {
   editingId.value = null
-  Object.assign(form, { equipmentCode: '', name: '', methodIds: [], fvDuration: 1, fvValidity: 14 })
+  Object.assign(form, { equipmentCode: '', name: '', methodIds: [], fvDuration: 8, fvValidity: 112 })
   open.value = true
 }
 function openEdit(e) {
@@ -38,8 +38,8 @@ function openEdit(e) {
     equipmentCode: e.equipmentCode,
     name: e.name,
     methodIds: [...e.methodIds],
-    fvDuration: e.fvDuration ?? 1,
-    fvValidity: e.fvValidity ?? 14,
+    fvDuration: e.fvDuration ?? 8,
+    fvValidity: e.fvValidity ?? 112,
   })
   open.value = true
 }
@@ -49,7 +49,7 @@ async function submit() {
     equipmentCode: form.equipmentCode,
     name: form.name,
     methodIds: [...form.methodIds],
-    fvDuration: Number(form.fvDuration) || 1,
+    fvDuration: Number(form.fvDuration) || 8,
     fvValidity: Number(form.fvValidity) || 0,
   }
   const ok = editingId.value
@@ -137,11 +137,11 @@ async function remove(e) {
         </p>
         <div class="row">
           <div class="field" style="flex: 1">
-            <label>FV duration (shifts)</label>
+            <label>FV duration (hours)</label>
             <input v-model.number="form.fvDuration" type="number" min="1" />
           </div>
           <div class="field" style="flex: 1">
-            <label>FV validity (shifts, 0 = none)</label>
+            <label>FV validity (hours, 0 = none)</label>
             <input v-model.number="form.fvValidity" type="number" min="0" />
           </div>
         </div>

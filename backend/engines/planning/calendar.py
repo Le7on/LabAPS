@@ -1,12 +1,13 @@
-"""Shift calendar mapping (ADR-016).
+"""Shift calendar mapping (ADR-016 / ADR-025).
 
-Maps the scheduler's integer time units to real calendar dates and shift time
-windows. One integer unit = one shift slot. Slots are laid out day by day from a
-start date to an end date, skipping any explicitly skipped dates. The shift mode
-fixes each day's slots:
+Maps the scheduler's integer time units to real calendar dates and clock times.
+One integer unit = one HOUR (durations/WorkHours are in hours). Hourly slots are
+laid out within each day's shift windows, day by day from a start date to an end
+date, skipping any explicitly skipped dates. The shift mode fixes each day's
+working hours:
 
-- single: one slot 09:00-17:00
-- double: two slots 06:00-14:00 and 14:00-22:00
+- single: 09:00-17:00 (8 hourly slots)
+- double: 06:00-14:00 and 14:00-22:00 (16 hourly slots)
 
 This is a pure module: no framework, no persistence, no OR-Tools.
 """
@@ -28,7 +29,7 @@ _SHIFT_WINDOWS: dict[str, tuple[tuple[str, str, str], ...]] = {
 
 @dataclass(frozen=True, slots=True)
 class Slot:
-    """One shift slot on the calendar; ``index`` is its scheduler time unit."""
+    """One hour on the calendar; ``index`` is its scheduler time unit (hours)."""
 
     index: int
     day: date
@@ -83,16 +84,22 @@ def build_calendar(
         working = day in extra or (day not in skip and (include_weekends or not is_weekend))
         if working:
             for shift_code, start_hhmm, end_hhmm in windows:
-                slots.append(
-                    Slot(
-                        index=index,
-                        day=day,
-                        shift_code=shift_code,
-                        start_at=_combine(day, start_hhmm),
-                        end_at=_combine(day, end_hhmm),
+                # One slot per hour within the shift window.
+                hour_start = _combine(day, start_hhmm)
+                shift_end = _combine(day, end_hhmm)
+                while hour_start < shift_end:
+                    hour_end = hour_start + timedelta(hours=1)
+                    slots.append(
+                        Slot(
+                            index=index,
+                            day=day,
+                            shift_code=shift_code,
+                            start_at=hour_start,
+                            end_at=hour_end,
+                        )
                     )
-                )
-                index += 1
+                    index += 1
+                    hour_start = hour_end
         day += timedelta(days=1)
     return slots
 

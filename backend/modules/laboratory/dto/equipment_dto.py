@@ -15,8 +15,8 @@ class CreateEquipmentRequest:
     overtime_dates: list[str] = field(default_factory=list)
     applicable_project_ids: set[str] = field(default_factory=set)
     method_ids: set[str] = field(default_factory=set)
-    fv_duration: int = 1
-    fv_validity: int = 14
+    fv_duration: int = 8
+    fv_validity: int = 112
 
     @classmethod
     def from_json(cls, data: dict) -> CreateEquipmentRequest:
@@ -27,8 +27,8 @@ class CreateEquipmentRequest:
             overtime_dates=list(data.get("overtimeDates", [])),
             applicable_project_ids=set(data.get("applicableProjectIds", [])),
             method_ids=set(data.get("methodIds", [])),
-            fv_duration=int(data.get("fvDuration", 1)),
-            fv_validity=int(data.get("fvValidity", 14)),
+            fv_duration=int(data.get("fvDuration", 8)),
+            fv_validity=int(data.get("fvValidity", 112)),
         )
 
 

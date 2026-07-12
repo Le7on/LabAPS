@@ -73,11 +73,12 @@ class ORToolsSolverAdapter(SolverAdapter):
             scheduled[task.identifier] = sched
 
             # Variables span the whole horizon so the model is always satisfiable
-            # (an unplaced task just sits anywhere with scheduled=0). Window bounds
-            # are enforced only WHEN scheduled — so a task whose duration can't fit
-            # its window is simply left unscheduled instead of failing the run.
+            # (an unplaced task just sits anywhere with scheduled=0). The end domain
+            # is widened by the duration so ``end == start + duration`` always has a
+            # solution even for a task too long to fit — such a task is simply left
+            # unscheduled (window/horizon bounds below apply only WHEN scheduled).
             start = cp.new_int_var(earliest, horizon, f"start_{task.identifier}")
-            end = cp.new_int_var(earliest, horizon, f"end_{task.identifier}")
+            end = cp.new_int_var(earliest, horizon + task.duration, f"end_{task.identifier}")
             cp.add(end == start + task.duration)
             starts[task.identifier] = start
             ends[task.identifier] = end
@@ -85,6 +86,8 @@ class ORToolsSolverAdapter(SolverAdapter):
             # A task longer than the whole horizon can never be placed.
             if task.duration > horizon - earliest:
                 cp.add(sched == 0)
+            else:
+                cp.add(end <= horizon).only_enforce_if(sched)
 
             lo = max(earliest, task.window[0]) if task.window else earliest
             hi = min(horizon, task.window[1]) if task.window else horizon
@@ -106,7 +109,10 @@ class ORToolsSolverAdapter(SolverAdapter):
 
         assignment = self._add_resource_assignment(cp, model, starts, ends, scheduled)
 
-        makespan = cp.new_int_var(0, horizon, "makespan")
+        # Upper bound allows an unscheduled over-long task's end to exceed the
+        # horizon without making the max-equality infeasible.
+        max_end = horizon + sum(t.duration for t in model.tasks)
+        makespan = cp.new_int_var(0, max_end, "makespan")
         cp.add_max_equality(makespan, list(ends.values()))
 
         # Objective: schedule as much as possible first (each scheduled task is
@@ -117,10 +123,10 @@ class ORToolsSolverAdapter(SolverAdapter):
         if model.objective == Objective.WEIGHTED_COMPLETION:
             task_map = model.task_map()
             timing = sum(task_map[tid].weight * end for tid, end in ends.items())
-            max_timing = sum(task_map[tid].weight for tid in ends) * horizon
+            max_timing = sum(task_map[tid].weight for tid in ends) * max_end
         else:
             timing = makespan
-            max_timing = horizon
+            max_timing = max_end
         big = max_timing + 1
         cp.maximize(big * placed - timing)
 

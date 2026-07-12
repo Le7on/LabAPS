@@ -18,7 +18,7 @@ from backend.shared.errors import ValidationError
 @dataclass(slots=True)
 class OperationDefinition:
     operation_type: str
-    duration: int  # number of shifts occupied (1 shift = 1 scheduler time unit)
+    duration: int  # WorkHours: hours the method occupies (1 hour = 1 scheduler unit)
     gelatin_type: str | None = None
     # Equipment bound to this method (ADR-015): the scheduler's equipment
     # candidates for the method are exactly these. Staff eligibility comes from

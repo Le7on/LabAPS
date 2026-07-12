@@ -87,9 +87,30 @@ def test_schedule_requires_plan_ids(client):
 
 
 def test_overbooked_day_schedules_what_it_can_and_reports_conflicts(client):
-    # One machine, single shift (1 slot/day), but 3 rounds demanded on one day:
-    # one round schedules, the other two surface as conflicts (ADR-023).
-    workflow_id, method_id = _lab(client)
+    # One machine, single-shift day = 8 working hours. An 8-hour method fills the
+    # whole day, so of 3 rounds demanded on one day only one fits; the other two
+    # surface as conflicts (ADR-023).
+    project_id = client.post(
+        "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
+    ).get_json()["data"]["id"]
+    eq_id = client.post(
+        "/api/v1/equipment",
+        json={"equipmentCode": "EQ-1", "name": "M", "fvValidity": 0},
+    ).get_json()["data"]["id"]
+    client.post(
+        "/api/v1/staff",
+        json={"staffCode": "ST-1", "name": "Alice", "qualifiedProjectIds": [project_id]},
+    )
+    workflow = client.post(
+        "/api/v1/workflow-definitions",
+        json={
+            "workflowCode": "SMDP",
+            "name": "SMDP",
+            "projectId": project_id,
+            "operations": [{"operationType": "run", "duration": 8, "equipmentIds": [eq_id]}],
+        },
+    ).get_json()["data"]
+    workflow_id, method_id = workflow["id"], workflow["operations"][0]["id"]
     plan_id = _plan(client, "PI", "2026-08-11", "2026-08-11", shift_mode="single")
     _line(client, plan_id, workflow_id, method_id, 3, "2026-08-11")
 

@@ -34,12 +34,15 @@ def test_frozen_window_pushes_start_past_boundary():
     assert solution.scheduled_tasks[0].start >= 15
 
 
-def test_frozen_window_exceeding_horizon_is_infeasible():
-    # Frozen boundary leaves no room for the 3-unit task before the horizon.
+def test_frozen_window_exceeding_horizon_leaves_task_unscheduled():
+    # Frozen boundary leaves no room for the 3-unit task before the horizon: the
+    # run stays feasible and the task is unscheduled (a conflict), per ADR-023.
     model = SchedulingModel(
         tasks=(Task(identifier="t1", duration=3),),
         horizon=10,
         frozen_until=9,
     )
     solution = ORToolsSolverAdapter(max_time_in_seconds=5).solve(model)
-    assert not solution.feasible
+    assert solution.feasible
+    assert solution.scheduled_tasks == ()
+    assert solution.unscheduled == ("t1",)

@@ -26,9 +26,11 @@ def test_pi_request_drifts_past_fv_day(client):
     # FV occupies 1 shift and stays valid a long time; on a single-shift calendar
     # the FV consumes the machine's first day (2026-08-10), so a request targeting
     # that day must drift to the next working day.
+    # FV occupies a full single-shift day (8h) and stays valid a long time, so
+    # it consumes all of 2026-08-10; a request targeting that day must drift.
     eq_id = client.post(
         "/api/v1/equipment",
-        json={"equipmentCode": "EQ-1", "name": "M", "fvDuration": 1, "fvValidity": 999},
+        json={"equipmentCode": "EQ-1", "name": "M", "fvDuration": 8, "fvValidity": 9999},
     ).get_json()["data"]["id"]
     workflow = client.post(
         "/api/v1/workflow-definitions",

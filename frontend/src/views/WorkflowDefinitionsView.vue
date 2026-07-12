@@ -188,8 +188,8 @@ async function remove(wf) {
               <input v-model="m.operationType" placeholder="e.g. amplify" />
             </div>
             <div class="field">
-              <label>Work-hours (min. shifts)</label>
-              <input v-model.number="m.duration" type="number" min="1" />
+              <label>Work-hours (hours)</label>
+              <input v-model.number="m.duration" type="number" min="1" step="1" />
             </div>
             <div class="field">
               <label>Runs on equipment</label>
