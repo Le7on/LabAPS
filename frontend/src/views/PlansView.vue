@@ -13,7 +13,12 @@ const open = ref(false)
 
 // Expanded plan (to edit its demand lines) + the inline add-line form.
 const expanded = ref(null)
-const lineForm = reactive({ workflowDefinitionId: '', rounds: 1, targetDate: '' })
+const lineForm = reactive({
+  workflowDefinitionId: '',
+  operationDefinitionId: '',
+  rounds: 1,
+  targetDate: '',
+})
 const lineError = ref(null)
 
 const workflowOptions = computed(() =>
@@ -21,10 +26,30 @@ const workflowOptions = computed(() =>
 )
 const workflowName = (id) => lab.workflows.find((w) => w.id === id)?.name ?? id.slice(0, 8)
 
+// Methods (SMDP/SAP/…) of the selected workflow, for the Method dropdown.
+const methodOptions = computed(() => {
+  const wf = lab.workflows.find((w) => w.id === lineForm.workflowDefinitionId)
+  return wf ? wf.operations.map((op) => ({ value: op.id, label: op.operationType })) : []
+})
+function methodName(workflowId, methodId) {
+  const wf = lab.workflows.find((w) => w.id === workflowId)
+  return wf?.operations.find((op) => op.id === methodId)?.operationType ?? '—'
+}
+
+// Reset the method when the workflow changes.
+function onWorkflowChange() {
+  lineForm.operationDefinitionId = ''
+}
+
 function toggleExpand(plan) {
   expanded.value = expanded.value === plan.id ? null : plan.id
   lineError.value = null
-  Object.assign(lineForm, { workflowDefinitionId: '', rounds: 1, targetDate: plan.startDate })
+  Object.assign(lineForm, {
+    workflowDefinitionId: '',
+    operationDefinitionId: '',
+    rounds: 1,
+    targetDate: plan.startDate,
+  })
 }
 
 async function addLine(plan) {
@@ -32,7 +57,12 @@ async function addLine(plan) {
   try {
     await addDemandLine(plan.id, { ...lineForm })
     await store.fetchPlans()
-    Object.assign(lineForm, { workflowDefinitionId: '', rounds: 1, targetDate: plan.startDate })
+    Object.assign(lineForm, {
+      workflowDefinitionId: '',
+      operationDefinitionId: '',
+      rounds: 1,
+      targetDate: plan.startDate,
+    })
   } catch (e) {
     lineError.value = e?.message ?? 'Failed to add line'
   }
@@ -145,11 +175,14 @@ async function submit() {
             <tr v-if="expanded === plan.id" class="detail-row">
               <td colspan="7">
                 <div class="detail">
-                  <div class="label">PI requests — workflow × rounds on a target day</div>
+                  <div class="label">PI requests — method × rounds on a target day</div>
                   <table class="lines">
                     <tbody>
                       <tr v-for="line in plan.demandLines" :key="line.id">
-                        <td class="cell-strong">{{ workflowName(line.workflowDefinitionId) }}</td>
+                        <td class="cell-strong">
+                          {{ workflowName(line.workflowDefinitionId) }} ·
+                          {{ methodName(line.workflowDefinitionId, line.operationDefinitionId) }}
+                        </td>
                         <td class="mono">× {{ line.rounds }}</td>
                         <td class="mono">{{ line.targetDate }}</td>
                         <td class="right">
@@ -167,10 +200,19 @@ async function submit() {
                     </tbody>
                   </table>
                   <div class="add-line row">
-                    <select v-model="lineForm.workflowDefinitionId">
+                    <select v-model="lineForm.workflowDefinitionId" @change="onWorkflowChange">
                       <option value="">Workflow…</option>
                       <option v-for="w in workflowOptions" :key="w.value" :value="w.value">
                         {{ w.label }}
+                      </option>
+                    </select>
+                    <select
+                      v-model="lineForm.operationDefinitionId"
+                      :disabled="!methodOptions.length"
+                    >
+                      <option value="">Method…</option>
+                      <option v-for="m in methodOptions" :key="m.value" :value="m.value">
+                        {{ m.label }}
                       </option>
                     </select>
                     <input

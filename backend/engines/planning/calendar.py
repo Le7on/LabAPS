@@ -51,12 +51,15 @@ def build_calendar(
     end_date: str,
     shift_mode: str,
     skipped_dates: list[str] | None = None,
+    include_weekends: bool = False,
 ) -> list[Slot]:
     """Build the ordered list of shift slots for a plan's calendar.
 
-    Days run inclusively from ``start_date`` to ``end_date``. Dates in
-    ``skipped_dates`` produce no slots. Each remaining day contributes the slots
-    of ``shift_mode`` in order. Slot ``index`` is the scheduler time unit.
+    Days run inclusively from ``start_date`` to ``end_date``. Weekends (Sat/Sun)
+    are non-working by default and produce no slots unless ``include_weekends``
+    is set. Dates in ``skipped_dates`` (holidays) also produce no slots. Each
+    remaining day contributes the slots of ``shift_mode`` in order. Slot
+    ``index`` is the scheduler time unit.
     """
     windows = _SHIFT_WINDOWS.get(shift_mode)
     if windows is None:
@@ -73,7 +76,8 @@ def build_calendar(
     day = start
     index = 0
     while day <= end:
-        if day not in skip:
+        is_weekend = day.weekday() >= 5  # 5=Sat, 6=Sun
+        if day not in skip and (include_weekends or not is_weekend):
             for shift_code, start_hhmm, end_hhmm in windows:
                 slots.append(
                     Slot(

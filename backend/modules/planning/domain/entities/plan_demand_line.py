@@ -16,6 +16,7 @@ from backend.shared.errors import ValidationError
 @dataclass(slots=True)
 class PlanDemandLine:
     workflow_definition_id: str
+    operation_definition_id: str  # the Method (SMDP/SAP/…) to run
     rounds: int
     target_date: str  # "YYYY-MM-DD"; the day these rounds must run (hard constraint)
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
@@ -23,6 +24,8 @@ class PlanDemandLine:
     def __post_init__(self) -> None:
         if not self.workflow_definition_id:
             raise ValidationError("workflowDefinitionId is required")
+        if not self.operation_definition_id:
+            raise ValidationError("operationDefinitionId is required")
         if self.rounds <= 0:
             raise ValidationError("rounds must be positive")
         if not self.target_date:

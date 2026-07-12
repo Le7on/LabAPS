@@ -8,8 +8,14 @@ defineProps({
 })
 const emit = defineEmits(['toggle'])
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const cursor = ref(new Date())
+
+// Saturday (6) and Sunday (0) are non-working by default.
+function isWeekend(d) {
+  const wd = d.getDay()
+  return wd === 0 || wd === 6
+}
 
 const monthLabel = computed(() =>
   cursor.value.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
@@ -19,12 +25,12 @@ function iso(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
-// Grid cells: leading blanks (Mon-based) + each day of the month.
+// Grid cells: leading blanks (Sunday-based) + each day of the month.
 const cells = computed(() => {
   const year = cursor.value.getFullYear()
   const month = cursor.value.getMonth()
   const first = new Date(year, month, 1)
-  const lead = (first.getDay() + 6) % 7 // Mon=0
+  const lead = first.getDay() // Sun=0
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const out = []
   for (let i = 0; i < lead; i++) out.push(null)
@@ -50,6 +56,13 @@ function shift(delta) {
     <div class="cal__grid">
       <template v-for="(d, i) in cells" :key="i">
         <span v-if="!d" class="cal__blank" />
+        <span
+          v-else-if="isWeekend(d)"
+          class="cal__day cal__day--weekend"
+          title="Weekend — non-working"
+        >
+          {{ d.getDate() }}
+        </span>
         <button
           v-else
           class="cal__day"
@@ -124,6 +137,15 @@ function shift(delta) {
 }
 .cal__day--off:hover {
   border-color: var(--led-danger);
+}
+.cal__day--weekend {
+  background: var(--inset);
+  color: var(--ink-muted);
+  border-color: var(--line);
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .cal__legend {
   display: flex;

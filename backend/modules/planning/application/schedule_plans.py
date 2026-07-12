@@ -96,34 +96,35 @@ class SchedulePlansUseCase:
 
     @staticmethod
     def _build_operations(plans, slots, workflows):
-        """Materialize every demand line into pinned workflow-instance operations."""
+        """Materialize each demand line's selected Method into ``rounds`` pinned
+        operations. A request targets one Method (SMDP/SAP/…), so each round is a
+        single operation of that method, pinned to the target day (ADR-020)."""
         ops = []
         for plan in plans:
             for line in plan.demand_lines:
                 wf = workflows.get(line.workflow_definition_id)
-                if wf is None or not wf.operations:
+                if wf is None:
                     continue
+                method = next(
+                    (op for op in wf.operations if op.id == line.operation_definition_id), None
+                )
+                if method is None:
+                    raise ValidationError(
+                        f"Method {line.operation_definition_id} not in workflow {wf.id}"
+                    )
                 window = day_window(slots, line.target_date)
                 if window is None:
                     raise ValidationError(f"Target date {line.target_date} is not a working day")
                 for r in range(1, line.rounds + 1):
-                    id_by_type = {}
-                    for op in wf.operations:
-                        inst_id = f"{plan.id}:{line.id}:{op.id}#r{r}"
-                        id_by_type[op.operation_type] = inst_id
-                    for op in wf.operations:
-                        ops.append(
-                            Operation(
-                                identifier=id_by_type[op.operation_type],
-                                duration=op.duration,
-                                required_capability=(f"m:{op.id}" if op.equipment_ids else None),
-                                required_skill=(f"p:{wf.project_id}" if wf.project_id else None),
-                                depends_on=tuple(
-                                    id_by_type[dep] for dep in op.depends_on if dep in id_by_type
-                                ),
-                                window=window,
-                            )
+                    ops.append(
+                        Operation(
+                            identifier=f"{plan.id}:{line.id}:{method.id}#r{r}",
+                            duration=method.duration,
+                            required_capability=(f"m:{method.id}" if method.equipment_ids else None),
+                            required_skill=(f"p:{wf.project_id}" if wf.project_id else None),
+                            window=window,
                         )
+                    )
         return ops
 
     @staticmethod

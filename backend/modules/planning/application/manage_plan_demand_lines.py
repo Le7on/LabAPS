@@ -16,6 +16,7 @@ class AddPlanDemandLineUseCase:
     def execute(self, plan_id: str, data: dict) -> dict:
         line = PlanDemandLine(
             workflow_definition_id=data.get("workflowDefinitionId", ""),
+            operation_definition_id=data.get("operationDefinitionId", ""),
             rounds=int(data.get("rounds", 0)),
             target_date=data.get("targetDate", ""),
         )
@@ -23,8 +24,11 @@ class AddPlanDemandLineUseCase:
             plan = uow.plans.get(plan_id)
             if plan is None:
                 raise NotFoundError(f"Plan {plan_id} not found")
-            if uow.workflow_definitions.get(line.workflow_definition_id) is None:
+            workflow = uow.workflow_definitions.get(line.workflow_definition_id)
+            if workflow is None:
                 raise ValidationError(f"Unknown workflow: {line.workflow_definition_id}")
+            if not any(op.id == line.operation_definition_id for op in workflow.operations):
+                raise ValidationError("Method does not belong to the selected workflow")
             # The target date must fall inside the plan's calendar.
             if plan.start_date and (
                 line.target_date < plan.start_date or line.target_date > plan.end_date
@@ -37,6 +41,7 @@ class AddPlanDemandLineUseCase:
             "id": line.id,
             "planId": plan_id,
             "workflowDefinitionId": line.workflow_definition_id,
+            "operationDefinitionId": line.operation_definition_id,
             "rounds": line.rounds,
             "targetDate": line.target_date,
         }

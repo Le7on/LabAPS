@@ -25,7 +25,7 @@ def _setup(client):
     ).get_json()["data"]["id"]
     eq_id = client.post(
         "/api/v1/equipment",
-        json={"equipmentCode": "EQ-B", "name": "Thermocycler", "capabilities": ["pcr"]},
+        json={"equipmentCode": "EQ-B", "name": "Thermocycler", "fvValidity": 0},
     ).get_json()["data"]["id"]
     workflow_id = client.post(
         "/api/v1/workflow-definitions",

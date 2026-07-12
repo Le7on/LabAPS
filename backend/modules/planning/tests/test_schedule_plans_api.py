@@ -23,7 +23,7 @@ def _lab(client):
         "/api/v1/equipment",
         json={"equipmentCode": "EQ-1", "name": "M", "fvValidity": 0},
     ).get_json()["data"]["id"]
-    workflow_id = client.post(
+    workflow = client.post(
         "/api/v1/workflow-definitions",
         json={
             "workflowCode": "SMDP",
@@ -31,13 +31,13 @@ def _lab(client):
             "projectId": project_id,
             "operations": [{"operationType": "run", "duration": 1, "equipmentIds": [eq_id]}],
         },
-    ).get_json()["data"]["id"]
+    ).get_json()["data"]
     # A qualified operator.
     client.post(
         "/api/v1/staff",
         json={"staffCode": "ST-1", "name": "Alice", "qualifiedProjectIds": [project_id]},
     )
-    return workflow_id
+    return workflow["id"], workflow["operations"][0]["id"]
 
 
 def _plan(client, name, start, end, shift_mode="double"):
@@ -53,19 +53,24 @@ def _plan(client, name, start, end, shift_mode="double"):
     ).get_json()["data"]["id"]
 
 
-def _line(client, plan_id, workflow_id, rounds, date):
+def _line(client, plan_id, workflow_id, method_id, rounds, date):
     client.post(
         f"/api/v1/plans/{plan_id}/demand-lines",
-        json={"workflowDefinitionId": workflow_id, "rounds": rounds, "targetDate": date},
+        json={
+            "workflowDefinitionId": workflow_id,
+            "operationDefinitionId": method_id,
+            "rounds": rounds,
+            "targetDate": date,
+        },
     )
 
 
 def test_two_plans_scheduled_together_on_target_days(client):
-    workflow_id = _lab(client)
+    workflow_id, method_id = _lab(client)
     p1 = _plan(client, "PI-A", "2026-08-10", "2026-08-15")
     p2 = _plan(client, "PI-B", "2026-08-10", "2026-08-15")
-    _line(client, p1, workflow_id, 2, "2026-08-11")
-    _line(client, p2, workflow_id, 1, "2026-08-13")
+    _line(client, p1, workflow_id, method_id, 2, "2026-08-11")
+    _line(client, p2, workflow_id, method_id, 1, "2026-08-13")
 
     resp = client.post("/api/v1/schedule", json={"planIds": [p1, p2], "shiftMode": "double"})
     assert resp.status_code == 200

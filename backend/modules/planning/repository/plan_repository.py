@@ -55,6 +55,7 @@ class PlanRepository:
                     PlanDemandLineORM(
                         id=line.id,
                         workflow_definition_id=line.workflow_definition_id,
+                        operation_definition_id=line.operation_definition_id,
                         rounds=line.rounds,
                         target_date=line.target_date,
                     )
@@ -117,6 +118,7 @@ class PlanRepository:
                 PlanDemandLineORM(
                     id=line.id,
                     workflow_definition_id=line.workflow_definition_id,
+                    operation_definition_id=line.operation_definition_id,
                     rounds=line.rounds,
                     target_date=line.target_date,
                 )
@@ -151,6 +153,7 @@ class PlanRepository:
                 PlanDemandLine(
                     id=line.id,
                     workflow_definition_id=line.workflow_definition_id,
+                    operation_definition_id=line.operation_definition_id or "",
                     rounds=line.rounds,
                     target_date=line.target_date,
                 )

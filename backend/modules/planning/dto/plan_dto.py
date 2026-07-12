@@ -51,6 +51,7 @@ def plan_to_dict(plan: Plan) -> dict:
             {
                 "id": line.id,
                 "workflowDefinitionId": line.workflow_definition_id,
+                "operationDefinitionId": line.operation_definition_id,
                 "rounds": line.rounds,
                 "targetDate": line.target_date,
             }

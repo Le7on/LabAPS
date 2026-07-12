@@ -48,6 +48,7 @@ class PlanDemandLineORM(BaseEntity):
 
     plan_id: Mapped[str] = mapped_column(ForeignKey("plan.id"), index=True)
     workflow_definition_id: Mapped[str] = mapped_column(String(36))
+    operation_definition_id: Mapped[str] = mapped_column(String(36), default="")
     rounds: Mapped[int] = mapped_column(Integer)
     target_date: Mapped[str] = mapped_column(String(10))
 
