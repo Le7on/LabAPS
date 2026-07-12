@@ -47,4 +47,13 @@ def plan_to_dict(plan: Plan) -> dict:
         "endDate": plan.end_date,
         "shiftMode": plan.shift_mode,
         "skippedDates": list(plan.skipped_dates),
+        "demandLines": [
+            {
+                "id": line.id,
+                "workflowDefinitionId": line.workflow_definition_id,
+                "rounds": line.rounds,
+                "targetDate": line.target_date,
+            }
+            for line in plan.demand_lines
+        ],
     }

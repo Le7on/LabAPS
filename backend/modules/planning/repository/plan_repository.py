@@ -9,8 +9,13 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from backend.infrastructure.orm.planning.plan_orm import PlanORM, PlanVersionORM
+from backend.infrastructure.orm.planning.plan_orm import (
+    PlanDemandLineORM,
+    PlanORM,
+    PlanVersionORM,
+)
 from backend.modules.planning.domain.aggregates.plan import Plan
+from backend.modules.planning.domain.entities.plan_demand_line import PlanDemandLine
 from backend.modules.planning.domain.entities.plan_version import PlanVersion
 from backend.modules.planning.domain.enums.plan_enums import (
     PlanStatus,
@@ -42,6 +47,19 @@ class PlanRepository:
         orm.description = plan.description
         orm.status = plan.status.value
 
+        # Sync demand lines (append-only from the aggregate; replace to be safe).
+        existing_lines = {line.id for line in orm.demand_lines}
+        for line in plan.demand_lines:
+            if line.id not in existing_lines:
+                orm.demand_lines.append(
+                    PlanDemandLineORM(
+                        id=line.id,
+                        workflow_definition_id=line.workflow_definition_id,
+                        rounds=line.rounds,
+                        target_date=line.target_date,
+                    )
+                )
+
         existing = {v.id: v for v in orm.versions}
         for version in plan.versions:
             if version.id in existing:
@@ -62,6 +80,16 @@ class PlanRepository:
     def get(self, plan_id: str) -> Plan | None:
         orm = self.session.get(PlanORM, plan_id)
         return self._to_domain(orm) if orm else None
+
+    def remove_demand_line(self, plan_id: str, line_id: str) -> bool:
+        orm = self.session.get(PlanORM, plan_id)
+        if orm is None:
+            return False
+        line = next((line_ for line_ in orm.demand_lines if line_.id == line_id), None)
+        if line is None:
+            return False
+        orm.demand_lines.remove(line)
+        return True
 
     def list(self) -> list[Plan]:
         stmt = select(PlanORM).order_by(PlanORM.created_at)
@@ -85,6 +113,15 @@ class PlanRepository:
             end_date=plan.end_date,
             shift_mode=plan.shift_mode,
             skipped_dates=list(plan.skipped_dates),
+            demand_lines=[
+                PlanDemandLineORM(
+                    id=line.id,
+                    workflow_definition_id=line.workflow_definition_id,
+                    rounds=line.rounds,
+                    target_date=line.target_date,
+                )
+                for line in plan.demand_lines
+            ],
             versions=[
                 PlanVersionORM(
                     id=v.id,
@@ -110,6 +147,15 @@ class PlanRepository:
             end_date=orm.end_date,
             shift_mode=orm.shift_mode or "single",
             skipped_dates=list(orm.skipped_dates or []),
+            demand_lines=[
+                PlanDemandLine(
+                    id=line.id,
+                    workflow_definition_id=line.workflow_definition_id,
+                    rounds=line.rounds,
+                    target_date=line.target_date,
+                )
+                for line in orm.demand_lines
+            ],
             versions=[
                 PlanVersion(
                     id=v.id,

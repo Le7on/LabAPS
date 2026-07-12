@@ -34,6 +34,24 @@ class PlanORM(BaseEntity):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+    demand_lines: Mapped[list[PlanDemandLineORM]] = relationship(
+        back_populates="plan",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+
+
+class PlanDemandLineORM(BaseEntity):
+    """A PI request line: run a workflow N rounds on a target date (ADR-020)."""
+
+    __tablename__ = "plan_demand_line"
+
+    plan_id: Mapped[str] = mapped_column(ForeignKey("plan.id"), index=True)
+    workflow_definition_id: Mapped[str] = mapped_column(String(36))
+    rounds: Mapped[int] = mapped_column(Integer)
+    target_date: Mapped[str] = mapped_column(String(10))
+
+    plan: Mapped[PlanORM] = relationship(back_populates="demand_lines")
 
 
 class PlanVersionORM(BaseEntity):

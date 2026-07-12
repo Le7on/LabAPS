@@ -18,6 +18,14 @@ export function createVersion(planId) {
   return client.post(`/plans/${planId}/versions`).then((r) => r.data)
 }
 
+export function addDemandLine(planId, payload) {
+  return client.post(`/plans/${planId}/demand-lines`, payload).then((r) => r.data)
+}
+
+export function removeDemandLine(planId, lineId) {
+  return client.delete(`/plans/${planId}/demand-lines/${lineId}`).then((r) => r.data)
+}
+
 export function getPlanAvailability(planId) {
   return client.get(`/plans/${planId}/availability`).then((r) => r.data)
 }

@@ -25,6 +25,10 @@ from backend.modules.planning.application.manage_demand import (
     AddDemandUseCase,
     ListDemandUseCase,
 )
+from backend.modules.planning.application.manage_plan_demand_lines import (
+    AddPlanDemandLineUseCase,
+    RemovePlanDemandLineUseCase,
+)
 from backend.modules.planning.application.plan_availability import (
     GetPlanAvailabilityUseCase,
     SetPlanAvailabilityUseCase,
@@ -70,6 +74,21 @@ def list_plans():
 def get_plan(plan_id: str):
     use_case = GetPlanUseCase(_container().unit_of_work)
     return api_response.success(use_case.execute(plan_id))
+
+
+@plans_bp.post("/plans/<plan_id>/demand-lines")
+def add_plan_demand_line(plan_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = AddPlanDemandLineUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, data), status=201)
+
+
+@plans_bp.delete("/plans/<plan_id>/demand-lines/<line_id>")
+def remove_plan_demand_line(plan_id: str, line_id: str):
+    use_case = RemovePlanDemandLineUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id, line_id))
 
 
 @plans_bp.get("/plans/<plan_id>/availability")

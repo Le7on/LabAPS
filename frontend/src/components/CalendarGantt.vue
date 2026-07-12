@@ -26,8 +26,6 @@ function dayOf(a) {
   return a.startAt ? a.startAt.slice(0, 10) : null
 }
 
-const hasCalendar = computed(() => props.assignments.some((a) => a.startAt))
-
 const days = computed(() => {
   const set = new Set()
   for (const a of props.assignments) {
@@ -63,11 +61,7 @@ function label(map, id, fallback = '—') {
 </script>
 
 <template>
-  <div v-if="!hasCalendar" class="cg-empty muted">
-    This plan has no calendar dates, so a day grid isn't available. Add start/end dates to the plan
-    to see the schedule by day.
-  </div>
-  <div v-else class="cg-wrap">
+  <div class="cg-wrap">
     <table class="cg">
       <thead>
         <tr>

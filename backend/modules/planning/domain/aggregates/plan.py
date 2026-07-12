@@ -43,6 +43,8 @@ class Plan:
     end_date: str | None = None
     shift_mode: str = "single"
     skipped_dates: list[str] = field(default_factory=list)
+    # PI request lines: run a workflow N rounds on a target date (ADR-020).
+    demand_lines: list = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if not self.planning_horizon:

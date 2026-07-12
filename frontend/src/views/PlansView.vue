@@ -1,12 +1,51 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { usePlansStore } from '../stores/plans'
+import { useLaboratoryStore } from '../stores/laboratory'
+import { addDemandLine, removeDemandLine } from '../api/plans'
 import PageHeader from '../components/PageHeader.vue'
 import SlideOver from '../components/SlideOver.vue'
 import StatusLed from '../components/StatusLed.vue'
 
 const store = usePlansStore()
+const lab = useLaboratoryStore()
 const open = ref(false)
+
+// Expanded plan (to edit its demand lines) + the inline add-line form.
+const expanded = ref(null)
+const lineForm = reactive({ workflowDefinitionId: '', rounds: 1, targetDate: '' })
+const lineError = ref(null)
+
+const workflowOptions = computed(() =>
+  lab.workflows.map((w) => ({ value: w.id, label: `${w.workflowCode} · ${w.name}` }))
+)
+const workflowName = (id) => lab.workflows.find((w) => w.id === id)?.name ?? id.slice(0, 8)
+
+function toggleExpand(plan) {
+  expanded.value = expanded.value === plan.id ? null : plan.id
+  lineError.value = null
+  Object.assign(lineForm, { workflowDefinitionId: '', rounds: 1, targetDate: plan.startDate })
+}
+
+async function addLine(plan) {
+  lineError.value = null
+  try {
+    await addDemandLine(plan.id, { ...lineForm })
+    await store.fetchPlans()
+    Object.assign(lineForm, { workflowDefinitionId: '', rounds: 1, targetDate: plan.startDate })
+  } catch (e) {
+    lineError.value = e?.message ?? 'Failed to add line'
+  }
+}
+
+async function deleteLine(plan, lineId) {
+  try {
+    await removeDemandLine(plan.id, lineId)
+    await store.fetchPlans()
+  } catch (e) {
+    lineError.value = e?.message ?? 'Failed to remove line'
+  }
+}
 const form = reactive({
   name: '',
   description: '',
@@ -28,7 +67,10 @@ function removeHoliday(d) {
   form.skippedDates = form.skippedDates.filter((x) => x !== d)
 }
 
-onMounted(() => store.fetchPlans())
+onMounted(() => {
+  store.fetchPlans()
+  lab.fetchWorkflows()
+})
 
 // ISO week label (e.g. "2026-W32") derived from a YYYY-MM-DD date.
 function isoWeek(dateStr) {
@@ -80,26 +122,80 @@ async function submit() {
       <table v-if="store.plans.length" class="table">
         <thead>
           <tr>
+            <th></th>
             <th>Plan code</th>
             <th>Name</th>
             <th>Period</th>
             <th>Shifts</th>
+            <th>Requests</th>
             <th>Status</th>
-            <th>Versions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="plan in store.plans" :key="plan.id">
-            <td class="mono cell-strong">{{ plan.planCode }}</td>
-            <td class="cell-strong">{{ plan.name }}</td>
-            <td class="mono">
-              <template v-if="plan.startDate">{{ plan.startDate }} → {{ plan.endDate }}</template>
-              <template v-else>{{ plan.planningHorizon }}</template>
-            </td>
-            <td class="mono">{{ plan.shiftMode }}</td>
-            <td><StatusLed :status="plan.status" /></td>
-            <td class="mono">{{ plan.versionCount }}</td>
-          </tr>
+          <template v-for="plan in store.plans" :key="plan.id">
+            <tr class="plan-row" @click="toggleExpand(plan)">
+              <td class="expand">{{ expanded === plan.id ? '▾' : '▸' }}</td>
+              <td class="mono cell-strong">{{ plan.planCode }}</td>
+              <td class="cell-strong">{{ plan.name }}</td>
+              <td class="mono">{{ plan.startDate }} → {{ plan.endDate }}</td>
+              <td class="mono">{{ plan.shiftMode }}</td>
+              <td class="mono">{{ (plan.demandLines || []).length }}</td>
+              <td><StatusLed :status="plan.status" /></td>
+            </tr>
+            <tr v-if="expanded === plan.id" class="detail-row">
+              <td colspan="7">
+                <div class="detail">
+                  <div class="label">PI requests — workflow × rounds on a target day</div>
+                  <table class="lines">
+                    <tbody>
+                      <tr v-for="line in plan.demandLines" :key="line.id">
+                        <td class="cell-strong">{{ workflowName(line.workflowDefinitionId) }}</td>
+                        <td class="mono">× {{ line.rounds }}</td>
+                        <td class="mono">{{ line.targetDate }}</td>
+                        <td class="right">
+                          <button
+                            class="btn btn--sm btn--ghost danger"
+                            @click="deleteLine(plan, line.id)"
+                          >
+                            ✕
+                          </button>
+                        </td>
+                      </tr>
+                      <tr v-if="!plan.demandLines || !plan.demandLines.length">
+                        <td colspan="4" class="muted">No requests yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="add-line row">
+                    <select v-model="lineForm.workflowDefinitionId">
+                      <option value="">Workflow…</option>
+                      <option v-for="w in workflowOptions" :key="w.value" :value="w.value">
+                        {{ w.label }}
+                      </option>
+                    </select>
+                    <input
+                      v-model.number="lineForm.rounds"
+                      type="number"
+                      min="1"
+                      class="rounds"
+                      title="Rounds"
+                    />
+                    <input
+                      v-model="lineForm.targetDate"
+                      type="date"
+                      :min="plan.startDate"
+                      :max="plan.endDate"
+                      title="Target date"
+                    />
+                    <button class="btn btn--sm btn--primary" @click="addLine(plan)">
+                      Add request
+                    </button>
+                  </div>
+                  <p v-if="lineError" class="error">{{ lineError }}</p>
+                </div>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
       <p v-else class="empty">No plans yet.</p>
@@ -166,5 +262,42 @@ async function submit() {
   color: var(--led-danger);
   padding: 0 0 0 4px;
   font-size: 11px;
+}
+.plan-row {
+  cursor: pointer;
+}
+.expand {
+  color: var(--ink-3);
+  width: 24px;
+  text-align: center;
+}
+.detail-row td {
+  background: var(--panel-2);
+  padding: var(--s3) var(--s4);
+}
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+.lines {
+  width: auto;
+  border-collapse: collapse;
+}
+.lines td {
+  padding: 4px 12px 4px 0;
+  border: none;
+}
+.add-line {
+  align-items: center;
+}
+.add-line .rounds {
+  width: 64px;
+}
+.right {
+  text-align: right;
+}
+.danger {
+  color: var(--led-danger);
 }
 </style>
