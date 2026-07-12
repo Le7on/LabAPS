@@ -36,9 +36,10 @@ function methodName(workflowId, methodId) {
   return wf?.operations.find((op) => op.id === methodId)?.operationType ?? '—'
 }
 
-// Reset the method when the workflow changes.
+// Reset the method when the workflow changes; auto-pick if there's only one.
 function onWorkflowChange() {
-  lineForm.operationDefinitionId = ''
+  const opts = methodOptions.value
+  lineForm.operationDefinitionId = opts.length === 1 ? opts[0].value : ''
 }
 
 function toggleExpand(plan) {
@@ -229,7 +230,11 @@ async function submit() {
                       :max="plan.endDate"
                       title="Target date"
                     />
-                    <button class="btn btn--sm btn--primary" @click="addLine(plan)">
+                    <button
+                      class="btn btn--sm btn--primary"
+                      :disabled="!lineForm.workflowDefinitionId || !lineForm.operationDefinitionId"
+                      @click="addLine(plan)"
+                    >
                       Add request
                     </button>
                   </div>
