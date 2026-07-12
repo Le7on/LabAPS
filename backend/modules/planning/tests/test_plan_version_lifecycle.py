@@ -10,7 +10,9 @@ from backend.shared.errors import ConflictError
 
 
 def _plan_with_version() -> tuple[Plan, str]:
-    plan = Plan(planning_horizon="2026-W33", name="P")
+    plan = Plan(
+        planning_horizon="2026-W33", name="P", start_date="2026-08-10", end_date="2026-08-20"
+    )
     version = plan.create_version()
     return plan, version.id
 
@@ -51,7 +53,9 @@ def test_published_version_is_immutable_for_scheduling():
 
 
 def test_publishing_supersedes_previous_published_version():
-    plan = Plan(planning_horizon="2026-W33", name="P")
+    plan = Plan(
+        planning_horizon="2026-W33", name="P", start_date="2026-08-10", end_date="2026-08-20"
+    )
     v1 = plan.create_version()
     v2 = plan.create_version()
 

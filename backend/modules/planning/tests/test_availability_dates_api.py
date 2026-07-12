@@ -35,9 +35,7 @@ def _setup(client, duration=1):
             "workflowCode": "WF-1",
             "name": "W",
             "projectId": project_id,
-            "operations": [
-                {"operationType": "run", "duration": duration, "equipmentIds": [eq_id]}
-            ],
+            "operations": [{"operationType": "run", "duration": duration, "equipmentIds": [eq_id]}],
         },
     ).get_json()["data"]["id"]
     plan_id = client.post(

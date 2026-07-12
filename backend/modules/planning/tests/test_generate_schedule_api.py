@@ -22,7 +22,12 @@ def client():
 def test_full_planning_to_schedule_flow(client):
     created = client.post(
         "/api/v1/plans",
-        json={"planningHorizon": "2026-W34", "name": "Schedule Test"},
+        json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
+            "planningHorizon": "2026-W34",
+            "name": "Schedule Test",
+        },
     )
     assert created.status_code == 201
     plan_id = created.get_json()["data"]["id"]

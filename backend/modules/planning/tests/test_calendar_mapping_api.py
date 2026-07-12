@@ -120,16 +120,3 @@ def test_calendar_too_small_is_infeasible(client):
     )
     assert response.status_code == 200
     assert response.get_json()["meta"]["feasible"] is False
-
-
-def test_plan_without_calendar_keeps_integer_behavior(client):
-    workflow_id = _setup_workflow(client)
-    response, _ = _schedule(client, {"planningHorizon": "2026-W33", "name": "P"}, workflow_id)
-    assert response.status_code == 200
-    a = response.get_json()["data"]["assignments"][0]
-    # No calendar: integer units only, no datetime mapping in the response.
-    assert a.get("startAt") is None
-    assert a.get("endAt") is None
-    # Integer units are still present.
-    assert a["start"] == 0
-    assert a["end"] == 2

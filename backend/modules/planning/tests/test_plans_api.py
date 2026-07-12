@@ -15,6 +15,8 @@ def test_create_and_list_plan(client):
     response = client.post(
         "/api/v1/plans",
         json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
             "planningHorizon": "2026-W32",
             "name": "Week 32 Production Plan",
             "description": "Routine production",
@@ -39,6 +41,8 @@ def test_get_plan_returns_details(client):
     created = client.post(
         "/api/v1/plans",
         json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
             "planningHorizon": "2026-W33",
             "name": "Week 33 Production Plan",
             "description": "Routine production",

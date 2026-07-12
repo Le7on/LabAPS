@@ -37,7 +37,13 @@ def _setup(client):
         },
     ).get_json()["data"]["id"]
     plan_id = client.post(
-        "/api/v1/plans", json={"planningHorizon": "2026-W33", "name": "P"}
+        "/api/v1/plans",
+        json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
+            "planningHorizon": "2026-W33",
+            "name": "P",
+        },
     ).get_json()["data"]["id"]
     version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
     return eq_id, workflow_id, plan_id, version_id

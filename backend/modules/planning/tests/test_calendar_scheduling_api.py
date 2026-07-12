@@ -1,7 +1,7 @@
-"""End-to-end test: equipment availability windows honored by instance scheduling.
+"""End-to-end test: equipment date availability honored by instance scheduling.
 
-Verifies calendar data flows: Equipment.availability -> Planning Context snapshot
--> schedule-instances resource windows -> solver placement.
+A plan always has a calendar; marking equipment unavailable on the early days of
+the plan must push the operation to a later, available day.
 """
 
 from __future__ import annotations
@@ -19,19 +19,13 @@ def client():
         yield client
 
 
-def test_scheduling_honors_equipment_availability_window(client):
+def test_scheduling_honors_equipment_date_availability(client):
     project_id = client.post(
         "/api/v1/projects", json={"projectCode": "PRJ-1", "name": "Proj"}
     ).get_json()["data"]["id"]
-    # Equipment available only in [10, 20).
     eq_id = client.post(
         "/api/v1/equipment",
-        json={
-            "equipmentCode": "EQ-1",
-            "name": "Windowed",
-            "capabilities": ["pcr"],
-            "availability": [[10, 20]],
-        },
+        json={"equipmentCode": "EQ-1", "name": "M", "fvValidity": 0},
     ).get_json()["data"]["id"]
     workflow_id = client.post(
         "/api/v1/workflow-definitions",
@@ -39,15 +33,31 @@ def test_scheduling_honors_equipment_availability_window(client):
             "workflowCode": "WF-1",
             "name": "PCR",
             "projectId": project_id,
-            "operations": [{"operationType": "amplify", "duration": 3, "equipmentIds": [eq_id]}],
+            "operations": [{"operationType": "amplify", "duration": 1, "equipmentIds": [eq_id]}],
         },
     ).get_json()["data"]["id"]
     plan_id = client.post(
-        "/api/v1/plans", json={"planningHorizon": "2026-W33", "name": "P"}
+        "/api/v1/plans",
+        json={
+            "planningHorizon": "2026-W33",
+            "name": "P",
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-14",
+            "shiftMode": "single",
+        },
     ).get_json()["data"]["id"]
+    # Machine down for the first three days; only 08-13/08-14 remain.
+    client.post(
+        f"/api/v1/plans/{plan_id}/availability",
+        json={
+            "kind": "equipment",
+            "resourceId": eq_id,
+            "available": True,
+            "unavailableDates": [["2026-08-10", "2026-08-12"]],
+        },
+    )
     version_id = client.post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
     base = f"/api/v1/plans/{plan_id}/versions/{version_id}"
-
     client.post(f"{base}/generate-instances", json={"workflowDefinitionId": workflow_id})
     scheduled = client.post(f"{base}/schedule-instances")
 
@@ -55,6 +65,5 @@ def test_scheduling_honors_equipment_availability_window(client):
     body = scheduled.get_json()
     assert body["meta"]["feasible"] is True
     assignment = body["data"]["assignments"][0]
-    # The operation must be placed inside the [10, 20) window.
-    assert assignment["start"] >= 10
-    assert assignment["end"] <= 20
+    # Must land on an available day (08-13 or 08-14), not the down days.
+    assert assignment["startAt"][:10] >= "2026-08-13"

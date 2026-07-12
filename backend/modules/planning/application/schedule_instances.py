@@ -45,14 +45,14 @@ class ScheduleInstancesUseCase:
             context = uow.workflow_instances.get_context(version_id) or {}
             demands = uow.demands.list_for_version(version_id)
 
-            # Calendar (ADR-016): when the plan defines one, the horizon is the
-            # number of shift slots and each assignment maps to real datetimes.
-            slots = []
-            if plan.has_calendar():
-                slots = build_calendar(
-                    plan.start_date, plan.end_date, plan.shift_mode, plan.skipped_dates
-                )
-            horizon = len(slots) if slots else None
+            # Calendar (ADR-016): a plan always has a date range, so the horizon
+            # is the number of shift slots and each assignment maps to real dates.
+            slots = build_calendar(
+                plan.start_date, plan.end_date, plan.shift_mode, plan.skipped_dates
+            )
+            if not slots:
+                raise ValidationError("The plan calendar has no working days (all dates skipped)")
+            horizon = len(slots)
 
             problem = self._build_problem(
                 operations, context, demands, frozen_until, horizon, slots
@@ -69,10 +69,9 @@ class ScheduleInstancesUseCase:
                     "equipmentId": a.equipment_id,
                     "staffId": a.staff_id,
                 }
-                if slots:
-                    mapped = map_interval(slots, a.start, a.end)
-                    if mapped:
-                        assignment.update(mapped)
+                mapped = map_interval(slots, a.start, a.end)
+                if mapped:
+                    assignment.update(mapped)
                 assignments.append(assignment)
 
             if result.feasible:
@@ -91,7 +90,7 @@ class ScheduleInstancesUseCase:
 
     @staticmethod
     def _build_problem(
-        operations, context, demands, frozen_until=0, horizon=None, slots=None
+        operations, context, demands, frozen_until, horizon, slots
     ) -> PlanningProblem:
         # Operation identity is the operation instance id; dependencies in the
         # instances already reference instance ids (run r -> run r of each
@@ -141,17 +140,15 @@ class ScheduleInstancesUseCase:
         )
 
         def windows_for(res):
-            # With a calendar, unavailable date ranges (leave / breakdown) become
-            # available slot windows so the resource can't be used on those days.
-            # Without a calendar, fall back to any raw integer availability windows.
-            if slots:
-                return available_windows(slots, res.get("unavailableDates", []))
-            return tuple(tuple(w) for w in res.get("availability", []))
+            # A resource's unavailable date ranges (leave / breakdown) become the
+            # complementary available shift-slot windows; the solver then keeps
+            # work off those days.
+            return available_windows(slots, res.get("unavailableDates", []))
 
         def usable(res):
-            # Under a calendar, a resource with no available window (unavailable
-            # every day) cannot work at all — drop it so it is not eligible.
-            return not slots or bool(windows_for(res))
+            # A resource with no available window (unavailable every day) cannot
+            # work at all — drop it so it is not eligible.
+            return bool(windows_for(res))
 
         resources = tuple(
             Resource(
@@ -174,12 +171,8 @@ class ScheduleInstancesUseCase:
             for s in context.get("staff", [])
             if usable(s)
         )
-        policies = (
-            PlanningPolicies(
-                objective=objective, frozen_until=frozen_until, planning_horizon=horizon
-            )
-            if horizon is not None
-            else PlanningPolicies(objective=objective, frozen_until=frozen_until)
+        policies = PlanningPolicies(
+            objective=objective, frozen_until=frozen_until, planning_horizon=horizon
         )
         return PlanningProblem(
             operations=built_ops,

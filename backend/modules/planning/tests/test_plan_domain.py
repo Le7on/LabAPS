@@ -14,7 +14,9 @@ from backend.shared.errors import ValidationError
 
 
 def test_plan_code_derived_from_horizon():
-    plan = Plan(planning_horizon="2026-W33", name="Week 33")
+    plan = Plan(
+        planning_horizon="2026-W33", name="Week 33", start_date="2026-08-10", end_date="2026-08-20"
+    )
     assert plan.plan_code == "PLAN-2026-W33"
     assert plan.status == PlanStatus.DRAFT
 
@@ -30,7 +32,9 @@ def test_plan_requires_name():
 
 
 def test_create_version_appends_incrementing_versions():
-    plan = Plan(planning_horizon="2026-W33", name="Week 33")
+    plan = Plan(
+        planning_horizon="2026-W33", name="Week 33", start_date="2026-08-10", end_date="2026-08-20"
+    )
 
     first = plan.create_version()
     second = plan.create_version(VersionType.SIMULATION)

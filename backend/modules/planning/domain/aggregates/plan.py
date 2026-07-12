@@ -37,8 +37,8 @@ class Plan:
     plan_code: str = ""
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     versions: list[PlanVersion] = field(default_factory=list)
-    # Calendar configuration (ADR-016). Optional; when start/end are set the
-    # scheduler maps integer units to real dates + shift windows.
+    # Calendar configuration (ADR-016). A plan always runs over a real date range;
+    # the scheduler maps integer shift-slot units to these dates + shift windows.
     start_date: str | None = None
     end_date: str | None = None
     shift_mode: str = "single"
@@ -49,13 +49,18 @@ class Plan:
             raise ValidationError("planningHorizon is required")
         if not self.name:
             raise ValidationError("name is required")
+        if not self.start_date or not self.end_date:
+            raise ValidationError("startDate and endDate are required")
+        if self.end_date < self.start_date:
+            raise ValidationError("endDate must be on or after startDate")
         if not self.plan_code:
             self.plan_code = self.derive_plan_code(self.planning_horizon)
         if self.shift_mode not in ("single", "double"):
             raise ValidationError("shiftMode must be 'single' or 'double'")
 
     def has_calendar(self) -> bool:
-        return bool(self.start_date and self.end_date)
+        # A plan always has a calendar now; kept for call-site compatibility.
+        return True
 
     @staticmethod
     def derive_plan_code(planning_horizon: str) -> str:

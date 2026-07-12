@@ -25,7 +25,15 @@ def test_empty_dashboard(client):
 
 
 def test_dashboard_reflects_created_entities(client):
-    client.post("/api/v1/plans", json={"planningHorizon": "2026-W33", "name": "P"})
+    client.post(
+        "/api/v1/plans",
+        json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
+            "planningHorizon": "2026-W33",
+            "name": "P",
+        },
+    )
     client.post(
         "/api/v1/equipment",
         json={"equipmentCode": "EQ-1", "name": "Machine", "capabilities": ["pcr"]},

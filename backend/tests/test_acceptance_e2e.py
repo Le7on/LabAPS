@@ -89,9 +89,15 @@ def test_full_pipeline_end_to_end():
     ).get_json()["data"]["id"]
 
     # 3. Plan + version.
-    plan_id = post("/api/v1/plans", {"planningHorizon": "2026-W33", "name": "Week 33"}).get_json()[
-        "data"
-    ]["id"]
+    plan_id = post(
+        "/api/v1/plans",
+        {
+            "planningHorizon": "2026-W33",
+            "name": "Week 33",
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
+        },
+    ).get_json()["data"]["id"]
     version_id = post(f"/api/v1/plans/{plan_id}/versions").get_json()["data"]["id"]
     base = f"/api/v1/plans/{plan_id}/versions/{version_id}"
 
