@@ -34,10 +34,13 @@ class GenerateWorkflowInstanceUseCase:
             if not workflow.operations:
                 raise ValidationError("Workflow definition has no operations")
 
-            # Per-plan availability: a resource is excluded from this plan's
-            # snapshot if globally inactive OR explicitly unavailable for the plan.
+            # Per-plan availability: a resource is excluded entirely if globally
+            # inactive or turned off for the whole plan; otherwise its unavailable
+            # date ranges (leave / breakdown) are captured for later slot masking.
             unavailable_equipment = uow.plan_availability.unavailable_ids(plan_id, "equipment")
             unavailable_staff = uow.plan_availability.unavailable_ids(plan_id, "staff")
+            eq_dates = uow.plan_availability.unavailable_dates(plan_id, "equipment")
+            staff_dates = uow.plan_availability.unavailable_dates(plan_id, "staff")
 
             # Immutable snapshot of the resources available at generation time.
             context = {
@@ -45,6 +48,7 @@ class GenerateWorkflowInstanceUseCase:
                     {
                         "id": e.id,
                         "availability": [list(w) for w in e.availability],
+                        "unavailableDates": eq_dates.get(e.id, []),
                         "fvDuration": e.fv_duration,
                         "fvValidity": e.fv_validity,
                     }
@@ -56,6 +60,7 @@ class GenerateWorkflowInstanceUseCase:
                         "id": s.id,
                         "qualifiedProjectIds": sorted(s.qualified_project_ids),
                         "availability": [list(w) for w in s.availability],
+                        "unavailableDates": staff_dates.get(s.id, []),
                     }
                     for s in uow.staff.list()
                     if s.active and s.id not in unavailable_staff

@@ -89,6 +89,7 @@ def set_plan_availability(plan_id: str):
         data.get("kind", ""),
         data.get("resourceId", ""),
         bool(data.get("available", True)),
+        data.get("unavailableDates", []),
     )
     return api_response.success(result)
 

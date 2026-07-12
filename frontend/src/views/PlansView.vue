@@ -13,7 +13,20 @@ const form = reactive({
   startDate: '',
   endDate: '',
   shiftMode: 'single',
+  skippedDates: [],
 })
+const holiday = ref('')
+
+function addHoliday() {
+  if (holiday.value && !form.skippedDates.includes(holiday.value)) {
+    form.skippedDates.push(holiday.value)
+    form.skippedDates.sort()
+  }
+  holiday.value = ''
+}
+function removeHoliday(d) {
+  form.skippedDates = form.skippedDates.filter((x) => x !== d)
+}
 
 onMounted(() => store.fetchPlans())
 
@@ -38,6 +51,7 @@ async function submit() {
     startDate: form.startDate,
     endDate: form.endDate,
     shiftMode: form.shiftMode,
+    skippedDates: [...form.skippedDates],
     planningHorizon: isoWeek(form.startDate),
   })
   if (ok) {
@@ -47,6 +61,7 @@ async function submit() {
       startDate: '',
       endDate: '',
       shiftMode: 'single',
+      skippedDates: [],
     })
     open.value = false
   }
@@ -114,6 +129,19 @@ async function submit() {
           </select>
         </div>
         <div class="field">
+          <label>Holidays (no work these days)</label>
+          <div class="row">
+            <input v-model="holiday" type="date" />
+            <button type="button" class="btn btn--sm" @click="addHoliday">Add</button>
+          </div>
+          <div v-if="form.skippedDates.length" class="holidays">
+            <span v-for="d in form.skippedDates" :key="d" class="chip">
+              {{ d }}
+              <button type="button" class="hol__x" @click="removeHoliday(d)">✕</button>
+            </span>
+          </div>
+        </div>
+        <div class="field">
           <label>Description</label>
           <input v-model="form.description" placeholder="Routine production" />
         </div>
@@ -123,3 +151,20 @@ async function submit() {
     </SlideOver>
   </section>
 </template>
+
+<style scoped>
+.holidays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+.hol__x {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--led-danger);
+  padding: 0 0 0 4px;
+  font-size: 11px;
+}
+</style>

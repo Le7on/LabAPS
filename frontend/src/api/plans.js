@@ -22,9 +22,14 @@ export function getPlanAvailability(planId) {
   return client.get(`/plans/${planId}/availability`).then((r) => r.data)
 }
 
-export function setPlanAvailability(planId, kind, resourceId, available) {
+export function setPlanAvailability(planId, kind, resourceId, available, unavailableDates = []) {
   return client
-    .post(`/plans/${planId}/availability`, { kind, resourceId, available })
+    .post(`/plans/${planId}/availability`, {
+      kind,
+      resourceId,
+      available,
+      unavailableDates,
+    })
     .then((r) => r.data)
 }
 

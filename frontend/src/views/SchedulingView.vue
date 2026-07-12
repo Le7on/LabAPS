@@ -22,6 +22,8 @@ import {
 import GanttChart from '../components/GanttChart.vue'
 import PageHeader from '../components/PageHeader.vue'
 import StatusLed from '../components/StatusLed.vue'
+import AvailabilityRow from '../components/AvailabilityRow.vue'
+import CalendarGantt from '../components/CalendarGantt.vue'
 
 const plans = ref([])
 const workflows = ref([])
@@ -62,10 +64,15 @@ async function onPlanChange() {
   }
 }
 
-async function toggleAvailability(kind, row) {
-  const next = !row.available
-  const ok = await run(() => setPlanAvailability(selected.plan, kind, row.id, next))
-  if (ok) row.available = next
+// change = { available, unavailableDates } from AvailabilityRow.
+async function updateAvailability(kind, row, change) {
+  const ok = await run(() =>
+    setPlanAvailability(selected.plan, kind, row.id, change.available, change.unavailableDates)
+  )
+  if (ok) {
+    row.available = change.available
+    row.unavailableDates = change.unavailableDates
+  }
 }
 
 onMounted(async () => {
@@ -77,6 +84,21 @@ onMounted(async () => {
 
 const makespan = computed(() => meta.value.makespan)
 const feasible = computed(() => meta.value.feasible)
+
+// Label maps for the calendar grid (id -> human label).
+const equipmentLabels = computed(() =>
+  Object.fromEntries(availability.equipment.map((e) => [e.id, `${e.code} · ${e.name}`]))
+)
+const staffLabels = computed(() =>
+  Object.fromEntries(availability.staff.map((s) => [s.id, `${s.code} · ${s.name}`]))
+)
+const methodLabels = computed(() => {
+  const map = {}
+  for (const wf of workflows.value) {
+    for (const op of wf.operations) map[op.id] = op.operationType
+  }
+  return map
+})
 
 async function run(fn, message) {
   error.value = null
@@ -230,30 +252,26 @@ function formatAt(iso) {
           </div>
           <div class="panel__body stack">
             <p class="muted avail__hint">
-              Set who and what is available this period. Toggle off to exclude. Set before
-              generating.
+              Uncheck to exclude for the whole plan, or add leave / breakdown date ranges. Set
+              before generating.
             </p>
             <div v-if="availability.staff.length" class="avail">
               <div class="label">Staff</div>
-              <label v-for="s in availability.staff" :key="s.id" class="avail__row">
-                <input
-                  type="checkbox"
-                  :checked="s.available"
-                  @change="toggleAvailability('staff', s)"
-                />
-                <span class="avail__name">{{ s.code }} · {{ s.name }}</span>
-              </label>
+              <AvailabilityRow
+                v-for="s in availability.staff"
+                :key="s.id"
+                :row="s"
+                @change="(c) => updateAvailability('staff', s, c)"
+              />
             </div>
             <div v-if="availability.equipment.length" class="avail">
               <div class="label">Equipment</div>
-              <label v-for="e in availability.equipment" :key="e.id" class="avail__row">
-                <input
-                  type="checkbox"
-                  :checked="e.available"
-                  @change="toggleAvailability('equipment', e)"
-                />
-                <span class="avail__name">{{ e.code }} · {{ e.name }}</span>
-              </label>
+              <AvailabilityRow
+                v-for="e in availability.equipment"
+                :key="e.id"
+                :row="e"
+                @change="(c) => updateAvailability('equipment', e, c)"
+              />
             </div>
           </div>
         </div>
@@ -312,6 +330,20 @@ function formatAt(iso) {
 
       <!-- Right: the result — timeline hero, then detail. -->
       <div class="result stack">
+        <div v-if="assignments.length" class="panel">
+          <div class="panel__head">
+            <span class="panel__title">Schedule by day</span>
+          </div>
+          <div class="panel__body">
+            <CalendarGantt
+              :assignments="assignments"
+              :equipment-labels="equipmentLabels"
+              :staff-labels="staffLabels"
+              :method-labels="methodLabels"
+            />
+          </div>
+        </div>
+
         <div v-if="assignments.length" class="panel">
           <div class="panel__head"><span class="panel__title">Resource timeline</span></div>
           <div class="panel__body">

@@ -8,7 +8,7 @@ a resource with no row defaults to available.
 
 from __future__ import annotations
 
-from sqlalchemy import Boolean, String, UniqueConstraint
+from sqlalchemy import JSON, Boolean, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.infrastructure.orm.common.base import BaseEntity
@@ -23,4 +23,8 @@ class PlanResourceAvailabilityORM(BaseEntity):
     plan_id: Mapped[str] = mapped_column(String(36), index=True)
     resource_kind: Mapped[str] = mapped_column(String(20))  # "staff" | "equipment"
     resource_id: Mapped[str] = mapped_column(String(36))
+    # False = unavailable for the whole plan period. True (default) = available,
+    # except on any date ranges in ``unavailable_dates`` (leave / breakdown /
+    # downtime), each ["YYYY-MM-DD", "YYYY-MM-DD"] inclusive.
     available: Mapped[bool] = mapped_column(Boolean, default=True)
+    unavailable_dates: Mapped[list] = mapped_column(JSON, default=list)

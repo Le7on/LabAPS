@@ -99,6 +99,50 @@ def slot_count(
     return len(build_calendar(start_date, end_date, shift_mode, skipped_dates))
 
 
+def _expand_ranges(ranges: list | None) -> set[date]:
+    """Expand [["YYYY-MM-DD","YYYY-MM-DD"], ...] inclusive ranges into a date set."""
+    out: set[date] = set()
+    for r in ranges or []:
+        start = _parse_date(r[0])
+        end = _parse_date(r[1])
+        day = start
+        while day <= end:
+            out.add(day)
+            day += timedelta(days=1)
+    return out
+
+
+def available_windows(
+    slots: list[Slot], unavailable_ranges: list | None
+) -> tuple[tuple[int, int], ...]:
+    """Contiguous available [start_unit, end_unit) slot windows.
+
+    Given the plan's slots and a resource's unavailable date ranges (leave,
+    breakdown), return the maximal runs of consecutive slot indices whose day is
+    NOT unavailable. A task fitting entirely within one such window therefore
+    never touches an unavailable day. Empty ranges -> one window spanning all
+    slots (fully available). No slots -> no windows.
+    """
+    if not slots:
+        return ()
+    blocked = _expand_ranges(unavailable_ranges)
+    if not blocked:
+        return ((0, len(slots)),)
+
+    windows: list[tuple[int, int]] = []
+    run_start: int | None = None
+    for slot in slots:
+        free = slot.day not in blocked
+        if free and run_start is None:
+            run_start = slot.index
+        elif not free and run_start is not None:
+            windows.append((run_start, slot.index))
+            run_start = None
+    if run_start is not None:
+        windows.append((run_start, slots[-1].index + 1))
+    return tuple(windows)
+
+
 def map_interval(slots: list[Slot], start_unit: int, end_unit: int) -> dict | None:
     """Map an integer [start_unit, end_unit) interval to real datetimes.
 

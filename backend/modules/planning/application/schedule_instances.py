@@ -8,7 +8,11 @@ resulting assignments and marks the version Scheduled.
 
 from __future__ import annotations
 
-from backend.engines.planning.calendar import build_calendar, map_interval
+from backend.engines.planning.calendar import (
+    available_windows,
+    build_calendar,
+    map_interval,
+)
 from backend.engines.planning.planning_problem import (
     EQUIPMENT,
     OBJECTIVE_MAKESPAN,
@@ -50,7 +54,9 @@ class ScheduleInstancesUseCase:
                 )
             horizon = len(slots) if slots else None
 
-            problem = self._build_problem(operations, context, demands, frozen_until, horizon)
+            problem = self._build_problem(
+                operations, context, demands, frozen_until, horizon, slots
+            )
             result = self._engine.schedule(problem)
 
             assignments = []
@@ -85,7 +91,7 @@ class ScheduleInstancesUseCase:
 
     @staticmethod
     def _build_problem(
-        operations, context, demands, frozen_until=0, horizon=None
+        operations, context, demands, frozen_until=0, horizon=None, slots=None
     ) -> PlanningProblem:
         # Operation identity is the operation instance id; dependencies in the
         # instances already reference instance ids (run r -> run r of each
@@ -134,24 +140,39 @@ class ScheduleInstancesUseCase:
             for op in operations
         )
 
+        def windows_for(res):
+            # With a calendar, unavailable date ranges (leave / breakdown) become
+            # available slot windows so the resource can't be used on those days.
+            # Without a calendar, fall back to any raw integer availability windows.
+            if slots:
+                return available_windows(slots, res.get("unavailableDates", []))
+            return tuple(tuple(w) for w in res.get("availability", []))
+
+        def usable(res):
+            # Under a calendar, a resource with no available window (unavailable
+            # every day) cannot work at all — drop it so it is not eligible.
+            return not slots or bool(windows_for(res))
+
         resources = tuple(
             Resource(
                 identifier=e["id"],
                 kind=EQUIPMENT,
                 provides=frozenset(equipment_tokens.get(e["id"], set())),
-                windows=tuple(tuple(w) for w in e.get("availability", [])),
+                windows=windows_for(e),
                 fv_duration=int(e.get("fvDuration", 0) or 0),
                 fv_validity=int(e.get("fvValidity", 0) or 0),
             )
             for e in context.get("equipment", [])
+            if usable(e)
         ) + tuple(
             Resource(
                 identifier=s["id"],
                 kind=STAFF,
                 provides=frozenset(f"p:{pid}" for pid in s.get("qualifiedProjectIds", [])),
-                windows=tuple(tuple(w) for w in s.get("availability", [])),
+                windows=windows_for(s),
             )
             for s in context.get("staff", [])
+            if usable(s)
         )
         policies = (
             PlanningPolicies(
