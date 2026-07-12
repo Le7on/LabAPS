@@ -8,7 +8,10 @@ from __future__ import annotations
 
 from flask import Blueprint, current_app, request
 
-from backend.modules.planning.application.create_plan import CreatePlanUseCase
+from backend.modules.planning.application.create_plan import (
+    CreatePlanUseCase,
+    DeletePlanUseCase,
+)
 from backend.modules.planning.application.create_plan_version import (
     CreatePlanVersionUseCase,
 )
@@ -84,6 +87,12 @@ def schedule_plans():
 @plans_bp.get("/plans/<plan_id>")
 def get_plan(plan_id: str):
     use_case = GetPlanUseCase(_container().unit_of_work)
+    return api_response.success(use_case.execute(plan_id))
+
+
+@plans_bp.delete("/plans/<plan_id>")
+def delete_plan(plan_id: str):
+    use_case = DeletePlanUseCase(_container().unit_of_work)
     return api_response.success(use_case.execute(plan_id))
 
 

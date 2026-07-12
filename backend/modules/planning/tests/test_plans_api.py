@@ -56,3 +56,46 @@ def test_get_plan_returns_details(client):
     payload = response.get_json()["data"]
     assert payload["id"] == plan_id
     assert payload["planCode"] == "PLAN-2026-W33"
+
+
+def _make_plan(client):
+    return client.post(
+        "/api/v1/plans",
+        json={
+            "startDate": "2026-08-10",
+            "endDate": "2026-08-20",
+            "planningHorizon": "2026-W32",
+            "name": "Draft Plan",
+        },
+    ).get_json()["data"]["id"]
+
+
+def test_delete_draft_plan(client):
+    plan_id = _make_plan(client)
+    resp = client.delete(f"/api/v1/plans/{plan_id}")
+    assert resp.status_code == 200
+    assert client.get("/api/v1/plans").get_json()["meta"]["total"] == 0
+
+
+def test_delete_missing_plan_is_404(client):
+    assert client.delete("/api/v1/plans/nope").status_code == 404
+
+
+def test_cannot_delete_non_draft_plan(client):
+    # Plans are Draft on creation; a non-draft plan is rejected by the guard.
+    from backend.modules.planning.domain.aggregates.plan import Plan
+    from backend.modules.planning.domain.enums.plan_enums import PlanStatus
+
+    container = client.application.config["CONTAINER"]
+    plan = Plan(
+        planning_horizon="2026-W40",
+        name="Active",
+        start_date="2026-08-10",
+        end_date="2026-08-20",
+        status=PlanStatus.ACTIVE,
+    )
+    with container.unit_of_work() as uow:
+        uow.plans.add(plan)
+
+    resp = client.delete(f"/api/v1/plans/{plan.id}")
+    assert resp.status_code == 409

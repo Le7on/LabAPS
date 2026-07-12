@@ -9,7 +9,13 @@ import MultiSelect from '../components/MultiSelect.vue'
 const store = useLaboratoryStore()
 const open = ref(false)
 const editingId = ref(null)
-const form = reactive({ equipmentCode: '', name: '', methodIds: [], fvDuration: 8, fvValidity: 112 })
+const form = reactive({
+  equipmentCode: '',
+  name: '',
+  methodIds: [],
+  fvDuration: 8,
+  fvValidity: 112,
+})
 
 onMounted(() => {
   store.fetchEquipment()
@@ -29,7 +35,13 @@ const methodLabel = (id) => methodOptions.value.find((m) => m.value === id)?.lab
 
 function openCreate() {
   editingId.value = null
-  Object.assign(form, { equipmentCode: '', name: '', methodIds: [], fvDuration: 8, fvValidity: 112 })
+  Object.assign(form, {
+    equipmentCode: '',
+    name: '',
+    methodIds: [],
+    fvDuration: 8,
+    fvValidity: 112,
+  })
   open.value = true
 }
 function openEdit(e) {

@@ -77,6 +77,13 @@ async function deleteLine(plan, lineId) {
     lineError.value = e?.message ?? 'Failed to remove line'
   }
 }
+
+async function remove(plan) {
+  if (window.confirm(`Delete draft plan "${plan.name}"? This cannot be undone.`)) {
+    if (expanded.value === plan.id) expanded.value = null
+    await store.removePlan(plan.id)
+  }
+}
 const form = reactive({
   name: '',
   description: '',
@@ -160,6 +167,7 @@ async function submit() {
             <th>Shifts</th>
             <th>Requests</th>
             <th>Status</th>
+            <th class="right">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -172,9 +180,18 @@ async function submit() {
               <td class="mono">{{ plan.shiftMode }}</td>
               <td class="mono">{{ (plan.demandLines || []).length }}</td>
               <td><StatusLed :status="plan.status" /></td>
+              <td class="right">
+                <button
+                  v-if="plan.status === 'draft'"
+                  class="btn btn--sm btn--ghost danger"
+                  @click.stop="remove(plan)"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
             <tr v-if="expanded === plan.id" class="detail-row">
-              <td colspan="7">
+              <td colspan="8">
                 <div class="detail">
                   <div class="label">PI requests — method × rounds on a target day</div>
                   <table class="lines">

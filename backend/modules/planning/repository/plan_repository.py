@@ -92,6 +92,13 @@ class PlanRepository:
         orm.demand_lines.remove(line)
         return True
 
+    def delete(self, plan_id: str) -> bool:
+        orm = self.session.get(PlanORM, plan_id)
+        if orm is None:
+            return False
+        self.session.delete(orm)
+        return True
+
     def list(self) -> list[Plan]:
         stmt = select(PlanORM).order_by(PlanORM.created_at)
         return [self._to_domain(orm) for orm in self.session.scalars(stmt).all()]

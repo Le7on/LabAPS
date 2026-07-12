@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { createPlan, listPlans } from '../api/plans'
+import { createPlan, deletePlan, listPlans } from '../api/plans'
 
 // Client-side state for Plans (Pinia). Business state stays on the backend.
 export const usePlansStore = defineStore('plans', () => {
@@ -33,5 +33,17 @@ export const usePlansStore = defineStore('plans', () => {
     }
   }
 
-  return { plans, loading, error, fetchPlans, addPlan }
+  async function removePlan(planId) {
+    error.value = null
+    try {
+      await deletePlan(planId)
+      await fetchPlans()
+      return true
+    } catch (e) {
+      error.value = e?.message ?? 'Failed to delete plan'
+      return false
+    }
+  }
+
+  return { plans, loading, error, fetchPlans, addPlan, removePlan }
 })

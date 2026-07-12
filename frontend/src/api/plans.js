@@ -10,6 +10,10 @@ export function createPlan(payload) {
   return client.post('/plans', payload).then((r) => r.data)
 }
 
+export function deletePlan(planId) {
+  return client.delete(`/plans/${planId}`).then((r) => r.data)
+}
+
 export function getPlan(planId) {
   return client.get(`/plans/${planId}`).then((r) => r.data)
 }
