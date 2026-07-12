@@ -84,3 +84,21 @@ def test_two_plans_scheduled_together_on_target_days(client):
 def test_schedule_requires_plan_ids(client):
     resp = client.post("/api/v1/schedule", json={"planIds": []})
     assert resp.status_code == 422
+
+
+def test_overbooked_day_schedules_what_it_can_and_reports_conflicts(client):
+    # One machine, single shift (1 slot/day), but 3 rounds demanded on one day:
+    # one round schedules, the other two surface as conflicts (ADR-023).
+    workflow_id, method_id = _lab(client)
+    plan_id = _plan(client, "PI", "2026-08-11", "2026-08-11", shift_mode="single")
+    _line(client, plan_id, workflow_id, method_id, 3, "2026-08-11")
+
+    resp = client.post("/api/v1/schedule", json={"planIds": [plan_id], "shiftMode": "single"})
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["meta"]["feasible"] is True
+    assert len(body["data"]["assignments"]) == 1
+    conflicts = body["data"]["conflicts"]
+    assert len(conflicts) == 1
+    assert conflicts[0]["unscheduledRounds"] == 2
+    assert conflicts[0]["targetDate"] == "2026-08-11"

@@ -33,7 +33,8 @@ const totalRequests = computed(() =>
 )
 
 const assignments = computed(() => result.value?.assignments ?? [])
-const feasible = computed(() => meta.value.feasible)
+const conflicts = computed(() => result.value?.conflicts ?? [])
+const hasResult = computed(() => result.value !== null)
 
 const equipmentLabels = computed(() =>
   Object.fromEntries(lab.equipment.map((e) => [e.id, `${e.equipmentCode} · ${e.name}`]))
@@ -75,8 +76,11 @@ async function run() {
       subtitle="Select plans and schedule them together on one calendar"
     >
       <template #actions>
-        <span v-if="feasible != null" class="ctx">
-          <StatusLed :status="feasible ? 'feasible' : 'infeasible'" />
+        <span v-if="hasResult" class="ctx">
+          <StatusLed :status="conflicts.length ? 'running' : 'completed'" />
+          <span class="ctx__txt">{{
+            conflicts.length ? 'Scheduled with conflicts' : 'Fully scheduled'
+          }}</span>
         </span>
       </template>
     </PageHeader>
@@ -122,6 +126,35 @@ async function run() {
       </div>
 
       <div class="result stack">
+        <div v-if="conflicts.length" class="panel conflicts">
+          <div class="panel__head">
+            <span class="panel__title">Conflicts — could not be scheduled</span>
+            <span class="badge badge--danger">{{ conflicts.length }}</span>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Plan</th>
+                <th>Workflow · Method</th>
+                <th>Target date</th>
+                <th>Unscheduled</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(c, i) in conflicts" :key="i">
+                <td class="cell-strong">{{ c.planName }}</td>
+                <td>{{ c.workflow }} · {{ c.method }}</td>
+                <td class="mono">{{ c.targetDate }}</td>
+                <td class="mono">× {{ c.unscheduledRounds }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="muted conflicts__hint">
+            No available machine bound to the method, or no qualified operator, or the day is full.
+            Adjust availability / overtime / shift mode, or move the target date, then re-run.
+          </p>
+        </div>
+
         <div v-if="assignments.length" class="panel">
           <div class="panel__head">
             <span class="panel__title">Schedule by day</span>
@@ -137,18 +170,17 @@ async function run() {
           </div>
         </div>
 
-        <div v-else-if="feasible === false" class="panel placeholder">
+        <div v-if="hasResult && !assignments.length" class="panel placeholder">
           <div class="placeholder__inner">
             <div class="placeholder__mark">⚠</div>
             <p class="muted">
-              Infeasible — a target day lacks capacity (a required machine or qualified operator is
-              unavailable, or too many rounds for the day's shifts). Adjust requests, availability,
-              or shift mode and re-run.
+              Nothing could be scheduled — see the conflicts above. Adjust availability, overtime,
+              shift mode, or target dates and re-run.
             </p>
           </div>
         </div>
 
-        <div v-else class="panel placeholder">
+        <div v-if="!hasResult" class="panel placeholder">
           <div class="placeholder__inner">
             <div class="placeholder__mark">◷</div>
             <p class="muted">Select plans and run the scheduler to see the schedule by day.</p>
@@ -168,9 +200,22 @@ async function run() {
   border-radius: var(--r-md);
   background: var(--panel);
 }
+.ctx__txt {
+  margin-left: var(--s2);
+  font-size: 12px;
+  color: var(--ink-2);
+}
 .note {
   margin: 0 0 var(--s4);
   font-size: 13px;
+}
+.conflicts .table {
+  margin-top: 0;
+}
+.conflicts__hint {
+  font-size: 12px;
+  padding: var(--s2) var(--s4) var(--s3);
+  margin: 0;
 }
 .console {
   display: grid;

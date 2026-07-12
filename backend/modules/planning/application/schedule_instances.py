@@ -143,13 +143,11 @@ class ScheduleInstancesUseCase:
             # A resource's global unavailable days (leave / maintenance) become
             # the complementary available shift-slot windows; the solver then
             # keeps work off those days. Single dates are treated as 1-day ranges.
+            # A resource unavailable every day keeps a zero-length window so it
+            # stays present but can host nothing (its requirement isn't silently
+            # dropped — the task surfaces as a conflict instead).
             ranges = [[d, d] for d in res.get("unavailableDates", [])]
-            return available_windows(slots, ranges)
-
-        def usable(res):
-            # A resource with no available window (unavailable every day) cannot
-            # work at all — drop it so it is not eligible.
-            return bool(windows_for(res))
+            return available_windows(slots, ranges) or ((0, 0),)
 
         resources = tuple(
             Resource(
@@ -161,7 +159,6 @@ class ScheduleInstancesUseCase:
                 fv_validity=int(e.get("fvValidity", 0) or 0),
             )
             for e in context.get("equipment", [])
-            if usable(e)
         ) + tuple(
             Resource(
                 identifier=s["id"],
@@ -170,7 +167,6 @@ class ScheduleInstancesUseCase:
                 windows=windows_for(s),
             )
             for s in context.get("staff", [])
-            if usable(s)
         )
         policies = PlanningPolicies(
             objective=objective, frozen_until=frozen_until, planning_horizon=horizon

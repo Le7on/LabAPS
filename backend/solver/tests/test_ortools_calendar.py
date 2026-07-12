@@ -39,13 +39,16 @@ def test_task_scheduled_within_availability_window():
     assert placed.end <= 20
 
 
-def test_task_infeasible_when_no_window_fits():
-    # Only a 2-unit window, but the task needs 3 units.
+def test_task_unscheduled_when_no_window_fits():
+    # Only a 2-unit window, but the task needs 3 units: it can't be placed, so it
+    # is left unscheduled (a conflict) while the run itself succeeds.
     resource = SchedulingResource(
         identifier="eq", kind=EQUIPMENT, provides=frozenset({"cap"}), windows=((0, 2),)
     )
     solution = _solve(resource)
-    assert not solution.feasible
+    assert solution.feasible
+    assert solution.scheduled_tasks == ()
+    assert len(solution.unscheduled) == 1
 
 
 def test_task_uses_a_later_window_when_needed():

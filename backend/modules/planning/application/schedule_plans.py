@@ -96,6 +96,8 @@ class SchedulePlansUseCase:
                     item.update(mapped)
                 assignments.append(item)
 
+            conflicts = self._conflicts(result.unscheduled, plans, workflows)
+
         return {
             "planIds": plan_ids,
             "startDate": start,
@@ -103,7 +105,36 @@ class SchedulePlansUseCase:
             "status": result.status,
             "feasible": result.feasible,
             "assignments": assignments,
+            "conflicts": conflicts,
         }
+
+    @staticmethod
+    def _conflicts(unscheduled, plans, workflows):
+        """Map unscheduled operation ids back to readable conflicts, aggregated
+        per demand line (id format: ``planId:lineId:methodId#rN``)."""
+        plan_by_id = {p.id: p for p in plans}
+        counts: dict[tuple, int] = {}
+        for op_id in unscheduled:
+            head = op_id.split("#")[0]
+            plan_id, line_id, method_id = head.split(":", 2)
+            counts[(plan_id, line_id, method_id)] = counts.get((plan_id, line_id, method_id), 0) + 1
+
+        out = []
+        for (plan_id, line_id, method_id), n in counts.items():
+            plan = plan_by_id.get(plan_id)
+            line = next((line_ for line_ in plan.demand_lines if line_.id == line_id), None) if plan else None
+            wf = workflows.get(line.workflow_definition_id) if line else None
+            method = next((op for op in wf.operations if op.id == method_id), None) if wf else None
+            out.append(
+                {
+                    "planName": plan.name if plan else plan_id,
+                    "workflow": wf.name if wf else "?",
+                    "method": method.operation_type if method else method_id,
+                    "targetDate": line.target_date if line else "?",
+                    "unscheduledRounds": n,
+                }
+            )
+        return out
 
     # -- problem building -------------------------------------------------
 
@@ -171,9 +202,9 @@ class SchedulePlansUseCase:
         for e in equipment_list:
             if not e.active:
                 continue
-            windows = available_windows(slots, cls._blocked_for(e, overtime_only_days))
-            if not windows:
-                continue
+            # Keep a fully-unavailable resource present with a zero-length window
+            # so its requirement isn't silently dropped (surfaces as a conflict).
+            windows = available_windows(slots, cls._blocked_for(e, overtime_only_days)) or ((0, 0),)
             resources.append(
                 Resource(
                     identifier=e.id,
@@ -188,9 +219,7 @@ class SchedulePlansUseCase:
         for s in staff_list:
             if not s.active:
                 continue
-            windows = available_windows(slots, cls._blocked_for(s, overtime_only_days))
-            if not windows:
-                continue
+            windows = available_windows(slots, cls._blocked_for(s, overtime_only_days)) or ((0, 0),)
             resources.append(
                 Resource(
                     identifier=s.id,

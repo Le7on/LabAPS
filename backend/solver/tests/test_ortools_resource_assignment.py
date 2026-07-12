@@ -98,7 +98,9 @@ def test_two_resources_run_tasks_in_parallel():
     assert solution.makespan == 4  # parallel: max(3, 4)
 
 
-def test_no_capable_resource_is_infeasible():
+def test_no_capable_resource_leaves_task_unscheduled():
+    # No resource can perform the task: the run still succeeds, but the task is
+    # surfaced as unscheduled (a conflict) rather than failing the whole run.
     model = SchedulingModel(
         tasks=(
             Task(identifier="t1", duration=2, requirements=frozenset({(EQUIPMENT, "mass-spec")})),
@@ -109,5 +111,6 @@ def test_no_capable_resource_is_infeasible():
 
     solution = _solve(model)
 
-    assert not solution.feasible
-    assert solution.status == "infeasible"
+    assert solution.feasible
+    assert solution.scheduled_tasks == ()
+    assert solution.unscheduled == ("t1",)

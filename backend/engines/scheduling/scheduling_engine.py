@@ -23,6 +23,7 @@ class ScheduleResult:
     makespan: int
     status: str
     feasible: bool
+    unscheduled: tuple[str, ...] = ()
 
 
 class SchedulingEngine:
@@ -48,4 +49,5 @@ class SchedulingEngine:
             makespan=solution.makespan,
             status=solution.status,
             feasible=solution.feasible,
+            unscheduled=solution.unscheduled,
         )

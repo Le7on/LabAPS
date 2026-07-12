@@ -69,11 +69,14 @@ def test_equipment_maintenance_keeps_work_off_that_day(client):
     assert not a["startAt"].startswith("2026-08-10")
 
 
-def test_full_maintenance_makes_single_day_plan_infeasible(client):
+def test_full_maintenance_leaves_single_day_plan_unscheduled(client):
     eq_id, workflow_id, plan_id = _setup(client, start="2026-08-10", end="2026-08-10")
     client.post(
         f"/api/v1/equipment/{eq_id}/unavailable-dates",
         json={"unavailableDates": ["2026-08-10"]},
     )
     body = _schedule(client, plan_id, workflow_id)
-    assert body["meta"]["feasible"] is False
+    # The only machine is down and it's a single day: nothing can be placed, so
+    # the run succeeds with zero assignments (the op is a conflict).
+    assert body["meta"]["feasible"] is True
+    assert body["data"]["assignments"] == []

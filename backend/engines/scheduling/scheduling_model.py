@@ -183,4 +183,7 @@ class SchedulingSolution:
     makespan: int = 0
     status: str = "unknown"
     feasible: bool = False
+    # Task ids that could not be placed (no eligible resource, or no room given
+    # capacity/calendar) — surfaced as conflicts rather than failing the whole run.
+    unscheduled: tuple[str, ...] = ()
     diagnostics: dict = field(default_factory=dict)

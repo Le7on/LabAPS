@@ -81,4 +81,7 @@ def test_staff_not_qualified_for_project_is_infeasible(client):
 
     response = _schedule(client, _staff_only_workflow(client, project_id))
     assert response.status_code == 200
-    assert response.get_json()["meta"]["feasible"] is False
+    # No qualified staff: the op can't be placed, so it is left unscheduled
+    # (zero assignments) rather than failing the run.
+    assert response.get_json()["meta"]["feasible"] is True
+    assert response.get_json()["data"]["assignments"] == []
