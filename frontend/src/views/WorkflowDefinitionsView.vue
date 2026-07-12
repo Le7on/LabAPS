@@ -7,6 +7,7 @@ import MultiSelect from '../components/MultiSelect.vue'
 
 const store = useLaboratoryStore()
 const open = ref(false)
+const editingId = ref(null)
 
 function emptyMethod() {
   return {
@@ -19,6 +20,33 @@ function emptyMethod() {
 }
 
 const form = reactive({ workflowCode: '', name: '', projectId: '', methods: [emptyMethod()] })
+
+function openCreate() {
+  editingId.value = null
+  Object.assign(form, { workflowCode: '', name: '', projectId: '', methods: [emptyMethod()] })
+  open.value = true
+}
+
+function openEdit(wf) {
+  editingId.value = wf.id
+  Object.assign(form, {
+    workflowCode: wf.workflowCode,
+    name: wf.name,
+    projectId: wf.projectId,
+    methods: wf.operations.map((op) => ({
+      key: crypto.randomUUID(),
+      operationType: op.operationType,
+      duration: op.duration,
+      equipmentIds: [...op.equipmentIds],
+      // dependsOn is stored as method ids; map back to method names for the UI.
+      dependsOn: op.dependsOn
+        .map((depId) => wf.operations.find((o) => o.id === depId)?.operationType)
+        .filter(Boolean),
+    })),
+  })
+  if (!form.methods.length) form.methods.push(emptyMethod())
+  open.value = true
+}
 
 onMounted(() => {
   store.fetchWorkflows()
@@ -60,16 +88,16 @@ async function submit() {
       dependsOn: [...m.dependsOn],
     }))
 
-  const ok = await store.addWorkflow({
+  const payload = {
     workflowCode: form.workflowCode,
     name: form.name,
     projectId: form.projectId,
     operations,
-  })
-  if (ok) {
-    Object.assign(form, { workflowCode: '', name: '', projectId: '', methods: [emptyMethod()] })
-    open.value = false
   }
+  const ok = editingId.value
+    ? await store.editWorkflow(editingId.value, payload)
+    : await store.addWorkflow(payload)
+  if (ok) open.value = false
 }
 
 async function remove(wf) {
@@ -84,7 +112,7 @@ async function remove(wf) {
       subtitle="Per project: the methods that make it, with work-hours and order"
     >
       <template #actions>
-        <button class="btn btn--primary" :disabled="!store.projects.length" @click="open = true">
+        <button class="btn btn--primary" :disabled="!store.projects.length" @click="openCreate">
           + New workflow
         </button>
       </template>
@@ -111,7 +139,8 @@ async function remove(wf) {
             <td class="cell-strong">{{ wf.name }}</td>
             <td>{{ projectName(wf.projectId) }}</td>
             <td class="mono">{{ wf.operations.length }}</td>
-            <td class="right">
+            <td class="right actions">
+              <button class="btn btn--sm btn--ghost" @click="openEdit(wf)">Edit</button>
               <button class="btn btn--sm btn--ghost danger" @click="remove(wf)">Delete</button>
             </td>
           </tr>
@@ -121,7 +150,11 @@ async function remove(wf) {
       <p v-if="store.error" class="error err">{{ store.error }}</p>
     </div>
 
-    <SlideOver :open="open" title="New workflow" @close="open = false">
+    <SlideOver
+      :open="open"
+      :title="editingId ? 'Edit workflow' : 'New workflow'"
+      @close="open = false"
+    >
       <form class="stack" @submit.prevent="submit">
         <div class="field">
           <label>Project</label>
@@ -175,7 +208,9 @@ async function remove(wf) {
         </div>
 
         <p v-if="store.error" class="error">{{ store.error }}</p>
-        <button class="btn btn--primary" type="submit">Create workflow</button>
+        <button class="btn btn--primary" type="submit">
+          {{ editingId ? 'Save workflow' : 'Create workflow' }}
+        </button>
       </form>
     </SlideOver>
   </section>
@@ -184,6 +219,11 @@ async function remove(wf) {
 <style scoped>
 .right {
   text-align: right;
+}
+.actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
 }
 .danger {
   color: var(--led-danger);

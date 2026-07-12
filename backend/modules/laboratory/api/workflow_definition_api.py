@@ -10,6 +10,7 @@ from flask import Blueprint, current_app, request
 
 from backend.modules.laboratory.application.create_workflow_definition import (
     CreateWorkflowDefinitionUseCase,
+    UpdateWorkflowDefinitionUseCase,
 )
 from backend.modules.laboratory.application.list_workflow_definitions import (
     DeleteWorkflowDefinitionUseCase,
@@ -44,6 +45,17 @@ def list_workflow_definitions():
     use_case = ListWorkflowDefinitionsUseCase(_uow())
     result = use_case.execute()
     return api_response.collection(result["items"])
+
+
+@workflow_definition_bp.put("/workflow-definitions/<workflow_id>")
+def update_workflow_definition(workflow_id: str):
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        raise ValidationError("Request body must be a JSON object")
+    use_case = UpdateWorkflowDefinitionUseCase(_uow())
+    return api_response.success(
+        use_case.execute(workflow_id, CreateWorkflowDefinitionRequest.from_json(data))
+    )
 
 
 @workflow_definition_bp.delete("/workflow-definitions/<workflow_id>")

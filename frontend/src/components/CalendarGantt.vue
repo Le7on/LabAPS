@@ -42,9 +42,11 @@ const machines = computed(() => {
 })
 
 function methodName(a) {
-  // Instance id is "<methodDefId>#r<run>"; strip the run suffix for the label.
-  const defId = String(a.operationId).split('#')[0]
-  return props.methodLabels[defId] || defId.slice(0, 8)
+  // Operation id from the multi-plan run is "<planId>:<lineId>:<methodId>#r<run>".
+  // Take the method-definition id (last ":"-segment before the run suffix).
+  const head = String(a.operationId).split('#')[0]
+  const methodId = head.includes(':') ? head.split(':').pop() : head
+  return props.methodLabels[methodId] || methodId.slice(0, 8)
 }
 
 // assignments for a given machine + day.

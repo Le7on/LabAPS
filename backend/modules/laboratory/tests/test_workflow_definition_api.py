@@ -65,3 +65,52 @@ def test_create_workflow_requires_code(client):
     response = client.post("/api/v1/workflow-definitions", json={"name": "No code"})
     assert response.status_code == 422
     assert response.get_json()["error"]["code"] == "VALIDATION_FAILED"
+
+
+def test_update_workflow_edits_name_and_methods_preserving_ids(client):
+    pid = _project_id(client)
+    created = client.post(
+        "/api/v1/workflow-definitions",
+        json={
+            "workflowCode": "WF-1",
+            "name": "Old",
+            "projectId": pid,
+            "operations": [
+                {"operationType": "SMDP", "duration": 2},
+                {"operationType": "SAP", "duration": 3},
+            ],
+        },
+    ).get_json()["data"]
+    wid = created["id"]
+    smdp_id = next(o["id"] for o in created["operations"] if o["operationType"] == "SMDP")
+
+    updated = client.put(
+        f"/api/v1/workflow-definitions/{wid}",
+        json={
+            "workflowCode": "WF-1",
+            "name": "New",
+            "projectId": pid,
+            "operations": [
+                {"operationType": "SMDP", "duration": 5},  # edited, same type
+                {"operationType": "CMDP", "duration": 1},  # new method
+            ],  # SAP removed
+        },
+    )
+    assert updated.status_code == 200
+    data = updated.get_json()["data"]
+    assert data["name"] == "New"
+    types = {o["operationType"] for o in data["operations"]}
+    assert types == {"SMDP", "CMDP"}
+    # SMDP kept its id (so equipment bindings / demand lines survive) and new duration.
+    smdp = next(o for o in data["operations"] if o["operationType"] == "SMDP")
+    assert smdp["id"] == smdp_id
+    assert smdp["duration"] == 5
+
+
+def test_update_missing_workflow_is_404(client):
+    pid = _project_id(client)
+    resp = client.put(
+        "/api/v1/workflow-definitions/nope",
+        json={"workflowCode": "X", "name": "Y", "projectId": pid, "operations": []},
+    )
+    assert resp.status_code == 404

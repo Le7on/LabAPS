@@ -9,6 +9,7 @@ import {
   deleteProject,
   deleteStaff,
   deleteWorkflowDefinition,
+  updateWorkflowDefinition,
   listEquipment,
   listProjects,
   listStaff,
@@ -159,6 +160,8 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
   const removeStaff = (id) => _mutate(() => deleteStaff(id), fetchStaff, 'Failed to delete staff')
   const removeWorkflow = (id) =>
     _mutate(() => deleteWorkflowDefinition(id), fetchWorkflows, 'Failed to delete workflow')
+  const editWorkflow = (id, p) =>
+    _mutate(() => updateWorkflowDefinition(id, p), fetchWorkflows, 'Failed to update workflow')
 
   return {
     equipment,
@@ -182,5 +185,6 @@ export const useLaboratoryStore = defineStore('laboratory', () => {
     editStaff,
     removeStaff,
     removeWorkflow,
+    editWorkflow,
   }
 })

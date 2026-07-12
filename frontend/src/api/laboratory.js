@@ -61,6 +61,10 @@ export function deleteWorkflowDefinition(id) {
   return client.delete(`/workflow-definitions/${id}`).then((r) => r.data)
 }
 
+export function updateWorkflowDefinition(id, payload) {
+  return client.put(`/workflow-definitions/${id}`, payload).then((r) => r.data)
+}
+
 // kind is 'equipment' | 'staff'; date arrays of "YYYY-MM-DD".
 export function setUnavailableDates(kind, id, unavailableDates, overtimeDates = []) {
   return client

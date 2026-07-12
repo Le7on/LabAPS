@@ -52,6 +52,57 @@ class WorkflowDefinitionRepository:
         self.session.delete(orm)
         return True
 
+    def update(self, workflow: WorkflowDefinition) -> bool:
+        """Replace a workflow's fields and methods. Methods are matched to the
+        existing ones by operation type so unchanged methods keep their id (and
+        thus existing equipment bindings / PI demand-line references); new types
+        get fresh ids and removed types are dropped."""
+        orm = self.session.get(WorkflowDefinitionORM, workflow.id)
+        if orm is None:
+            return False
+        orm.workflow_code = workflow.workflow_code
+        orm.name = workflow.name
+        orm.project_id = workflow.project_id
+        orm.active = workflow.active
+
+        existing_by_type = {op.operation_type: op for op in orm.operations}
+        wanted = {eid for op in workflow.operations for eid in op.equipment_ids}
+        by_id = (
+            {
+                e.id: e
+                for e in self.session.scalars(
+                    select(EquipmentORM).where(EquipmentORM.id.in_(wanted))
+                ).all()
+            }
+            if wanted
+            else {}
+        )
+
+        new_ops = []
+        for op in workflow.operations:
+            equipment = [by_id[eid] for eid in op.equipment_ids if eid in by_id]
+            match = existing_by_type.get(op.operation_type)
+            if match is not None:
+                match.duration = op.duration
+                match.gelatin_type = op.gelatin_type
+                match.depends_on = list(op.depends_on)
+                match.equipment = equipment
+                new_ops.append(match)
+            else:
+                new_ops.append(
+                    OperationDefinitionORM(
+                        operation_type=op.operation_type,
+                        duration=op.duration,
+                        gelatin_type=op.gelatin_type,
+                        depends_on=list(op.depends_on),
+                        equipment=equipment,
+                    )
+                )
+        # Assigning the list drops methods whose type no longer appears
+        # (cascade delete-orphan on the relationship).
+        orm.operations = new_ops
+        return True
+
     def _to_orm(self, workflow: WorkflowDefinition) -> WorkflowDefinitionORM:
         # Resolve all bound equipment ids referenced by any method in one query.
         wanted = {eid for op in workflow.operations for eid in op.equipment_ids}
