@@ -59,7 +59,6 @@ class ORToolsSolverAdapter(SolverAdapter):
 
         starts: dict[str, cp_model.IntVar] = {}
         ends: dict[str, cp_model.IntVar] = {}
-        intervals: dict[str, cp_model.IntervalVar] = {}
 
         # Policy Constraint (frozen window): no task starts before frozen_until.
         earliest = max(0, model.frozen_until)
@@ -70,27 +69,30 @@ class ORToolsSolverAdapter(SolverAdapter):
         scheduled: dict[str, cp_model.IntVar] = {}
 
         for task in model.tasks:
-            # A task pinned to a day is bounded by its window; otherwise it may
-            # run anywhere from the frozen boundary to the horizon.
-            lo = max(earliest, task.window[0]) if task.window else earliest
-            hi = min(horizon, task.window[1]) if task.window else horizon
-            # A pinned task with an empty window (e.g. its day was masked out)
-            # can never be scheduled; keep vars valid and mark it unschedulable.
-            if hi < lo:
-                lo = hi = earliest
-                impossible = True
-            else:
-                impossible = False
-            start = cp.new_int_var(lo, hi, f"start_{task.identifier}")
-            end = cp.new_int_var(lo, hi, f"end_{task.identifier}")
-            interval = cp.new_interval_var(start, task.duration, end, f"interval_{task.identifier}")
-            starts[task.identifier] = start
-            ends[task.identifier] = end
-            intervals[task.identifier] = interval
             sched = cp.new_bool_var(f"sched_{task.identifier}")
             scheduled[task.identifier] = sched
-            if impossible:
+
+            # Variables span the whole horizon so the model is always satisfiable
+            # (an unplaced task just sits anywhere with scheduled=0). Window bounds
+            # are enforced only WHEN scheduled — so a task whose duration can't fit
+            # its window is simply left unscheduled instead of failing the run.
+            start = cp.new_int_var(earliest, horizon, f"start_{task.identifier}")
+            end = cp.new_int_var(earliest, horizon, f"end_{task.identifier}")
+            cp.add(end == start + task.duration)
+            starts[task.identifier] = start
+            ends[task.identifier] = end
+
+            # A task longer than the whole horizon can never be placed.
+            if task.duration > horizon - earliest:
                 cp.add(sched == 0)
+
+            lo = max(earliest, task.window[0]) if task.window else earliest
+            hi = min(horizon, task.window[1]) if task.window else horizon
+            if hi < lo:
+                cp.add(sched == 0)
+            else:
+                cp.add(start >= lo).only_enforce_if(sched)
+                cp.add(end <= hi).only_enforce_if(sched)
 
         # Dependency: a task runs only after its predecessors; a task can only be
         # scheduled if all its predecessors are (can't do step 2 without step 1).

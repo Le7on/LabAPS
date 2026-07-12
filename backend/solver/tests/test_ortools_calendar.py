@@ -64,3 +64,26 @@ def test_task_uses_a_later_window_when_needed():
     placed = solution.scheduled_tasks[0]
     assert placed.start >= 30
     assert placed.end <= 40
+
+
+def test_task_window_too_small_for_duration_is_unscheduled_not_infeasible():
+    # Regression: a task pinned to a window shorter than its duration must be
+    # left unscheduled (a conflict), NOT make the whole model infeasible.
+    model = SchedulingModel(
+        tasks=(
+            Task(
+                identifier="t1",
+                duration=4,
+                requirements=frozenset({(EQUIPMENT, "cap")}),
+                window=(0, 3),  # only 3 units of room for a 4-unit task
+            ),
+        ),
+        resources=(
+            SchedulingResource(identifier="eq", kind=EQUIPMENT, provides=frozenset({"cap"})),
+        ),
+        horizon=10,
+    )
+    solution = ORToolsSolverAdapter(max_time_in_seconds=5).solve(model)
+    assert solution.feasible
+    assert solution.scheduled_tasks == ()
+    assert solution.unscheduled == ("t1",)
