@@ -22,10 +22,11 @@ class PlanDemandLine:
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
     def __post_init__(self) -> None:
+        # operationDefinitionId is validated when creating a new line (the use
+        # case checks the method belongs to the workflow); it is intentionally
+        # not required here so legacy rows can still be reconstructed from storage.
         if not self.workflow_definition_id:
             raise ValidationError("workflowDefinitionId is required")
-        if not self.operation_definition_id:
-            raise ValidationError("operationDefinitionId is required")
         if self.rounds <= 0:
             raise ValidationError("rounds must be positive")
         if not self.target_date:

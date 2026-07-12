@@ -27,6 +27,8 @@ class AddPlanDemandLineUseCase:
             workflow = uow.workflow_definitions.get(line.workflow_definition_id)
             if workflow is None:
                 raise ValidationError(f"Unknown workflow: {line.workflow_definition_id}")
+            if not line.operation_definition_id:
+                raise ValidationError("operationDefinitionId is required")
             if not any(op.id == line.operation_definition_id for op in workflow.operations):
                 raise ValidationError("Method does not belong to the selected workflow")
             # The target date must fall inside the plan's calendar.
